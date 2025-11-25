@@ -1,0 +1,31 @@
+{
+  "name": "Ez2Fix",
+  "legalName": "Ez2Fix LLC",
+  "phone": "(201) 554-6769",
+  "phoneRaw": "2015546769",
+  "email": "ez2fixllc@gmail.com",
+  "license": "#13VH13553300",
+  "serviceAreas": {
+    "primaryHub": "Northern New Jersey",
+    "counties": [
+      "Essex County",
+      "Bergen County",
+      "Hudson County",
+      "Passaic County",
+      "Morris County"
+    ]
+  },
+  "hours": {
+    "weekdays": "Mon-Fri: 8am-8pm",
+    "weekends": "Sat-Sun: 9am-6pm",
+    "emergency": "Emergency: 24/7 Available"
+  },
+  "social": {
+    "facebook": "",
+    "googleBusiness": ""
+  },
+  "schema": {
+    "url": "ez2fixllc.com",
+    "description": "Professional Garage Door Repair & Installation in Northern New Jersey"
+  }
+}

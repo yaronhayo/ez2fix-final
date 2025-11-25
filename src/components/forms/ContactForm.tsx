@@ -76,7 +76,7 @@ export default function ContactForm() {
                 console.warn('reCAPTCHA failed:', error);
             }
 
-            const response = await fetch('/api/contact', {
+            const response = await fetch('/api/contact.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, recaptchaToken: token }),

@@ -3,18 +3,13 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel/serverless';
 import icon from 'astro-icon';
 import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ez2fixllc.com',
-  output: 'hybrid',
-  adapter: vercel({
-    imageService: true,
-    devImageService: 'sharp',
-  }),
+  output: 'static',
   integrations: [
     react(),
     tailwind({

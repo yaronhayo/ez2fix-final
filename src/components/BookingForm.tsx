@@ -209,7 +209,7 @@ export default function BookingForm() {
 
 
             // console.log('Sending request to /api/booking');
-            const response = await fetch('/api/booking', {
+            const response = await fetch('/api/booking.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, recaptchaToken: token }),
