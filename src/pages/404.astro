@@ -1,0 +1,78 @@
+---
+import { Icon } from "astro-icon/components";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+
+const title = "Page Not Found | Ez2Fix Garage Door Repair";
+const description =
+    "The page you are looking for does not exist. Return to the homepage or contact us for garage door repair services.";
+---
+
+<BaseLayout title={title} description={description}>
+    <Header />
+
+    <main
+        class="min-h-[60vh] flex items-center justify-center bg-dark-50 py-20 mt-24"
+    >
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h1 class="text-6xl md:text-8xl font-bold text-gold-400 mb-6">
+                    404
+                </h1>
+                <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+                    Page Not Found
+                </h2>
+                <p class="text-lg text-dark-600 mb-10 leading-relaxed">
+                    Oops! The page you are looking for might have been removed,
+                    had its name changed, or is temporarily unavailable.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button variant="primary" href="/">
+                        <Icon name="heroicons:home" class="w-5 h-5 mr-2" />
+                        Return Home
+                    </Button>
+                    <Button variant="outline" href="/contact">
+                        <Icon name="heroicons:envelope" class="w-5 h-5 mr-2" />
+                        Contact Support
+                    </Button>
+                </div>
+
+                <div class="mt-12 pt-12 border-t border-dark-100">
+                    <p class="text-dark-500 mb-4">Looking for our services?</p>
+                    <div
+                        class="flex flex-wrap justify-center gap-4 text-sm font-medium text-gold-600"
+                    >
+                        <a
+                            href="/services/emergency-repair"
+                            class="hover:text-gold-700 hover:underline"
+                            >Emergency Repair</a
+                        >
+                        <span class="text-dark-300">•</span>
+                        <a
+                            href="/services/spring-repair"
+                            class="hover:text-gold-700 hover:underline"
+                            >Spring Repair</a
+                        >
+                        <span class="text-dark-300">•</span>
+                        <a
+                            href="/services/opener-installation"
+                            class="hover:text-gold-700 hover:underline"
+                            >Opener Installation</a
+                        >
+                        <span class="text-dark-300">•</span>
+                        <a
+                            href="/service-areas"
+                            class="hover:text-gold-700 hover:underline"
+                            >Service Areas</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</BaseLayout>

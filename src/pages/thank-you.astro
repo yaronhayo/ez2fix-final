@@ -1,0 +1,274 @@
+---
+export const prerender = false;
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+import { siteConfig } from "@config/site.config";
+import { Icon } from "astro-icon/components";
+
+// This page should not be indexed by search engines
+const noIndex = true;
+
+// Check for valid booking session
+const url = new URL(Astro.request.url);
+const sessionToken = url.searchParams.get('token');
+const sessionCookie = Astro.cookies.get('booking_session');
+
+console.log('Thank-you page access attempt:', {
+    hasToken: !!sessionToken,
+    hasCookie: !!sessionCookie?.value,
+    tokenValue: sessionToken,
+    cookieValue: sessionCookie?.value,
+    url: url.toString()
+});
+
+// Redirect to homepage if no valid session
+// Redirect to homepage if no valid session
+if (!sessionToken && !sessionCookie?.value) {
+    console.log('No valid session found (token or cookie), redirecting to homepage');
+    // return Astro.redirect('/'); // Temporarily disabled for debugging as per user request to "override"
+}
+
+console.log('Valid session found, allowing access to thank-you page');
+
+// Clear the session cookie after successful access
+if (sessionCookie) {
+    Astro.cookies.delete('booking_session', { path: '/' });
+    console.log('Session cookie cleared');
+}
+---
+
+<BaseLayout
+    title="Thank You - Service Request Received | Ez2Fix"
+    description="Thank you for choosing Ez2Fix. We have received your service request and will contact you shortly."
+    noindex={noIndex}
+>
+    <Header />
+
+    <!-- Hero Section -->
+    <section
+        class="bg-gradient-to-br from-dark-700 to-dark-600 text-cream-100 py-20 md:py-32"
+    >
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <!-- Success Icon -->
+                <div
+                    class="w-20 h-20 bg-gold-400 rounded-full flex items-center justify-center mx-auto mb-6"
+                >
+                    <Icon name="heroicons:check" class="w-12 h-12 text-dark-700" />
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-cream-100">Thank You!</h1>
+                <p class="text-2xl text-cream-200 mb-8">
+                    We've Received Your Request
+                </p>
+                <p class="text-lg text-cream-200 mb-8">
+                    A member of our team will contact you shortly to confirm
+                    your appointment and answer any questions you may have.
+                </p>
+
+                <!-- What Happens Next -->
+                <div
+                    class="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-left border border-gold-200/20"
+                >
+                    <h2 class="text-2xl font-bold mb-6 text-center text-cream-100">
+                        What Happens Next?
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div
+                                class="w-10 h-10 bg-gold-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1"
+                            >
+                                <span class="text-dark-700 font-bold">1</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2 text-cream-100">
+                                    We Review Your Request
+                                </h3>
+                                <p class="text-cream-200">
+                                    Our team will review the details of your
+                                    service request and gather any necessary
+                                    information.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="w-10 h-10 bg-gold-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1"
+                            >
+                                <span class="text-dark-700 font-bold">2</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2 text-cream-100">
+                                    We Contact You
+                                </h3>
+                                <p class="text-cream-200">
+                                    We'll call or email you within a few hours
+                                    to confirm your appointment and provide any
+                                    additional details.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="w-10 h-10 bg-gold-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1"
+                            >
+                                <span class="text-dark-700 font-bold">3</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2 text-cream-100">
+                                    We Complete Your Service
+                                </h3>
+                                <p class="text-cream-200">
+                                    Our licensed technicians will arrive at your
+                                    scheduled appointment time to fix your
+                                    garage door issue.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Contact -->
+    <section class="section bg-cream-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-dark-700 mb-4">
+                    Have an Emergency?
+                </h2>
+                <p class="text-dark-600 mb-6">
+                    If your garage door issue is urgent and you need prompt
+                    assistance, please call us now.
+                </p>
+                <Button
+                    variant="emergency"
+                    size="lg"
+                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                >
+                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                    Call {siteConfig.contact.phone} - 24/7
+                </Button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Signals -->
+    <section class="section bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-dark-700 mb-8 text-center">
+                    Why Our Customers Choose Ez2Fix
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon name="heroicons:shield-check" class="w-8 h-8 text-gold-600" />
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-700 mb-2">
+                            Licensed & Insured
+                        </h3>
+                        <p class="text-dark-600">
+                            NJ License {siteConfig.contact.license}
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon name="heroicons:clock" class="w-8 h-8 text-gold-600" />
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-700 mb-2">
+                            10-Year Warranty
+                        </h3>
+                        <p class="text-dark-600">On All Installations</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon name="heroicons:star-solid" class="w-8 h-8 text-gold-600" />
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-700 mb-2">
+                            5.0★ Rated
+                        </h3>
+                        <p class="text-dark-600">500+ Reviews</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section
+        class="section bg-gradient-to-br from-dark-700 to-dark-600 text-white text-center"
+    >
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 text-cream-100">Browse Our Services</h2>
+            <p class="text-xl text-cream-200 mb-6">
+                Learn more about our garage door repair and installation
+                services
+            </p>
+            <Button variant="primary" size="lg" href="/services">
+                <Icon name="heroicons:wrench-screwdriver" class="w-5 h-5 mr-2" />
+                View All Services
+            </Button>
+        </div>
+    </section>
+
+    <Footer />
+</BaseLayout>
+
+<!-- Google Ads Conversion Tracking -->
+{import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_ID && (
+    <script type="text/partytown">
+        gtag('event', 'conversion', {
+            'send_to': `${import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_ID}/${import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_LABEL}`,
+            'transaction_id': ''
+        });
+    </script>
+)}
+
+<!-- Microsoft Ads (Bing) Conversion Tracking -->
+{import.meta.env.PUBLIC_MICROSOFT_UET_TAG_ID && (
+    <script type="text/partytown">
+        window.uetq = window.uetq || [];
+        window.uetq.push('event', 'submit_lead_form', {
+            'event_category': 'form_submission',
+            'event_label': 'booking_form',
+            'event_value': 0
+        });
+    </script>
+)}
+
+<!-- Google Analytics 4 Event -->
+<script type="text/partytown">
+    gtag('event', 'generate_lead', {
+        'event_category': 'engagement',
+        'event_label': 'booking_form_submission',
+        'value': 1
+    });
+</script>
+
+<!-- ClickCease.com Conversion tracking -->
+<script type="text/javascript">
+    window.ccConVal = 0;
+    var script = document.createElement("script");
+    script.async = true;
+    script.type = "text/javascript";
+    var target = 'https://www.clickcease.com/monitor/cccontrack.js';
+    script.src = target; var elem = document.head; elem.appendChild(script);
+</script>
+<noscript>
+    <a href="https://www.clickcease.com" rel="nofollow"><img src="https://monitor.clickcease.com/conversions/conversions.aspx?value=0" alt="ClickCease"/></a>
+</noscript>
+<!-- ClickCease.com Conversion tracking -->

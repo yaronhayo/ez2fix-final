@@ -1,0 +1,73 @@
+---
+import type { Service } from "@data/services";
+import { Icon } from "astro-icon/components";
+
+import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+
+interface Props {
+    service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<a
+    href={`/services/${service.slug}`}
+    class="group bg-white rounded-xl shadow-lg border border-gold-200/20 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full"
+>
+    <!-- Service Image or Fallback -->
+    {
+        service.heroImage ? (
+            <div class="relative h-48 overflow-hidden">
+                <ResponsiveImage
+                    src={service.heroImage}
+                    alt={service.title}
+                    width={400}
+                    height={300}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-dark-900/60 to-transparent pointer-events-none" />
+            </div>
+        ) : null
+    }
+
+    <!-- Fallback Icon (shown if no image or image fails to load) -->
+    <div
+        class={`h-48 bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center ${service.heroImage ? "hidden" : "flex"}`}
+    >
+        <div
+            class="w-24 h-24 bg-white/90 rounded-full flex items-center justify-center shadow-lg"
+        >
+            <Icon
+                name={`heroicons:${service.icon === "bolt" ? "bolt" : service.icon === "spring" ? "arrow-path" : service.icon === "remote" ? "signal" : service.icon === "door" ? "home" : service.icon === "wrench" ? "wrench-screwdriver" : service.icon === "cable" ? "link" : service.icon === "panel" ? "squares-2x2" : service.icon === "track" ? "arrows-right-left" : "cog-6-tooth"}`}
+                class="w-12 h-12 text-gold-600"
+            />
+        </div>
+    </div>
+
+    <div class="p-6 flex flex-col flex-grow">
+        <h3
+            class="text-xl font-bold text-dark-700 text-center mb-2 group-hover:text-gold-600 transition-colors"
+        >
+            {service.title}
+        </h3>
+
+        <p
+            class="text-dark-600 text-center text-sm leading-relaxed mb-4 line-clamp-2 flex-grow"
+        >
+            {service.shortDescription}
+        </p>
+
+        <div class="mt-auto text-center">
+            <span
+                class="inline-flex items-center justify-center px-6 py-2 bg-gold-500 text-dark-900 font-semibold rounded-lg group-hover:bg-gold-600 group-hover:text-white transition-all shadow-md group-hover:shadow-lg"
+            >
+                View Details
+                <Icon
+                    name="heroicons:arrow-right"
+                    class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                />
+            </span>
+        </div>
+    </div>
+</a>

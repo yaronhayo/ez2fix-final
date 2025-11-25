@@ -1,0 +1,22 @@
+{
+    "name": "Ez2Fix - Professional Garage Door Services",
+    "short_name": "Ez2Fix",
+    "description": "Professional garage door repair and installation services in Northern New Jersey. 24/7 emergency service, licensed contractors, 10-year warranty.",
+    "theme_color": "#D4AF37",
+    "background_color": "#1F2937",
+    "display": "browser",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/images/logos/ez2fix-logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/logos/ez2fix-logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

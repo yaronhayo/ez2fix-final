@@ -1,0 +1,52 @@
+---
+interface Props {
+    city: string;
+    content: string;
+}
+
+const { city, content } = Astro.props;
+---
+
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-dark-700 mb-6">
+                Garage Door Services in {city}
+            </h2>
+            <div
+                class="prose prose-lg max-w-none text-dark-600 leading-relaxed"
+            >
+                <p>{content}</p>
+            </div>
+
+            <div
+                class="mt-8 p-6 bg-cream-50 rounded-xl border border-gold-200/20"
+            >
+                <h3
+                    class="text-xl font-bold text-dark-800 mb-4 flex items-center"
+                >
+                    <svg
+                        class="w-6 h-6 text-gold-500 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    Local Service Note
+                </h3>
+                <p class="text-dark-600">
+                    Our technicians are familiar with local building codes in {
+                        city
+                    } and carry inventory suitable for the common garage door styles
+                    found in your neighborhood.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

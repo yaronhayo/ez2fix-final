@@ -1,0 +1,337 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+import ServiceCard from "@components/ui/ServiceCard.astro";
+import GoogleMap from "@components/ui/GoogleMap.astro";
+import HomeHero from "@components/sections/HomeHero.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import ReviewsCarousel from "@components/sections/ReviewsCarousel.astro";
+import BookingForm from "@components/BookingForm.tsx";
+import FAQSection from "@components/sections/FAQSection.astro";
+import { Icon } from "astro-icon/components";
+import { services } from "@data/services";
+import { siteConfig } from "@config/site.config";
+import { generateBreadcrumbSchema } from "@utils/schema";
+import IntroSection from "@components/sections/IntroSection.astro";
+import { getFAQsByPage } from "@data/faqs";
+import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+import PromotionsSection from "@components/sections/PromotionsSection.astro";
+import ExpertTipsCarousel from "@components/sections/ExpertTipsCarousel.astro";
+import ProcessSection from "@components/sections/ProcessSection.astro";
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+	{ name: "Home", url: "https://ez2fixllc.com" },
+]);
+
+const faqs = getFAQsByPage("home");
+---
+
+<BaseLayout
+	title={`${siteConfig.company.tagline}`}
+	description="Licensed garage door repair and installation in Northern New Jersey. 24/7 emergency service, same-day appointments, 10-year warranty. Serving 70+ cities. Free estimates."
+	schema={[breadcrumbSchema]}
+>
+	<Header />
+
+	<!-- Hero Section -->
+	<HomeHero />
+
+	<!-- Mobile Booking Form (shown only on mobile) -->
+	<section
+		class="lg:hidden bg-gradient-to-br from-dark-700 to-dark-600 py-12"
+	>
+		<div class="container mx-auto px-4">
+			<div class="text-center mb-6">
+				<h2 class="text-2xl font-bold text-cream-100 mb-2">
+					Request Service
+				</h2>
+				<p class="text-cream-200 text-sm">
+					Prompt response • Free estimates • No hidden fees
+				</p>
+			</div>
+			<div class="max-w-lg mx-auto">
+				<BookingForm client:load />
+			</div>
+		</div>
+	</section>
+
+	<!-- Intro Section - Keyword Optimized -->
+	<IntroSection />
+
+	<!-- Services Grid Section -->
+	<ServicesGrid
+		title="Our Garage Door Services"
+		subtitle="Expert repair, installation, and maintenance for all garage door types. Licensed technicians, same-day service, 10-year warranty."
+		services={services}
+		className="bg-cream-100"
+		maxServices={6}
+	/>
+	<div class="bg-cream-100 pb-16 text-center -mt-8 relative z-10">
+		<Button variant="primary" size="lg" href="/services">
+			<Icon name="heroicons:wrench-screwdriver" class="w-5 h-5 mr-2" />
+			View All Services
+		</Button>
+	</div>
+
+	<!-- Trust Section -->
+	<section class="section bg-white">
+		<div class="container mx-auto px-4">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl md:text-4xl font-bold text-dark-700 mb-4">
+					Why {siteConfig.trustSignals.customersServed} Northern NJ Homeowners
+					Choose Ez2Fix
+				</h2>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+				<div class="text-center">
+					<div
+						class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+					>
+						<Icon
+							name="heroicons:shield-check"
+							class="w-8 h-8 text-gold-600"
+						/>
+					</div>
+					<h3 class="text-xl font-bold text-dark-700 mb-2">
+						Licensed & Insured
+					</h3>
+					<p class="text-dark-600">
+						{siteConfig.contact.license}<br />Bonded & Certified
+					</p>
+				</div>
+
+				<div class="text-center">
+					<div
+						class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+					>
+						<Icon
+							name="heroicons:check-badge"
+							class="w-8 h-8 text-gold-600"
+						/>
+					</div>
+					<h3 class="text-xl font-bold text-dark-700 mb-2">
+						10-Year Warranty
+					</h3>
+					<p class="text-dark-600">
+						On All Installations<br />Parts & Labor
+					</p>
+				</div>
+
+				<div class="text-center">
+					<div
+						class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+					>
+						<Icon
+							name="heroicons:bolt"
+							class="w-8 h-8 text-gold-600"
+						/>
+					</div>
+					<h3 class="text-xl font-bold text-dark-700 mb-2">
+						Same-Day Available
+					</h3>
+					<p class="text-dark-600">
+						24/7 Emergency Service<br />All Major Brands
+					</p>
+				</div>
+
+				<div class="text-center">
+					<div
+						class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+					>
+						<Icon
+							name="heroicons:currency-dollar"
+							class="w-8 h-8 text-gold-600"
+						/>
+					</div>
+					<h3 class="text-xl font-bold text-dark-700 mb-2">
+						Transparent Pricing
+					</h3>
+					<p class="text-dark-600">
+						Free On-Site Estimates<br />No Hidden Fees
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Process Section -->
+	<ProcessSection />
+
+	<!-- Promotions Section -->
+	<PromotionsSection />
+
+	<!--Service Area Map Section -->
+	<section class="section bg-cream-100">
+		<div class="container mx-auto px-4">
+			<div class="max-w-6xl mx-auto">
+				<div class="text-center mb-12">
+					<h2
+						class="text-3xl md:text-4xl font-bold text-dark-700 mb-4"
+					>
+						Serving 70+ Cities in Northern New Jersey
+					</h2>
+					<p class="text-lg text-dark-600 max-w-2xl mx-auto">
+						Professional <strong>garage door repair</strong> and installation
+						throughout
+						<strong>Bergen County</strong>, <strong
+							>Essex County</strong
+						>, Morris County, Hudson County, and Passaic County
+						garage door service areas. Same-day service available in
+						most Northern NJ communities.
+					</p>
+				</div>
+
+				<div class="grid md:grid-cols-2 gap-8 items-center">
+					<!-- Map -->
+					<div class="order-2 md:order-1">
+						<GoogleMap />
+					</div>
+
+					<!-- Service Area Details -->
+					<div class="order-1 md:order-2">
+						<h3 class="text-2xl font-bold text-dark-700 mb-4">
+							16 Priority Cities & 70+ Communities
+						</h3>
+						<p class="text-dark-600 mb-6">
+							We provide prompt, reliable garage door service
+							throughout Northern New Jersey. Whether you're in
+							Newark, Jersey City, Paterson, or any of the
+							surrounding communities, we're here to help.
+						</p>
+						<div class="space-y-3 mb-6">
+							<div class="flex items-start">
+								<svg
+									class="w-6 h-6 text-gold-600 mr-3 flex-shrink-0 mt-0.5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M5 13l4 4L19 7"></path>
+								</svg>
+								<div>
+									<span class="font-semibold text-dark-700"
+										>Same-Day Service Available</span
+									>
+									<p class="text-sm text-dark-600">
+										In most areas when you call before 2 PM
+									</p>
+								</div>
+							</div>
+							<div class="flex items-start">
+								<svg
+									class="w-6 h-6 text-gold-600 mr-3 flex-shrink-0 mt-0.5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M5 13l4 4L19 7"></path>
+								</svg>
+								<div>
+									<span class="font-semibold text-dark-700"
+										>24/7 Emergency Service</span
+									>
+									<p class="text-sm text-dark-600">
+										Available for urgent garage door repairs
+									</p>
+								</div>
+							</div>
+							<div class="flex items-start">
+								<svg
+									class="w-6 h-6 text-gold-600 mr-3 flex-shrink-0 mt-0.5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M5 13l4 4L19 7"></path>
+								</svg>
+								<div>
+									<span class="font-semibold text-dark-700"
+										>Local & Licensed</span
+									>
+									<p class="text-sm text-dark-600">
+										NJ License #{siteConfig.contact.license}
+									</p>
+								</div>
+							</div>
+						</div>
+						<Button variant="primary" href="/service-areas">
+							<Icon
+								name="heroicons:map-pin"
+								class="w-5 h-5 mr-2"
+							/>
+							View All Service Areas
+						</Button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Reviews Section -->
+	<ReviewsCarousel />
+
+	<!-- Recent Guides Section -->
+	<ExpertTipsCarousel />
+
+	<!-- FAQ Section -->
+	<FAQSection
+		faqs={faqs}
+		title="Frequently Asked Questions"
+		subtitle="Get answers to common questions about our garage door services in Northern NJ"
+		className="bg-cream-100"
+	/>
+
+	<!-- Final CTA Section -->
+	<section
+		class="section bg-gradient-to-br from-dark-700 to-dark-600 text-white"
+	>
+		<div class="container mx-auto px-4 text-center">
+			<h2 class="text-3xl md:text-4xl font-bold mb-6 text-cream-100">
+				Ready to Fix Your Garage Door?
+			</h2>
+			<p class="text-xl text-cream-200 mb-8 max-w-2xl mx-auto">
+				{siteConfig.trustSignals.yearsInBusiness} years of expert service
+				• Licensed & Insured • Same-day service available
+			</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				<Button
+					variant="primary"
+					size="lg"
+					href="/booking?utm_source=website&utm_medium=cta&utm_campaign=homepage-body"
+				>
+					<Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+					Get Free Estimate
+				</Button>
+				<Button
+					variant="secondary"
+					size="lg"
+					href={`tel:${siteConfig.contact.phoneRaw}`}
+				>
+					<Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+					Call {siteConfig.contact.phone}
+				</Button>
+			</div>
+			<p class="mt-6 text-cream-200">
+				✓ Licensed & Insured ✓ 10-Year Warranty ✓ Same-Day Available ✓
+				No Hidden Fees
+			</p>
+		</div>
+	</section>
+
+	<Footer />
+</BaseLayout>

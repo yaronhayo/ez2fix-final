@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-cream-100 text-dark-700 font-sans antialiased;
+  }
+
+  /* Headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-dark-700;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl leading-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold leading-snug;
+  }
+
+  h4 {
+    @apply text-xl font-semibold leading-snug;
+  }
+
+  h5 {
+    @apply text-lg font-semibold leading-normal;
+  }
+
+  h6 {
+    @apply text-base font-semibold leading-normal;
+  }
+
+  /* Links */
+  a {
+    @apply text-gold-600 transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-gold-700;
+  }
+
+  a:focus-visible {
+    @apply outline-2 outline-gold-400 outline-offset-2;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-gold-400 outline-offset-2;
+  }
+
+  /* Remove default button styles */
+  button {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+
+  /* Container */
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-white rounded-xl p-6 shadow-base border border-cream-300 transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply transform -translate-y-1 shadow-lg border-gold-400;
+  }
+
+  /* Button base */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold uppercase text-sm tracking-wide transition-all duration-200 focus:outline-none focus:ring-4;
+  }
+
+  .btn-primary {
+    @apply bg-gold-400 text-dark-800 shadow-md hover:bg-gold-500 hover:-translate-y-0.5 hover:shadow-lg active:scale-98 focus:ring-gold-200;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gold-700 border-2 border-gold-600 hover:bg-gold-50 hover:border-gold-700 active:bg-gold-100 focus:ring-gold-200;
+  }
+
+  .btn-emergency {
+    @apply bg-red-500 text-white shadow-md hover:bg-red-600 hover:-translate-y-0.5 hover:shadow-lg active:scale-98 focus:ring-red-200;
+  }
+
+  /* Input base */
+  .input {
+    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-base bg-white text-dark-700 placeholder-gray-400 transition-all duration-200 min-h-[48px];
+  }
+
+  .input:hover {
+    @apply border-gray-400;
+  }
+
+  .input:focus {
+    @apply border-gold-400 ring-4 ring-gold-100 outline-none;
+  }
+
+  .input.error {
+    @apply border-red-500;
+  }
+
+  .input.error:focus {
+    @apply ring-red-100;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+  }
+
+  .badge-gold {
+    @apply bg-gold-400 text-dark-800;
+  }
+
+  .badge-outline {
+    @apply bg-white text-gold-700 border-2 border-gold-400;
+  }
+
+  .badge-emergency {
+    @apply bg-red-500 text-white;
+  }
+}
+
+@layer utilities {
+
+  /* Accessibility - Hide visually but keep for screen readers */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+}
+
+/* reCAPTCHA Badge Positioning - 'Hide and Cite' Method */
+/* Moved outside @layer utilities to ensure global scope and highest specificity */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  /* Nuclear option if the above fails */
+  display: none !important;
+}

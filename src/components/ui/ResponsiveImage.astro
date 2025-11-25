@@ -1,0 +1,47 @@
+---
+interface Props {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    sizes?: string;
+    loading?: "lazy" | "eager";
+    fetchpriority?: "high" | "low" | "auto";
+    class?: string;
+}
+
+const {
+    src,
+    alt,
+    width,
+    height,
+    sizes = "100vw",
+    loading = "lazy",
+    fetchpriority = "auto",
+    class: className,
+    ...rest
+} = Astro.props;
+
+// Helper to generate WebP path
+const getWebPPath = (path: string) => {
+    return path.replace(/\.(jpg|jpeg|png)$/i, ".webp");
+};
+
+const webpSrc = getWebPPath(src);
+---
+
+<picture>
+    {/* <source srcset={webpSrc} type="image/webp" /> */}
+    <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes={sizes}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        class={className}
+        decoding="async"
+        {...rest}
+    />
+</picture>

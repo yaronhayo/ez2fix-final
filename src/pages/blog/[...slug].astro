@@ -1,0 +1,366 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+import { siteConfig } from "@config/site.config";
+import { generateArticleSchema, generateBreadcrumbSchema } from "@utils/schema";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+
+// Format date
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+}).format(post.data.publishDate);
+
+// Generate Schema
+// Generate Schema
+const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.data.title,
+    description: post.data.description,
+    image: post.data.image
+        ? `https://ez2fixllc.com${post.data.image}`
+        : "https://ez2fixllc.com/images/og-default.jpg",
+    datePublished: post.data.publishDate.toISOString(),
+    dateModified:
+        post.data.updatedDate?.toISOString() ||
+        post.data.publishDate.toISOString(),
+    author: {
+        "@type": "Person",
+        name: post.data.author,
+    },
+    publisher: {
+        "@type": "Organization",
+        name: siteConfig.company.name,
+        logo: {
+            "@type": "ImageObject",
+            url: "https://ez2fixllc.com/images/logos/ez2fix-logo.png",
+        },
+    },
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": new URL(Astro.url.pathname, Astro.site).href,
+    },
+};
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Blog", url: "https://ez2fixllc.com/blog" },
+    { name: post.data.title, url: `https://ez2fixllc.com/blog/${post.slug}` },
+]);
+
+// Get related posts (simple logic: same category, excluding current)
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+    .filter(
+        (p) => p.slug !== post.slug && p.data.category === post.data.category,
+    )
+    .slice(0, 3);
+---
+
+<BaseLayout
+    title={`${post.data.title} | Ez2Fix Blog`}
+    description={post.data.description}
+    ogImage={post.data.image}
+    schema={[articleSchema, breadcrumbSchema]}
+>
+    <Header />
+
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-cream-200 z-50">
+        <div
+            class="h-full bg-gold-500 origin-left scale-x-0 transition-transform duration-100"
+            id="progress-bar"
+        >
+        </div>
+    </div>
+
+    <!-- Post Header -->
+    <header
+        class="bg-dark-700 text-white py-16 md:py-24 relative overflow-hidden"
+    >
+        <div
+            class="absolute inset-0 bg-[url('/images/hero-pattern.svg')] opacity-10"
+        >
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div
+                    class="flex items-center justify-center space-x-2 text-sm font-semibold uppercase tracking-wider text-gold-400 mb-4"
+                >
+                    <span>{post.data.category.replace("-", " ")}</span>
+                    <span>•</span>
+                    <time datetime={post.data.publishDate.toISOString()}
+                        >{formattedDate}</time
+                    >
+                </div>
+                <h1
+                    class="text-3xl md:text-5xl font-bold mb-6 leading-tight text-cream-100"
+                >
+                    {post.data.title}
+                </h1>
+                <p class="text-xl text-cream-200 mb-8 max-w-2xl mx-auto">
+                    {post.data.description}
+                </p>
+                <div class="flex items-center justify-center space-x-4">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 bg-gold-500 rounded-full flex items-center justify-center text-dark-900 font-bold text-lg mr-3"
+                        >
+                            {post.data.author.charAt(0)}
+                        </div>
+                        <div class="text-left">
+                            <div class="font-bold text-white">
+                                {post.data.author}
+                            </div>
+                            <div class="text-xs text-gold-300">
+                                Ez2Fix Expert
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row gap-12">
+            <!-- Main Content -->
+            <main class="lg:w-2/3">
+                {
+                    post.data.image && (
+                        <img
+                            src={post.data.image}
+                            alt={post.data.title}
+                            class="w-full h-auto rounded-xl shadow-lg mb-12"
+                        />
+                    )
+                }
+
+                <article
+                    class="prose prose-lg max-w-none prose-headings:text-dark-800 prose-headings:font-bold prose-p:text-dark-600 prose-a:text-gold-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-dark-700 prose-li:text-dark-600"
+                >
+                    <Content />
+                </article>
+
+                <!-- Share & Tags -->
+                <div class="mt-12 pt-8 border-t border-cream-300">
+                    <div
+                        class="flex flex-wrap items-center justify-between gap-4"
+                    >
+                        <div class="flex flex-wrap gap-2">
+                            {
+                                post.data.tags.map((tag: string) => (
+                                    <span class="bg-cream-100 text-dark-600 text-sm px-3 py-1 rounded-full">
+                                        #{tag}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-dark-500 font-semibold text-sm"
+                                >Share:</span
+                            >
+                            <a
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://ez2fixllc.com/blog/${post.slug}`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-dark-400 hover:text-[#1877F2] transition-colors"
+                                aria-label="Share on Facebook"
+                            >
+                                <svg
+                                    class="w-6 h-6"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                                    ></path></svg
+                                >
+                            </a>
+                            <a
+                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://ez2fixllc.com/blog/${post.slug}`)}&text=${encodeURIComponent(post.data.title)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-dark-400 hover:text-[#1DA1F2] transition-colors"
+                                aria-label="Share on Twitter"
+                            >
+                                <svg
+                                    class="w-6 h-6"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                                    ></path></svg
+                                >
+                            </a>
+                            <a
+                                href={`mailto:?subject=${encodeURIComponent(post.data.title)}&body=${encodeURIComponent(`Check out this article: https://ez2fixllc.com/blog/${post.slug}`)}`}
+                                class="text-dark-400 hover:text-gold-600 transition-colors"
+                                aria-label="Share via Email"
+                            >
+                                <svg
+                                    class="w-6 h-6"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                                    ></path></svg
+                                >
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Box -->
+                <div
+                    class="mt-12 bg-dark-700 rounded-xl p-8 text-center text-white relative overflow-hidden"
+                >
+                    <div
+                        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gold-500 rounded-full opacity-20 blur-xl"
+                    >
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 -mb-4 -ml-4 w-32 h-32 bg-gold-500 rounded-full opacity-10 blur-xl"
+                    >
+                    </div>
+
+                    <h3
+                        class="text-2xl font-bold mb-4 relative z-10 text-cream-100"
+                    >
+                        Need Professional Garage Door Help?
+                    </h3>
+                    <p
+                        class="text-cream-200 mb-6 max-w-xl mx-auto relative z-10"
+                    >
+                        Our licensed technicians are ready to assist you with
+                        any repair or installation needs in Northern New Jersey.
+                    </p>
+                    <div
+                        class="flex flex-col sm:flex-row justify-center gap-4 relative z-10"
+                    >
+                        <Button
+                            variant="primary"
+                            href="/booking?utm_source=website&utm_medium=cta&utm_campaign=blog-post"
+                            >Book Online Now</Button
+                        >
+                        <Button
+                            variant="outline"
+                            href={`tel:${siteConfig.contact.phoneRaw}`}
+                            >Call {siteConfig.contact.phone}</Button
+                        >
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="lg:w-1/3 space-y-8">
+                <!-- Table of Contents -->
+                {
+                    headings.length > 0 && (
+                        <div class="bg-white rounded-xl shadow-sm border border-cream-300 p-6 sticky top-24">
+                            <h3 class="text-lg font-bold text-dark-800 mb-4 border-b border-cream-300 pb-2">
+                                Table of Contents
+                            </h3>
+                            <nav>
+                                <ul class="space-y-2 text-sm">
+                                    {headings.map((heading) => (
+                                        <li
+                                            class={`pl-${(heading.depth - 1) * 3}`}
+                                        >
+                                            <a
+                                                href={`#${heading.slug}`}
+                                                class="text-dark-600 hover:text-gold-600 transition-colors block py-1"
+                                            >
+                                                {heading.text}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+                        </div>
+                    )
+                }
+
+                <!-- Related Posts -->
+                {
+                    relatedPosts.length > 0 && (
+                        <div class="bg-cream-50 rounded-xl p-6 border border-cream-200">
+                            <h3 class="text-lg font-bold text-dark-800 mb-4">
+                                Related Articles
+                            </h3>
+                            <div class="space-y-4">
+                                {relatedPosts.map((related) => (
+                                    <a
+                                        href={`/blog/${related.slug}`}
+                                        class="block group"
+                                    >
+                                        <h4 class="font-semibold text-dark-700 group-hover:text-gold-600 transition-colors mb-1">
+                                            {related.data.title}
+                                        </h4>
+                                        <p class="text-xs text-dark-500">
+                                            {formattedDate}
+                                        </p>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+
+                <!-- Service Areas -->
+                <div class="bg-dark-700 text-white rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-gold-300 mb-4">
+                        We Serve Northern NJ
+                    </h3>
+                    <ul class="space-y-2 text-sm text-cream-200 mb-6">
+                        <li>• Newark & Jersey City</li>
+                        <li>• Paterson & Clifton</li>
+                        <li>• Elizabeth & Union</li>
+                        <li>• Montclair & The Caldwells</li>
+                        <li>• And surrounding areas...</li>
+                    </ul>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        href="/service-areas"
+                        class="w-full justify-center"
+                    >
+                        View Service Map
+                    </Button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <Footer />
+</BaseLayout>
+
+<script>
+    // Progress bar
+    const progressBar = document.getElementById("progress-bar");
+
+    window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = scrollTop / docHeight;
+
+        if (progressBar) {
+            progressBar.style.transform = `scaleX(${scrollPercent})`;
+        }
+    });
+</script>

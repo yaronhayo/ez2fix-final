@@ -1,0 +1,44 @@
+---
+import type { Service } from "@data/services";
+
+import ServiceCard from "@components/ui/ServiceCard.astro";
+
+interface Props {
+    title?: string;
+    subtitle?: string;
+    services: Service[];
+    className?: string;
+    maxServices?: number;
+}
+
+const {
+    title = "Related Services",
+    subtitle,
+    services,
+    className,
+    maxServices,
+} = Astro.props;
+
+const displayedServices = maxServices
+    ? services.slice(0, maxServices)
+    : services;
+---
+
+<section class={`py-16 bg-cream-100 ${className || ""}`}>
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-dark-700 mb-4">
+                {title}
+            </h2>
+            {subtitle && <p class="text-lg text-dark-600">{subtitle}</p>}
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            {
+                displayedServices.map((service) => (
+                    <ServiceCard service={service} />
+                ))
+            }
+        </div>
+    </div>
+</section>

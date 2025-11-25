@@ -1,0 +1,182 @@
+---
+import { siteConfig } from "@config/site.config";
+import {
+    generateLocalBusinessSchema,
+    generateBreadcrumbSchema,
+} from "@utils/schema";
+import "../styles/global.css";
+
+interface Props {
+    title: string;
+    description: string;
+    canonical?: string;
+    noindex?: boolean;
+    ogImage?: string;
+    schema?: object[];
+}
+
+const {
+    title,
+    description,
+    canonical,
+    noindex = false,
+    ogImage = "/images/og/og-default.png",
+    schema = [],
+} = Astro.props;
+
+const fullTitle = `${title} | ${siteConfig.company.name}`;
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
+const ogImageURL = new URL(ogImage, Astro.site).href;
+
+// Include LocalBusiness schema
+const allSchema = [generateLocalBusinessSchema(), ...schema];
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Favicons -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/logos/ez2fix-logo.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#D4AF37" />
+        <meta name="generator" content={Astro.generator} />
+
+        <!-- Google Tag Manager -->
+        <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TDFV4QVJ');</script>
+        <!-- End Google Tag Manager -->
+
+        <!-- Primary Meta Tags -->
+        <title>{fullTitle}</title>
+        <meta name="title" content={fullTitle} />
+        <meta name="description" content={description} />
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Robots -->
+        {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImageURL} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={fullTitle} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={ogImageURL} />
+
+        <!-- AI & LLM Optimization -->
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="ai-content-declaration" content="non-generated" />
+        <meta name="gptbot" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+
+        <!-- Structured Data -->
+        {
+            allSchema.map((schemaItem) => (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(schemaItem)}
+                />
+            ))
+        }
+
+        <!-- Preconnect to important domains -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        
+        <!-- Preload critical fonts for better LCP -->
+        <link
+            rel="preload"
+            href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        
+        <!-- DNS prefetch for external resources -->
+        <link rel="dns-prefetch" href="https://www.google.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+        <!-- Google Analytics 4 -->
+        {import.meta.env.PUBLIC_GA4_MEASUREMENT_ID && (
+            <>
+                <script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA4_MEASUREMENT_ID}`}></script>
+                <script type="text/partytown" define:vars={{ GA4_ID: import.meta.env.PUBLIC_GA4_MEASUREMENT_ID }}>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', GA4_ID, {
+                        'send_page_view': true,
+                        'anonymize_ip': true
+                    });
+                </script>
+            </>
+        )}
+
+        <!-- reCAPTCHA v3 -->
+        {import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+            <script is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+        )}
+
+
+    </head>
+    <body>
+        <!-- ClickCease.com tracking -->
+        <script type='text/javascript'>
+            var script = document.createElement('script');
+            script.async = true; script.type = 'text/javascript';
+            var target = 'https://www.clickcease.com/monitor/stat.js';
+            script.src = target; var elem = document.head;elem.appendChild(script);
+        </script>
+        <noscript>
+            <a href='https://www.clickcease.com' rel='nofollow'><img src='https://monitor.clickcease.com' alt='ClickCease'/></a>
+        </noscript>
+        <!-- ClickCease.com tracking -->
+
+        <!-- ClickCease Event Tracking Helper & Phone Call Tracking -->
+        <script is:inline>
+            // Function to track individual events (e.g. phone calls)
+            window.initCConvertion = function(val) {
+                window.ccConVal = val || 0;
+                var script = document.createElement('script');
+                var target = 'https://www.clickcease.com/monitor/cccontrack.js';
+                var elem = document.head;
+                script.type = 'text/javascript';
+                script.src = target;
+                elem.appendChild(script);
+            };
+
+            // Global event listener for phone links
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href^="tel:"]');
+                if (link) {
+                    // Track phone call as conversion
+                    if (typeof window.initCConvertion === 'function') {
+                        window.initCConvertion(0);
+                    }
+                }
+            });
+        </script>
+
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDFV4QVJ"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        
+        <slot />
+    </body>
+</html>

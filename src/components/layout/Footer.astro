@@ -1,0 +1,274 @@
+---
+import { siteConfig } from "@config/site.config";
+import { Icon } from "astro-icon/components";
+
+const navLinks = [
+    { name: "Services", href: "/services" },
+    { name: "Service Areas", href: "/service-areas" },
+    { name: "FAQ", href: "/faq" },
+    { name: "Reviews", href: "/reviews" },
+    { name: "About", href: "/about" },
+    {
+        name: "Contact",
+        href: "/contact?utm_source=website&utm_medium=cta&utm_campaign=footer",
+    },
+    { name: "Blog", href: "/blog" },
+    {
+        name: "Book Online",
+        href: "/booking?utm_source=website&utm_medium=cta&utm_campaign=footer",
+    },
+];
+
+const legalLinks = [
+    { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "Terms of Service", href: "/terms-of-service" },
+    { name: "Accessibility", href: "/accessibility" },
+];
+---
+
+<footer class="bg-dark-700 text-cream-100 pt-12 pb-6">
+    <div class="container mx-auto px-4">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <!-- Column 1: Company Info -->
+            <div>
+                <div class="flex items-center mb-4">
+                    <img
+                        src="/images/logos/ez2fix-logo.png"
+                        alt="Ez2Fix LLC Logo"
+                        class="h-16 w-auto mr-3"
+                    />
+                    <div class="text-2xl font-bold text-gold-300">
+                        Ez2Fix LLC
+                    </div>
+                </div>
+                <p class="text-cream-200 mb-4">{siteConfig.company.tagline}</p>
+                <div class="flex flex-col space-y-2 text-sm">
+                    <span class="text-gold-300">Licensed, Bonded & Insured</span
+                    >
+                    <span>License {siteConfig.contact.license}</span>
+                </div>
+            </div>
+
+            <!-- Column 2: Site Links -->
+            <div>
+                <h3 class="text-lg font-semibold text-gold-300 mb-4">
+                    Site Links
+                </h3>
+                <ul class="space-y-2">
+                    {
+                        navLinks.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    class="text-cream-100 hover:text-gold-200 hover:underline transition-colors"
+                                >
+                                    {link.name}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <!-- Column 3: Business Hours -->
+            <div>
+                <h3 class="text-lg font-semibold text-gold-300 mb-4">
+                    Business Hours
+                </h3>
+                <div class="space-y-1 text-sm">
+                    <div class="flex justify-between">
+                        <span>Monday:</span>
+                        <span class="text-cream-200">7:00 AM - 9:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Tuesday:</span>
+                        <span class="text-cream-200">7:00 AM - 9:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Wednesday:</span>
+                        <span class="text-cream-200">7:00 AM - 9:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Thursday:</span>
+                        <span class="text-cream-200">7:00 AM - 9:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Friday:</span>
+                        <span class="text-cream-200">7:00 AM - 9:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Saturday:</span>
+                        <span class="text-cream-200">8:00 AM - 6:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Sunday:</span>
+                        <span class="text-cream-200">8:00 AM - 6:00 PM</span>
+                    </div>
+                    <p class="text-gold-300 font-semibold mt-3">
+                        24/7 Emergency Service Available
+                    </p>
+                </div>
+            </div>
+
+            <!-- Column 4: Contact Us -->
+            <div>
+                <h3 class="text-lg font-semibold text-gold-300 mb-4">
+                    Contact Us
+                </h3>
+                <div class="space-y-3 text-sm">
+                    <a
+                        href={`tel:${siteConfig.contact.phoneRaw}`}
+                        class="flex items-center text-cream-100 hover:text-gold-200 transition-colors"
+                    >
+                        <Icon
+                            name="heroicons:phone"
+                            class="w-5 h-5 mr-2 text-gold-400"
+                        />
+                        {siteConfig.contact.phone}
+                    </a>
+                    <a
+                        href={`mailto:${siteConfig.contact.email}`}
+                        class="flex items-center text-cream-100 hover:text-gold-200 transition-colors"
+                    >
+                        <Icon
+                            name="heroicons:envelope"
+                            class="w-5 h-5 mr-2 text-gold-400"
+                        />
+                        {siteConfig.contact.email}
+                    </a>
+                    <p class="flex items-center">
+                        <Icon
+                            name="heroicons:map-pin"
+                            class="w-5 h-5 mr-2 text-gold-400"
+                        />
+                        Serving {siteConfig.coverage.primaryHub}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="border-t border-dark-600 pt-6 mb-6">
+            <div class="flex flex-wrap justify-center gap-6 text-sm">
+                <div class="flex items-center">
+                    <Icon
+                        name="heroicons:shield-check"
+                        class="w-5 h-5 mr-2 text-gold-400"
+                    />
+                    <span>Licensed & Insured</span>
+                </div>
+                <div class="flex items-center">
+                    <Icon
+                        name="heroicons:star-solid"
+                        class="w-5 h-5 mr-2 text-gold-400"
+                    />
+                    <span
+                        >{siteConfig.trustSignals.rating}★ Rating ({
+                            siteConfig.trustSignals.reviewCount
+                        } Reviews)</span
+                    >
+                </div>
+                <div class="flex items-center">
+                    <Icon
+                        name="heroicons:check-badge"
+                        class="w-5 h-5 mr-2 text-gold-400"
+                    />
+                    <span>{siteConfig.trustSignals.warranty}</span>
+                </div>
+                <div class="flex items-center">
+                    <Icon
+                        name="heroicons:user-group"
+                        class="w-5 h-5 mr-2 text-gold-400"
+                    />
+                    <span
+                        >{siteConfig.trustSignals.customersServed} Customers Served</span
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar - 3 Rows Centered -->
+        <div
+            class="border-t border-dark-600 pt-6 text-center text-sm space-y-3"
+        >
+            <!-- Row 1: Attribution -->
+            <p class="text-cream-200">
+                Made with <Icon
+                    name="heroicons:heart-solid"
+                    class="w-5 h-5 text-gold-400 inline-block animate-heartbeat"
+                />
+                by <a
+                    href={siteConfig.attribution.url}
+                    class="text-gold-300 hover:text-gold-200"
+                    target="_blank"
+                    rel="noopener noreferrer">Gett Marketing</a
+                >
+            </p>
+
+            <!-- Row 2: Legal Links -->
+            <div class="flex justify-center items-center gap-2 flex-wrap">
+                {
+                    legalLinks.map((link, index) => (
+                        <>
+                            <a
+                                href={link.href}
+                                class="text-cream-100 hover:text-gold-200 hover:underline transition-colors"
+                            >
+                                {link.name}
+                            </a>
+                            {index < legalLinks.length - 1 && (
+                                <span class="text-cream-200">•</span>
+                            )}
+                        </>
+                    ))
+                }
+            </div>
+
+            <!-- Row 3: Copyright -->
+            <p class="text-cream-200">
+                © 2025 Ez2Fix LLC. All rights reserved.
+            </p>
+
+            <!-- reCAPTCHA Legal Text (Required when hiding badge) -->
+            <p class="text-xs text-dark-400 mt-2">
+                This site is protected by reCAPTCHA and the Google
+                <a
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-dark-400 hover:text-gold-300 underline"
+                    >Privacy Policy</a
+                > and
+                <a
+                    href="https://policies.google.com/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-dark-400 hover:text-gold-300 underline"
+                    >Terms of Service</a
+                > apply.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    @keyframes heartbeat {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        10%,
+        30% {
+            transform: scale(1.2);
+        }
+        20%,
+        40% {
+            transform: scale(1.1);
+        }
+    }
+
+    .animate-heartbeat {
+        animation: heartbeat 1.5s ease-in-out infinite;
+    }
+</style>

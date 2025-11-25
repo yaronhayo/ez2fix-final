@@ -1,0 +1,59 @@
+---
+interface Props {
+    variant?: "primary" | "secondary" | "emergency" | "outline";
+    size?: "sm" | "md" | "lg";
+    type?: "button" | "submit" | "reset";
+    href?: string;
+    class?: string;
+    disabled?: boolean;
+    id?: string;
+    name?: string;
+    [key: string]: any;
+}
+
+const {
+    variant = "primary",
+    size = "md",
+    type = "button",
+    href,
+    class: className = "",
+    disabled = false,
+} = Astro.props;
+
+const baseClasses =
+    "inline-flex items-center justify-center font-bold tracking-wide transition-all duration-300 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed";
+
+const variantClasses = {
+    primary:
+        "bg-gold-500 text-dark-900 shadow-lg hover:bg-gold-600 hover:text-white hover:shadow-xl hover:scale-105 active:scale-100 focus:ring-gold-300",
+    secondary:
+        "bg-white text-dark-900 border-2 border-dark-900 hover:bg-gray-50 hover:border-dark-700 active:bg-gray-100 focus:ring-gray-300 shadow-md",
+    emergency:
+        "bg-red-500 text-white shadow-lg hover:bg-red-600 hover:shadow-xl hover:scale-105 active:scale-100 focus:ring-red-300",
+    outline:
+        "bg-transparent text-white border-2 border-white hover:bg-white hover:text-dark-900 focus:ring-white/30",
+};
+
+const sizeClasses = {
+    sm: "px-4 py-2 text-xs rounded-lg",
+    md: "px-6 py-3 text-sm rounded-xl",
+    lg: "px-8 py-4 text-base rounded-xl",
+};
+
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+const Tag = href ? "a" : "button";
+
+// Extract props that should not be passed to the HTML element
+const { variant: _, size: __, class: ___, ...htmlProps } = Astro.props;
+---
+
+<Tag
+    class={classes}
+    type={href ? undefined : type}
+    href={href}
+    disabled={disabled}
+    {...htmlProps}
+>
+    <slot />
+</Tag>

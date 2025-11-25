@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components";
+
+const stats = [
+    {
+        label: "Cities Served",
+        value: "70+",
+        icon: "heroicons:map",
+        description: "Across 5 NJ Counties",
+    },
+    {
+        label: "Happy Customers",
+        value: "5,000+",
+        icon: "heroicons:user-group",
+        description: "Since 2015",
+    },
+    {
+        label: "Satisfaction",
+        value: "100%",
+        icon: "heroicons:star",
+        description: "Guaranteed",
+    },
+];
+---
+
+<div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+    <h3 class="text-xl font-bold text-dark-800 mb-6 flex items-center">
+        <Icon name="heroicons:chart-bar" class="w-6 h-6 text-gold-500 mr-2" />
+        Service Impact
+    </h3>
+
+    <div class="grid grid-cols-2 gap-6">
+        {
+            stats.map((stat) => (
+                <div class="text-center p-4 bg-gray-50 rounded-xl hover:bg-gold-50 transition-colors group">
+                    <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                        <Icon name={stat.icon} class="w-5 h-5 text-gold-500" />
+                    </div>
+                    <div class="text-2xl font-bold text-dark-900 mb-1">
+                        {stat.value}
+                    </div>
+                    <div class="text-sm font-semibold text-dark-700">
+                        {stat.label}
+                    </div>
+                    <div class="text-xs text-dark-500 mt-1">
+                        {stat.description}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-100">
+        <div class="flex items-start space-x-3">
+            <Icon
+                name="heroicons:shield-check"
+                class="w-6 h-6 text-green-500 flex-shrink-0"
+            />
+            <div>
+                <h4 class="font-bold text-dark-800 text-sm">
+                    Locally Owned & Operated
+                </h4>
+                <p class="text-xs text-dark-500 mt-1">
+                    We are not a franchise. We live and work in the communities
+                    we serve, ensuring personal accountability for every job.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

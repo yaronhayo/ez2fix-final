@@ -1,0 +1,200 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import LandingHeader from "@components/layout/LandingHeader.astro";
+import Footer from "@components/layout/Footer.astro";
+import BookingForm from "@components/BookingForm.tsx";
+import FAQSection from "@components/sections/FAQSection.astro";
+import { generateBreadcrumbSchema } from "@utils/schema";
+import { Icon } from "astro-icon/components";
+import { getFAQsByPage } from "@data/faqs";
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Book Service", url: "https://ez2fixllc.com/booking" },
+]);
+
+const faqs = getFAQsByPage("booking");
+---
+
+<BaseLayout
+    title="Book Garage Door Service Online | Free Estimate | Ez2Fix"
+    description="Book garage door repair or installation online. Get a free estimate, choose your service, schedule at your convenience. Licensed, insured, 10-year warranty."
+    schema={[breadcrumbSchema]}
+>
+    <LandingHeader />
+
+    <!-- Urgency Banner -->
+    <div
+        class="bg-dark-900 text-gold-400 border-b border-gold-900 text-center py-2 text-sm font-bold"
+    >
+        <div class="container mx-auto px-4 flex items-center justify-center">
+            <Icon name="heroicons:clock" class="w-4 h-4 mr-2" />
+            Limited Availability for Today! Book Now to Secure Your Spot.
+        </div>
+    </div>
+
+    <!-- Hero / Booking Section -->
+    <section
+        class="bg-gradient-to-br from-dark-800 to-dark-900 min-h-screen relative overflow-hidden"
+    >
+        <!-- Background Pattern -->
+        <div
+            class="absolute inset-0 opacity-30 bg-[url('/images/pattern.png')]"
+        >
+        </div>
+
+        <div class="container mx-auto px-4 py-12 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Left Column: Value Proposition -->
+                <div class="text-cream-100 space-y-8 pt-8 lg:sticky lg:top-24">
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-lg"
+                    >
+                        Expert Garage Door <span class="text-gold-400"
+                            >Repair & Installation</span
+                        >
+                    </h1>
+                    <p
+                        class="text-xl text-cream-100 leading-relaxed font-medium drop-shadow-md"
+                    >
+                        Don't let a broken garage door ruin your day. Our
+                        licensed technicians are ready to help you now.
+                    </p>
+
+                    <div class="space-y-8">
+                        <div class="flex items-start group">
+                            <div
+                                class="bg-gold-500/20 p-4 rounded-xl mr-5 backdrop-blur-sm border border-gold-500/10 group-hover:bg-gold-500/30 transition-colors"
+                            >
+                                <Icon
+                                    name="heroicons:bolt"
+                                    class="w-8 h-8 text-gold-400"
+                                />
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">
+                                    Same-Day Service
+                                </h3>
+                                <p class="text-cream-200 text-lg">
+                                    We arrive fully stocked to fix your door in
+                                    one visit.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start group">
+                            <div
+                                class="bg-gold-500/20 p-4 rounded-xl mr-5 backdrop-blur-sm border border-gold-500/10 group-hover:bg-gold-500/30 transition-colors"
+                            >
+                                <Icon
+                                    name="heroicons:shield-check"
+                                    class="w-8 h-8 text-gold-400"
+                                />
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">
+                                    10-Year Warranty
+                                </h3>
+                                <p class="text-cream-200 text-lg">
+                                    Peace of mind with our industry-leading
+                                    parts & labor warranty.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start group">
+                            <div
+                                class="bg-gold-500/20 p-4 rounded-xl mr-5 backdrop-blur-sm border border-gold-500/10 group-hover:bg-gold-500/30 transition-colors"
+                            >
+                                <Icon
+                                    name="heroicons:currency-dollar"
+                                    class="w-8 h-8 text-gold-400"
+                                />
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">
+                                    Free Estimates
+                                </h3>
+                                <p class="text-cream-200 text-lg">
+                                    Transparent pricing with no hidden fees or
+                                    surprises.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div
+                        class="pt-8 border-t border-white/10 flex flex-wrap gap-6 items-center"
+                    >
+                        <div
+                            class="flex items-center text-sm font-bold text-white bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10"
+                        >
+                            <Icon
+                                name="heroicons:star-solid"
+                                class="w-5 h-5 text-gold-400 mr-2"
+                            />
+                            5.0/5 Rating
+                        </div>
+                        <div
+                            class="flex items-center text-sm font-bold text-white bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10"
+                        >
+                            <Icon
+                                name="heroicons:user-group"
+                                class="w-5 h-5 text-gold-400 mr-2"
+                            />
+                            2,000+ Happy Customers
+                        </div>
+                        <div
+                            class="flex items-center text-sm font-bold text-white bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10"
+                        >
+                            <Icon
+                                name="heroicons:check-badge"
+                                class="w-5 h-5 text-gold-400 mr-2"
+                            />
+                            Licensed & Insured
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Booking Form -->
+                <div
+                    class="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10"
+                >
+                    <div
+                        class="bg-gradient-to-r from-gold-500 to-gold-600 p-5 text-center"
+                    >
+                        <h2 class="text-dark-900 font-bold text-xl">
+                            Get Your Free Estimate
+                        </h2>
+                        <p class="text-dark-800 font-medium">
+                            Fast response • No obligation
+                        </p>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <BookingForm client:load />
+                    </div>
+                    <div
+                        class="bg-gray-50 p-4 text-center text-xs text-gray-500 border-t border-gray-100"
+                    >
+                        <Icon
+                            name="heroicons:lock-closed"
+                            class="w-3 h-3 inline-block mr-1"
+                        />
+                        Your information is secure and encrypted.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <FAQSection
+        faqs={faqs}
+        title="Common Questions"
+        subtitle="Everything you need to know about our booking process"
+        className="bg-white"
+    />
+
+    <Footer />
+</BaseLayout>

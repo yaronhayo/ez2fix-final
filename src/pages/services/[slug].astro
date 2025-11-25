@@ -1,0 +1,422 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { services, getRelatedServices } from "@data/services";
+import { getPromotionsForLocation } from "@data/promotions";
+import { Icon } from "astro-icon/components";
+import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+
+import ProcessSteps from "@components/sections/ProcessSteps.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import ReviewsCarousel from "@components/sections/ReviewsCarousel.astro";
+import FAQSection from "@components/sections/FAQSection.astro";
+import FinalCTA from "@components/sections/FinalCTA.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+
+export async function getStaticPaths() {
+    return services.map((service) => ({
+        params: { slug: service.slug },
+        props: { service },
+    }));
+}
+
+const { service } = Astro.props;
+const relatedServices = getRelatedServices(service.id);
+const promotions = getPromotionsForLocation("service-page", service.slug);
+
+import { generateFAQSchema } from "@utils/schema";
+
+// Schema Markup
+const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.metaDescription,
+    provider: {
+        "@type": "LocalBusiness",
+        name: "Ez2Fix Garage Doors",
+        image: "https://ez2fixllc.com/images/logo.png",
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: "389 E 54th St",
+            addressLocality: "Elmwood Park",
+            addressRegion: "NJ",
+            postalCode: "07407",
+            addressCountry: "US",
+        },
+        telephone: "+12015546769",
+        priceRange: service.priceRange || "$$",
+    },
+    areaServed: {
+        "@type": "State",
+        name: "New Jersey",
+    },
+    hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Garage Door Services",
+        itemListElement: [
+            {
+                "@type": "Offer",
+                itemOffered: {
+                    "@type": "Service",
+                    name: service.title,
+                },
+            },
+        ],
+    },
+};
+
+const faqSchema = service.faqs ? generateFAQSchema(service.faqs) : null;
+const allSchema = [serviceSchema, faqSchema].filter(Boolean) as object[];
+---
+
+<BaseLayout
+    title={service.metaTitle}
+    description={service.metaDescription}
+    schema={allSchema}
+>
+    <Header />
+
+    {/* Hero Section */}
+    <section
+        class="relative bg-dark-900 text-cream-100 py-12 lg:py-20 overflow-hidden mt-20"
+    >
+        <div class="absolute inset-0 z-0">
+            <ResponsiveImage
+                src={service.heroBanner || service.heroImage}
+                alt={service.title}
+                width={1920}
+                height={1080}
+                class="w-full h-full object-cover"
+                loading="eager"
+                fetchpriority="high"
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-dark-900 via-dark-900/75 to-dark-900/40"
+            >
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <Breadcrumbs
+                items={[
+                    { name: "Services", url: "/services" },
+                    { name: service.title },
+                ]}
+                className="mb-6 text-cream-200"
+            />
+            <div class="max-w-3xl">
+                {
+                    service.emergency && (
+                        <div class="inline-flex items-center bg-red-600/90 text-white px-4 py-1.5 rounded-full mb-6 font-bold text-sm uppercase tracking-wide shadow-lg animate-pulse backdrop-blur-sm">
+                            <Icon name="heroicons:bolt" class="w-4 h-4 mr-2" />
+                            24/7 Emergency Service
+                        </div>
+                    )
+                }
+
+                <h1
+                    class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-cream-100"
+                >
+                    {service.heroTitle || service.title}
+                </h1>
+                <p
+                    class="text-xl text-cream-200 mb-8 leading-relaxed max-w-2xl"
+                >
+                    {service.heroSubtitle || service.shortDescription}
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a
+                        href="/booking?utm_source=website&utm_medium=cta&utm_campaign=service-page"
+                        class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-dark-900 bg-gold-500 rounded-lg hover:bg-gold-400 hover:text-white transition-all transform hover:scale-105 shadow-lg shadow-gold-500/20"
+                    >
+                        <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                        Get Free Estimate
+                    </a>
+                    <a
+                        href="tel:2015546769"
+                        class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white border-2 border-white/20 bg-white/5 rounded-lg hover:bg-white hover:text-dark-900 transition-all backdrop-blur-sm"
+                    >
+                        <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                        Call (201) 554-6769
+                    </a>
+                </div>
+
+                <div
+                    class="mt-10 flex flex-wrap gap-6 text-sm font-medium text-gray-400"
+                >
+                    <div class="flex items-center">
+                        <Icon
+                            name="heroicons:check-circle"
+                            class="w-5 h-5 text-gold-500 mr-2"
+                        />
+                        Licensed & Insured
+                    </div>
+                    <div class="flex items-center">
+                        <Icon
+                            name="heroicons:check-circle"
+                            class="w-5 h-5 text-gold-500 mr-2"
+                        />
+                        10-Year Warranty
+                    </div>
+                    <div class="flex items-center">
+                        <Icon
+                            name="heroicons:check-circle"
+                            class="w-5 h-5 text-gold-500 mr-2"
+                        />
+                        5-Star Rated
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Symptoms Section - "Signs You Need This Service" */}
+    {
+        service.symptoms && service.symptoms.length > 0 && (
+            <section class="py-16 bg-cream-100 border-b border-cream-200">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-4xl mx-auto">
+                        <h2 class="text-2xl md:text-3xl font-bold text-dark-900 mb-8 text-center">
+                            Signs You Need {service.title}
+                        </h2>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {service.symptoms.map((symptom) => (
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-start">
+                                    <Icon
+                                        name="heroicons:exclamation-triangle"
+                                        class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-0.5"
+                                    />
+                                    <span class="font-medium text-dark-800">
+                                        {symptom}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {/* Overview Section */}
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-dark-900 mb-6"
+                    >
+                        About This Service
+                    </h2>
+                    <p class="text-lg text-dark-600 mb-8 leading-relaxed">
+                        {service.overview}
+                    </p>
+
+                    <div
+                        class="bg-gray-50 p-8 rounded-xl border border-gray-100 shadow-sm"
+                    >
+                        <h3
+                            class="text-xl font-bold text-dark-800 mb-6 flex items-center"
+                        >
+                            <Icon
+                                name="heroicons:check-badge"
+                                class="w-6 h-6 text-gold-500 mr-2"
+                            />
+                            Why Choose Us?
+                        </h3>
+                        <ul class="space-y-4">
+                            {
+                                service.benefits.map((benefit) => (
+                                    <li class="flex items-start">
+                                        <Icon
+                                            name="heroicons:check"
+                                            class="w-5 h-5 text-gold-500 mr-3 flex-shrink-0 mt-1"
+                                        />
+                                        <span class="text-dark-700 font-medium">
+                                            {benefit}
+                                        </span>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+
+                    {/* Promotions Display */}
+                    {
+                        promotions.length > 0 && (
+                            <div class="mt-8 space-y-4">
+                                {promotions.map((promo) => (
+                                    <div
+                                        class={`p-6 rounded-xl border-l-4 shadow-md ${promo.variant === "gold" ? "bg-gold-50 border-gold-500" : "bg-gray-50 border-gray-500"}`}
+                                    >
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="font-bold text-xl text-dark-900 mb-2">
+                                                    {promo.title}
+                                                </div>
+                                                <div class="text-dark-600">
+                                                    {promo.description}
+                                                </div>
+                                            </div>
+                                            <div
+                                                class={`ml-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${promo.variant === "gold" ? "bg-gold-500 text-dark-900" : "bg-dark-700 text-white"}`}
+                                            >
+                                                {promo.badgeText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
+
+                <div class="relative sticky top-24">
+                    <ResponsiveImage
+                        src={service.heroImage}
+                        alt={service.title}
+                        width={800}
+                        height={600}
+                        class="rounded-2xl shadow-2xl w-full h-auto object-cover aspect-[4/3]"
+                    />
+                    {/* Trust Badge Overlay */}
+                    <div
+                        class="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl hidden lg:block border border-gray-100"
+                    >
+                        <div class="flex items-center space-x-2 mb-1">
+                            <div class="text-gold-500 font-bold text-3xl">
+                                5.0
+                            </div>
+                            <div class="flex text-gold-500">
+                                <Icon
+                                    name="heroicons:star-solid"
+                                    class="w-5 h-5"
+                                />
+                                <Icon
+                                    name="heroicons:star-solid"
+                                    class="w-5 h-5"
+                                />
+                                <Icon
+                                    name="heroicons:star-solid"
+                                    class="w-5 h-5"
+                                />
+                                <Icon
+                                    name="heroicons:star-solid"
+                                    class="w-5 h-5"
+                                />
+                                <Icon
+                                    name="heroicons:star-solid"
+                                    class="w-5 h-5"
+                                />
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500 font-medium">
+                            Based on 500+ 5-Star Reviews
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Process Steps */}
+    {
+        service.processSteps && service.processSteps.length > 0 && (
+            <ProcessSteps steps={service.processSteps} />
+        )
+    }
+
+    {/* FAQs */}
+    {
+        service.faqs && service.faqs.length > 0 && (
+            <FAQSection faqs={service.faqs} />
+        )
+    }
+
+    {/* Trust Section */}
+    <section class="py-16 bg-cream-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center mb-12">
+                <h2 class="text-3xl font-bold text-dark-700 mb-4">
+                    Why Choose Ez2Fix?
+                </h2>
+                <p class="text-lg text-dark-600">
+                    We're committed to providing premium quality service and
+                    parts.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-gold-100 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                        <Icon name="heroicons:shield-check" class="w-6 h-6" />
+                    </div>
+                    <h3 class="font-bold text-dark-800 mb-2">
+                        Licensed & Insured
+                    </h3>
+                    <p class="text-sm text-dark-600">
+                        Fully licensed (#13VH13553300) and insured for your
+                        protection.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-gold-100 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                        <Icon name="heroicons:bolt" class="w-6 h-6" />
+                    </div>
+                    <h3 class="font-bold text-dark-800 mb-2">
+                        Same-Day Service
+                    </h3>
+                    <p class="text-sm text-dark-600">
+                        We arrive quickly with fully stocked trucks to fix it in
+                        one visit.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-gold-100 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                        <Icon name="heroicons:check-badge" class="w-6 h-6" />
+                    </div>
+                    <h3 class="font-bold text-dark-800 mb-2">
+                        10-Year Warranty
+                    </h3>
+                    <p class="text-sm text-dark-600">
+                        We stand behind our work with comprehensive warranties.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-gold-100 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                        <Icon name="heroicons:star-solid" class="w-6 h-6" />
+                    </div>
+                    <h3 class="font-bold text-dark-800 mb-2">5-Star Rated</h3>
+                    <p class="text-sm text-dark-600">
+                        Over 500 5-star reviews from satisfied customers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Reviews */}
+    <ReviewsCarousel title={`What Our ${service.title} Customers Say`} />
+
+    {/* Related Services */}
+    <ServicesGrid title="Other Services We Offer" services={relatedServices} />
+
+    {/* Final CTA */}
+    <FinalCTA
+        title={`Need ${service.title}?`}
+        subtitle="Our licensed technicians are ready to help. Call now for same-day service."
+    />
+
+    <Footer />
+</BaseLayout>

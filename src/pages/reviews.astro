@@ -1,0 +1,229 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import ReviewCard from "@components/ui/ReviewCard.astro";
+import FinalCTA from "@components/sections/FinalCTA.astro";
+import FAQSection from "@components/sections/FAQSection.astro";
+import { reviews, getAggregateRating } from "@data/reviews";
+import { siteConfig } from "@config/site.config";
+import { Icon } from "astro-icon/components";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+import { getFAQsByPage } from "@data/faqs";
+
+const metaTitle = "Customer Reviews & Testimonials | Ez2Fix Garage Doors";
+const metaDescription =
+  "Read authentic reviews from our satisfied customers in Northern New Jersey. 5-star rated garage door repair and installation services.";
+
+const aggregateRating = getAggregateRating();
+const totalReviews = reviews.length;
+const averageRating = aggregateRating.ratingValue;
+
+// Schema Markup
+const reviewSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${siteConfig.company.domain}/#organization`,
+  name: siteConfig.company.name,
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: averageRating,
+    reviewCount: totalReviews,
+    bestRating: "5",
+    worstRating: "1",
+  },
+  review: reviews.map((review) => ({
+    "@type": "Review",
+    author: {
+      "@type": "Person",
+      name: review.author,
+    },
+    datePublished: review.date,
+    reviewBody: review.text,
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: review.rating,
+      bestRating: "5",
+      worstRating: "1",
+    },
+  })),
+};
+
+const faqs = getFAQsByPage("reviews");
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
+
+  <Header />
+  <Breadcrumbs items={[{ name: "Reviews" }]} />
+
+  {/* Hero Section */}
+  <section class="bg-dark-900 text-cream-100 py-16 md:py-24">
+    <div class="container mx-auto px-4 text-center">
+      <div
+        class="inline-flex items-center space-x-2 bg-gold-500/20 text-gold-400 px-4 py-1 rounded-full text-sm font-bold mb-6 uppercase tracking-wide border border-gold-500/30"
+      >
+        <Icon name="heroicons:star-solid" class="w-4 h-4" />
+        <span>Top Rated Service</span>
+      </div>
+      <h1
+        class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-cream-100"
+      >
+        What Our Customers Say
+      </h1>
+      <p class="text-xl text-cream-200 max-w-2xl mx-auto mb-8">
+        We take pride in providing exceptional service to homeowners across
+        Northern New Jersey. Read why your neighbors trust Ez2Fix.
+      </p>
+
+      {/* Summary Stats */}
+      <div
+        class="flex flex-col md:flex-row justify-center items-center gap-8 mt-12"
+      >
+        <div
+          class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-gold-200/20 min-w-[200px]"
+        >
+          <div class="text-4xl font-bold text-gold-400 mb-1">
+            {averageRating}
+          </div>
+          <div class="flex justify-center space-x-1 mb-2">
+            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+          </div>
+          <div class="text-sm text-cream-200">Average Rating</div>
+        </div>
+
+        <div
+          class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/10 min-w-[200px]"
+        >
+          <div class="text-4xl font-bold text-gold-400 mb-1">
+            {totalReviews}+
+          </div>
+          <div class="text-lg font-semibold text-cream-100 mb-1">
+            Verified Reviews
+          </div>
+          <div class="text-sm text-cream-200">Across Google & Yelp</div>
+        </div>
+
+        <div
+          class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/10 min-w-[200px]"
+        >
+          <div class="text-4xl font-bold text-gold-400 mb-1">100%</div>
+          <div class="text-lg font-semibold text-cream-100 mb-1">
+            Satisfaction
+          </div>
+          <div class="text-sm text-cream-200">Committed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Reviews Grid */}
+  <section class="py-16 md:py-24 bg-cream-100">
+    <div class="container mx-auto px-4">
+      <div id="reviews-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          reviews.slice(0, 24).map((review, index) => (
+            <div
+              class={`review-card ${index >= 6 ? "hidden" : ""}`}
+              data-index={index}
+            >
+              <ReviewCard
+                author={review.author}
+                rating={review.rating}
+                date={review.relativeTime}
+                text={review.text}
+                city={review.city}
+                service={review.service}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Show More Button */}
+      {
+        reviews.length > 6 && (
+          <div class="mt-12 text-center">
+            <button
+              id="show-more-btn"
+              class="inline-flex items-center justify-center px-8 py-4 bg-gold-500 text-dark-900 rounded-lg shadow-md hover:bg-gold-600 hover:shadow-lg transition-all font-bold text-lg"
+            >
+              <Icon name="heroicons:chevron-down" class="w-5 h-5 mr-2" />
+              Show More Reviews
+            </button>
+          </div>
+        )
+      }
+
+      <div class="mt-16 text-center">
+        <a
+          href="https://www.google.com/search?q=Ez2Fix+Garage+Doors"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-gold-400 transition-all group"
+        >
+          <Icon
+            name="heroicons:globe-alt"
+            class="w-6 h-6 mr-3 text-gray-600 group-hover:text-gold-600"
+          />
+          <span class="text-lg font-semibold text-dark-800"
+            >Read more reviews on Google</span
+          >
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* Show More Script */}
+  <script>
+    let visibleCount = 6; // Start with 6 reviews visible
+    const reviewsPerClick = 6; // Show 6 more per click
+    const maxVisible = 24; // Maximum 24 reviews total
+
+    const showMoreBtn = document.getElementById("show-more-btn");
+    const reviewCards = document.querySelectorAll(".review-card");
+
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener("click", () => {
+        // Calculate which reviews to show next
+        const nextVisible = Math.min(
+          visibleCount + reviewsPerClick,
+          maxVisible,
+        );
+
+        // Show the next batch of reviews
+        for (
+          let i = visibleCount;
+          i < nextVisible && i < reviewCards.length;
+          i++
+        ) {
+          reviewCards[i].classList.remove("hidden");
+        }
+
+        // Update visible count
+        visibleCount = nextVisible;
+
+        // Hide button if we've reached max or shown all reviews
+        if (visibleCount >= maxVisible || visibleCount >= reviewCards.length) {
+          showMoreBtn.style.display = "none";
+        }
+      });
+    }
+  </script>
+
+  <!-- FAQ Section -->
+  <FAQSection
+    faqs={faqs}
+    title="Customer Reviews FAQs"
+    subtitle="Learn more about our reviews and how we maintain our 5-star rating"
+    className="bg-cream-100"
+  />
+
+  <FinalCTA />
+  <Footer />
+</BaseLayout>

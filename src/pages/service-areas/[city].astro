@@ -1,0 +1,438 @@
+---
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+import { locations, getNearbyCities } from "@data/locations";
+
+import { siteConfig } from "@config/site.config";
+import {
+    generateLocalBusinessSchema,
+    generateBreadcrumbSchema,
+} from "@utils/schema";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+import FAQSection from "@components/sections/FAQSection.astro";
+import ReviewsCarousel from "@components/sections/ReviewsCarousel.astro";
+import { globalFAQs } from "@data/faqs";
+import { Icon } from "astro-icon/components";
+import GoogleMap from "@components/ui/GoogleMap.astro";
+
+const cityFAQs = globalFAQs.slice(0, 5);
+
+export const getStaticPaths = (async () => {
+    return locations.map((location) => ({
+        params: { city: location.slug },
+        props: { location },
+    }));
+}) satisfies GetStaticPaths;
+
+const { location } = Astro.props;
+const nearbyCities = getNearbyCities(location.id);
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Service Areas", url: "https://ez2fixllc.com/service-areas" },
+    {
+        name: location.city,
+        url: `https://ez2fixllc.com/service-areas/${location.slug}`,
+    },
+]);
+
+const localBusinessSchema = generateLocalBusinessSchema([location.city]);
+---
+
+<BaseLayout
+    title={location.metaTitle}
+    description={location.metaDescription}
+    schema={[breadcrumbSchema, localBusinessSchema]}
+>
+    <Header />
+
+    <!-- Hero Section -->
+    <section
+        class="relative min-h-[60vh] flex items-center justify-center overflow-hidden"
+    >
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img
+                src={location.heroImage}
+                alt={`Garage Door Service in ${location.city}, NJ`}
+                class="w-full h-full object-cover"
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-dark-900/90 via-dark-900/70 to-dark-900/90"
+            >
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 py-20 text-center">
+            <Breadcrumbs
+                items={[
+                    { name: "Home", url: "/" },
+                    { name: "Service Areas", url: "/service-areas" },
+                    { name: location.city },
+                ]}
+                className="justify-center mb-8"
+            />
+
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+            >
+                {
+                    location.heroTitle ||
+                        `Garage Door Repair in ${location.city}, NJ`
+                }
+            </h1>
+
+            <p
+                class="text-xl text-cream-100 mb-8 max-w-2xl mx-auto leading-relaxed"
+            >
+                {
+                    location.heroSubtitle ||
+                        `Professional garage door services for ${location.city} homeowners. Licensed, insured, and locally trusted.`
+                }
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button
+                    variant="primary"
+                    size="lg"
+                    href="/booking?utm_source=website&utm_medium=cta&utm_campaign=city-hero"
+                    class="shadow-lg shadow-gold-500/20"
+                >
+                    <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                    Schedule Service
+                </Button>
+                <Button
+                    variant="secondary"
+                    size="lg"
+                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                    class="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/20 text-white"
+                >
+                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                    Call {siteConfig.contact.phone}
+                </Button>
+            </div>
+
+            <!-- Trust Badges -->
+            <div
+                class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-cream-200"
+            >
+                <div
+                    class="flex items-center bg-dark-800/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm"
+                >
+                    <Icon
+                        name="heroicons:star-solid"
+                        class="w-5 h-5 text-gold-400 mr-2"
+                    />
+                    <span>5-Star Rated in {location.county}</span>
+                </div>
+                <div
+                    class="flex items-center bg-dark-800/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm"
+                >
+                    <Icon
+                        name="heroicons:shield-check"
+                        class="w-5 h-5 text-gold-400 mr-2"
+                    />
+                    <span>Licensed & Insured</span>
+                </div>
+                <div
+                    class="flex items-center bg-dark-800/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm"
+                >
+                    <Icon
+                        name="heroicons:clock"
+                        class="w-5 h-5 text-gold-400 mr-2"
+                    />
+                    <span>Same-Day Service Available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Local Context & Landmarks Section -->
+    <section class="section bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <h2 class="text-3xl font-bold text-dark-700 mb-6">
+                        Serving the {location.city} Community
+                    </h2>
+                    <p class="text-lg text-dark-600 mb-6 leading-relaxed">
+                        {location.localContent}
+                    </p>
+                    <div
+                        class="bg-cream-50 p-6 rounded-xl border border-gold-200/20"
+                    >
+                        <h3
+                            class="font-bold text-dark-700 mb-4 flex items-center"
+                        >
+                            <Icon
+                                name="heroicons:map-pin"
+                                class="w-5 h-5 text-gold-500 mr-2"
+                            />
+                            We Know {location.city}
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            Our technicians are frequently in the area,
+                            servicing homes near:
+                        </p>
+                        <ul class="grid sm:grid-cols-2 gap-2">
+                            {
+                                location.landmarks?.map((landmark) => (
+                                    <li class="flex items-center text-sm text-dark-600">
+                                        <Icon
+                                            name="heroicons:check"
+                                            class="w-4 h-4 text-gold-500 mr-2 flex-shrink-0"
+                                        />
+                                        {landmark}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="relative h-[400px] rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+                >
+                    <GoogleMap locations={[location]} height="100%" />
+                </div>
+            </div>
+
+            <!-- Neighborhoods Grid -->
+            <div class="border-t border-gray-100 pt-12">
+                <h3 class="text-xl font-bold text-center text-dark-700 mb-8">
+                    Proudly Serving All {location.city} Neighborhoods
+                </h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    {
+                        location.neighborhoods.map((neighborhood) => (
+                            <span class="bg-white px-4 py-2 rounded-lg text-dark-600 border border-gray-200 shadow-sm hover:border-gold-300 hover:shadow-md transition-all text-sm font-medium">
+                                {neighborhood}
+                            </span>
+                        ))
+                    }
+                </div>
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-dark-500">
+                        ZIP Codes Served: {location.zipCodes.join(", ")}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Services Section -->
+    <section class="section bg-cream-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark-700 mb-4">
+                    Expert Garage Door Services in {location.city}
+                </h2>
+                <p class="text-lg text-dark-600 max-w-2xl mx-auto">
+                    Tailored solutions for {location.city}'s unique
+                    architectural styles and needs.
+                </p>
+            </div>
+
+            <div
+                class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            >
+                {
+                    location.commonServices.map((service) => (
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-gold-300 transition-colors group">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-gold-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gold-100 transition-colors">
+                                    <Icon
+                                        name="heroicons:wrench-screwdriver"
+                                        class="w-6 h-6 text-gold-600"
+                                    />
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-dark-700 mb-2">
+                                        {service}
+                                    </h3>
+                                    <p class="text-sm text-dark-500">
+                                        Professional installation and repair by
+                                        licensed experts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class="text-center mt-10">
+                <Button variant="primary" size="lg" href="/services">
+                    View All Services
+                </Button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us (Local Value Props) -->
+    <section class="section bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2
+                    class="text-3xl md:text-4xl font-bold text-dark-700 mb-12 text-center"
+                >
+                    Why {location.city} Residents Trust Ez2Fix
+                </h2>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon
+                                name="heroicons:users"
+                                class="w-8 h-8 text-gold-600"
+                            />
+                        </div>
+                        <div class="text-3xl font-bold text-gold-600 mb-2">
+                            {location.customersServed.toLocaleString()}+
+                        </div>
+                        <h3 class="font-bold text-dark-700">
+                            Neighbors Served
+                        </h3>
+                        <p class="text-sm text-dark-500 mt-2">
+                            Trusted in {location.city} since 2015
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon
+                                name="heroicons:shield-check"
+                                class="w-8 h-8 text-gold-600"
+                            />
+                        </div>
+                        <div class="text-3xl font-bold text-gold-600 mb-2">
+                            Licensed
+                        </div>
+                        <h3 class="font-bold text-dark-700">
+                            {location.county}
+                        </h3>
+                        <p class="text-sm text-dark-500 mt-2">
+                            Fully insured & bonded
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon
+                                name="heroicons:clock"
+                                class="w-8 h-8 text-gold-600"
+                            />
+                        </div>
+                        <div class="text-3xl font-bold text-gold-600 mb-2">
+                            Same-Day
+                        </div>
+                        <h3 class="font-bold text-dark-700">
+                            Service Available
+                        </h3>
+                        <p class="text-sm text-dark-500 mt-2">
+                            For urgent repairs
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <Icon
+                                name="heroicons:map-pin"
+                                class="w-8 h-8 text-gold-600"
+                            />
+                        </div>
+                        <div class="text-3xl font-bold text-gold-600 mb-2">
+                            Local
+                        </div>
+                        <h3 class="font-bold text-dark-700">Expert Team</h3>
+                        <p class="text-sm text-dark-500 mt-2">
+                            Knowing local needs
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <ReviewsCarousel title={`What ${location.city} Customers Say`} />
+
+    <!-- Nearby Cities Section -->
+    {
+        nearbyCities.length > 0 && (
+            <section class="section bg-cream-50 border-t border-gray-100">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-6">
+                            Also Serving Nearby Communities
+                        </h2>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            {nearbyCities.map((nearbyCity) => (
+                                <a
+                                    href={`/service-areas/${nearbyCity.slug}`}
+                                    class="bg-white hover:bg-gold-50 px-4 py-2 rounded-lg text-dark-600 hover:text-gold-700 font-medium transition-colors border border-gray-200 hover:border-gold-300"
+                                >
+                                    {nearbyCity.city}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    <!-- FAQs Section -->
+    <FAQSection faqs={cityFAQs} className="bg-white" />
+
+    <!-- Final CTA Section -->
+    <section
+        class="section bg-gradient-to-br from-dark-700 to-dark-600 text-white relative overflow-hidden"
+    >
+        <div
+            class="absolute inset-0 bg-[url('/images/pattern-grid.png')] opacity-10"
+        >
+        </div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-cream-100">
+                Ready to Fix Your Garage Door in {location.city}?
+            </h2>
+            <p class="text-xl text-cream-200 mb-8 max-w-2xl mx-auto">
+                Don't let a broken door disrupt your day. Our local experts are
+                ready to help.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                    variant="primary"
+                    size="lg"
+                    href="/booking?utm_source=website&utm_medium=cta&utm_campaign=city-footer"
+                >
+                    <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                    Book Online Now
+                </Button>
+                <Button
+                    variant="secondary"
+                    size="lg"
+                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                >
+                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                    Call {siteConfig.contact.phone}
+                </Button>
+            </div>
+            <p class="mt-8 text-sm text-cream-300/80">
+                Serving {location.zipCodes.join(", ")} and surrounding areas.
+            </p>
+        </div>
+    </section>
+
+    <Footer />
+</BaseLayout>

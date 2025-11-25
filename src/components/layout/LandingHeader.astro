@@ -1,0 +1,48 @@
+---
+import { siteConfig } from "@config/site.config";
+import Button from "@components/ui/Button.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md h-20">
+    <div
+        class="container mx-auto px-4 h-full flex items-center justify-between"
+    >
+        <!-- Logo -->
+        <a href="/" class="flex items-center flex-shrink-0">
+            <img
+                src="/images/logos/ez2fix-logo.png"
+                alt="Ez2Fix LLC"
+                class="h-12 w-auto md:h-14"
+            />
+        </a>
+
+        <!-- Call to Action -->
+        <div class="flex items-center">
+            <div class="hidden md:flex flex-col items-end mr-4">
+                <span
+                    class="text-xs text-dark-500 font-medium uppercase tracking-wider"
+                    >24/7 Emergency Service</span
+                >
+                <a
+                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                    class="text-lg font-bold text-dark-900 hover:text-gold-600 transition-colors"
+                >
+                    {siteConfig.contact.phone}
+                </a>
+            </div>
+            <Button
+                variant="primary"
+                size="md"
+                href={`tel:${siteConfig.contact.phoneRaw}`}
+                class="shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+            >
+                <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                <span class="hidden sm:inline">Call Now</span>
+                <span class="sm:hidden">Call</span>
+            </Button>
+        </div>
+    </div>
+</header>
+<div class="h-20"></div>
+<!-- Spacer -->

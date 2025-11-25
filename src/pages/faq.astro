@@ -1,0 +1,240 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Button from "@components/ui/Button.astro";
+import FAQItem from "@components/ui/FAQItem.astro";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+import { Icon } from "astro-icon/components";
+import { globalFAQs } from "@data/faqs";
+import { siteConfig } from "@config/site.config";
+import { generateBreadcrumbSchema, generateFAQSchema } from "@utils/schema";
+
+const faqSchema = generateFAQSchema(globalFAQs);
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "FAQ", url: "https://ez2fixllc.com/faq" },
+]);
+
+// Group FAQs by category for organized display
+const faqsByCategory = globalFAQs.reduce(
+    (acc, faq) => {
+        const category = faq.category || "general";
+        if (!acc[category]) acc[category] = [];
+        acc[category].push(faq);
+        return acc;
+    },
+    {} as Record<string, typeof globalFAQs>,
+);
+
+// Define category display info with icons and titles
+const categoryInfo: Record<
+    string,
+    { title: string; icon: string; description: string }
+> = {
+    service: {
+        title: "Service & Availability",
+        icon: "heroicons:wrench-screwdriver-solid",
+        description: "Hours, response times, and service areas",
+    },
+    pricing: {
+        title: "Pricing & Payment",
+        icon: "heroicons:currency-dollar-solid",
+        description: "Costs, estimates, and payment options",
+    },
+    credentials: {
+        title: "Credentials & Trust",
+        icon: "heroicons:shield-check-solid",
+        description: "Licensing, insurance, and certifications",
+    },
+    warranty: {
+        title: "Warranties & Guarantees",
+        icon: "heroicons:check-badge-solid",
+        description: "Coverage and satisfaction guarantees",
+    },
+    company: {
+        title: "About Our Company",
+        icon: "heroicons:building-office-solid",
+        description: "History, values, and what makes us different",
+    },
+    technical: {
+        title: "Technical & Products",
+        icon: "heroicons:cog-6-tooth-solid",
+        description: "Brands, parts, and technical questions",
+    },
+    general: {
+        title: "General Questions",
+        icon: "heroicons:chat-bubble-left-right-solid",
+        description: "Miscellaneous inquiries",
+    },
+};
+
+const totalFAQs = globalFAQs.length;
+const categoryKeys = Object.keys(faqsByCategory);
+---
+
+<BaseLayout
+    title="Frequently Asked Questions - Garage Door Repair Northern NJ"
+    description="Answers to common garage door questions. Learn about our services, pricing, warranties, response times, and more. Call (201) 554-6769 for prompt help."
+    schema={[faqSchema, breadcrumbSchema]}
+>
+    <Header />
+    <Breadcrumbs items={[{ name: "FAQ" }]} />
+
+    <!-- Hero Section -->
+    <section
+        class="bg-gradient-to-br from-dark-700 to-dark-600 text-cream-100 py-16 md:py-20"
+    >
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <div
+                    class="inline-flex items-center justify-center w-16 h-16 bg-gold-500 rounded-full mb-6"
+                >
+                    <Icon
+                        name="heroicons:question-mark-circle-solid"
+                        class="w-10 h-10 text-white"
+                    />
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-cream-100">
+                    Frequently Asked Questions
+                </h1>
+                <p class="text-xl text-cream-200 mb-4">
+                    Everything you need to know about our garage door services
+                </p>
+                <p class="text-cream-300 text-lg">
+                    <Icon
+                        name="heroicons:check-circle-solid"
+                        class="w-5 h-5 inline mr-2 text-gold-400"
+                    />
+                    {totalFAQs} Questions Answered across {
+                        categoryKeys.length
+                    } Categories
+                </p>
+                <p class="text-cream-200 mt-6">
+                    Can't find your answer? <a
+                        href="/contact"
+                        class="text-gold-300 hover:text-gold-200 underline font-semibold"
+                        >Contact us</a
+                    > or call <a
+                        href={`tel:${siteConfig.contact.phoneRaw}`}
+                        class="text-gold-300 hover:text-gold-200 font-bold"
+                        >{siteConfig.contact.phone}</a
+                    >
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Jump to Category -->
+    <section class="sticky top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center gap-4 py-4 overflow-x-auto">
+                <span class="text-sm font-semibold text-dark-600 whitespace-nowrap">Jump to:</span>
+                {
+                    categoryKeys.map((category) => (
+                        <a
+                            href={`#${category}`}
+                            class="flex items-center gap-2 px-4 py-2 bg-cream-50 hover:bg-gold-50 border border-gold-200/30 hover:border-gold-400 rounded-lg transition-all whitespace-nowrap text-sm font-medium text-dark-700 hover:text-gold-700"
+                        >
+                            <Icon
+                                name={categoryInfo[category]?.icon || "heroicons:folder-solid"}
+                                class="w-4 h-4"
+                            />
+                            {categoryInfo[category]?.title || category}
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs Section -->
+    <section class="section bg-gradient-to-b from-white to-cream-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto space-y-16">
+                {
+                    Object.entries(faqsByCategory).map(([category, faqs]) => (
+                        <div id={category} class="scroll-mt-40">
+                            <!-- Category Header -->
+                            <div class="mb-8 pb-6 border-b-2 border-gold-300/30">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-500 rounded-xl flex items-center justify-center shadow-lg">
+                                        <Icon
+                                            name={
+                                                categoryInfo[category]?.icon ||
+                                                "heroicons:folder-solid"
+                                            }
+                                            class="w-8 h-8 text-white"
+                                        />
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h2 class="text-3xl font-bold text-dark-800 mb-2">
+                                            {categoryInfo[category]?.title || category}
+                                        </h2>
+                                        <p class="text-dark-600">
+                                            {categoryInfo[category]?.description ||
+                                                "Common questions and answers"}
+                                        </p>
+                                        <p class="text-sm text-gold-600 font-semibold mt-2">
+                                            <Icon
+                                                name="heroicons:chat-bubble-left-solid"
+                                                class="w-4 h-4 inline mr-1"
+                                            />
+                                            {faqs.length} {faqs.length === 1 ? "Question" : "Questions"}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Items -->
+                            <div class="space-y-4">
+                                {faqs.map((faq) => (
+                                    <FAQItem question={faq.question} answer={faq.answer} />
+                                ))}
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Still Have Questions CTA -->
+    <section class="section bg-dark-900 text-white">
+        <div class="container mx-auto px-4">
+            <div
+                class="max-w-3xl mx-auto text-center bg-gradient-to-br from-dark-800 to-dark-700 p-12 rounded-2xl shadow-2xl border border-gold-500/20"
+            >
+                <Icon
+                    name="heroicons:chat-bubble-bottom-center-text-solid"
+                    class="w-16 h-16 text-gold-400 mx-auto mb-6"
+                />
+                <h2 class="text-3xl font-bold text-cream-100 mb-4">
+                    Still Have Questions?
+                </h2>
+                <p class="text-cream-200 mb-8 text-lg">
+                    Our friendly team is here to help. Get in touch and we'll
+                    answer any questions you have about our garage door
+                    services.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button variant="primary" size="lg" href="/contact">
+                        <Icon name="heroicons:envelope" class="w-5 h-5 mr-2" />
+                        Contact Us
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        size="lg"
+                        href={`tel:${siteConfig.contact.phoneRaw}`}
+                    >
+                        <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                        Call {siteConfig.contact.phone}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</BaseLayout>

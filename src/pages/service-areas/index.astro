@@ -1,0 +1,256 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import FinalCTA from "@components/sections/FinalCTA.astro";
+import { locations } from "@data/locations";
+import { generateBreadcrumbSchema } from "@utils/schema";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+import GoogleMap from "@components/ui/GoogleMap.astro";
+import ReviewsCarousel from "@components/sections/ReviewsCarousel.astro";
+import CityCard from "@components/ui/CityCard.astro";
+import ServiceStats from "@components/sections/ServiceStats.astro";
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "@config/site.config";
+
+const metaTitle = "Garage Door Service Areas Northern NJ | Ez2Fix";
+const metaDescription =
+    "Ez2Fix provides expert garage door repair and installation across Northern New Jersey. View our complete list of service areas in Essex, Bergen, Passaic, Hudson, and Union counties.";
+
+// Get All Cities for Featured Section (User requested all 16)
+const featuredCities = locations;
+
+// Group all locations by county for the list
+const locationsByCounty = locations.reduce(
+    (acc, location) => {
+        if (!acc[location.county]) {
+            acc[location.county] = [];
+        }
+        acc[location.county].push(location);
+        return acc;
+    },
+    {} as Record<string, typeof locations>,
+);
+
+const counties = Object.keys(locationsByCounty).sort();
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Service Areas", url: "https://ez2fixllc.com/service-areas" },
+]);
+---
+
+<BaseLayout
+    title={metaTitle}
+    description={metaDescription}
+    schema={[breadcrumbSchema]}
+>
+    <Header />
+    <Breadcrumbs items={[{ name: "Service Areas" }]} />
+
+    {/* Enhanced Hero Section */}
+    <section
+        class="relative bg-dark-900 text-white py-24 lg:py-32 overflow-hidden"
+    >
+        {/* Background Image */}
+        <div class="absolute inset-0 z-0">
+            <img
+                src="/images/service-areas-hero.jpg"
+                alt="Aerial view of George Washington Bridge and Northern New Jersey"
+                class="w-full h-full object-cover opacity-40"
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-dark-900/80 via-dark-900/60 to-dark-900"
+            >
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-gold-500/20 border border-gold-500/30 text-gold-300 text-sm font-semibold mb-6 backdrop-blur-sm"
+                >
+                    Serving Northern New Jersey Since 2015
+                </span>
+                <h1
+                    class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white"
+                >
+                    Northern NJ's Premier <span class="text-gold-400"
+                        >Garage Door Experts</span
+                    >
+                </h1>
+                <p
+                    class="text-xl text-cream-200 mb-10 max-w-2xl mx-auto leading-relaxed"
+                >
+                    From Newark to Hackensack, we provide prompt, professional
+                    garage door repair and installation.
+                    <span class="text-white font-semibold"
+                        >Locally owned, fully licensed, and ready to serve.</span
+                    >
+                </p>
+
+                <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                >
+                    <a
+                        href="/booking?utm_source=website&utm_medium=cta&utm_campaign=service-areas-hero"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-dark-900 bg-gold-500 rounded-lg hover:bg-gold-400 hover:text-white transition-all transform hover:scale-105 shadow-lg shadow-gold-500/20"
+                    >
+                        <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                        Book Service Online
+                    </a>
+                    <a
+                        href={`tel:${siteConfig.contact.phoneRaw}`}
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white border-2 border-white/20 bg-white/5 backdrop-blur-sm rounded-lg hover:bg-white hover:text-dark-900 hover:border-white transition-all"
+                    >
+                        <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                        Call {siteConfig.contact.phone}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Featured Cities Grid */}
+    <section class="py-20 bg-white relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                    Our Service Areas
+                </h2>
+                <p class="text-lg text-dark-600 max-w-2xl mx-auto">
+                    We have dedicated technicians stationed across these
+                    communities to ensure prompt, professional service for every
+                    customer.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {featuredCities.map((city) => <CityCard location={city} />)}
+            </div>
+        </div>
+    </section>
+
+    {/* Map & Coverage Section */}
+    <section class="py-12 bg-gray-50 border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                {/* Map Container - Sticky on Desktop */}
+                <div class="w-full lg:w-7/12 lg:sticky lg:top-24">
+                    <div
+                        class="bg-white p-2 rounded-2xl shadow-sm border border-gray-100 mb-6"
+                    >
+                        <div
+                            class="relative rounded-xl overflow-hidden h-[500px] z-0"
+                        >
+                            <GoogleMap />
+                            {/* Overlay Badge */}
+                            <div
+                                class="absolute top-4 left-4 bg-white/95 backdrop-blur shadow-md px-4 py-2 rounded-lg border-l-4 border-gold-500 z-10"
+                            >
+                                <div
+                                    class="text-xs font-bold text-dark-500 uppercase tracking-wider"
+                                >
+                                    Service Area
+                                </div>
+                                <div class="font-bold text-dark-900">
+                                    Northern New Jersey
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Emergency CTA (Moved below map for better balance) */}
+                    <div
+                        class="bg-dark-900 rounded-2xl p-6 text-center relative overflow-hidden shadow-lg"
+                    >
+                        <div
+                            class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4"
+                        >
+                            <div class="text-left">
+                                <h3 class="text-lg font-bold text-white">
+                                    Need Emergency Service?
+                                </h3>
+                                <p class="text-gray-300 text-sm">
+                                    Technicians on standby 24/7.
+                                </p>
+                            </div>
+                            <a
+                                href={`tel:${siteConfig.contact.phoneRaw}`}
+                                class="inline-flex items-center justify-center px-6 py-3 font-bold text-dark-900 bg-white rounded-lg hover:bg-gold-400 transition-colors whitespace-nowrap"
+                            >
+                                <Icon
+                                    name="heroicons:phone"
+                                    class="w-5 h-5 mr-2"
+                                />
+                                Call Now
+                            </a>
+                        </div>
+                        {/* Decorative Circle */}
+                        <div
+                            class="absolute -bottom-12 -right-12 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl"
+                        >
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Panel: Stats & County List */}
+                <div class="w-full lg:w-5/12">
+                    <ServiceStats />
+
+                    <div class="mt-8">
+                        <h3
+                            class="text-xl font-bold text-dark-900 mb-6 flex items-center"
+                        >
+                            <Icon
+                                name="heroicons:map-pin"
+                                class="w-6 h-6 text-gold-500 mr-2"
+                            />
+                            Browse by County
+                        </h3>
+
+                        <div class="space-y-6">
+                            {
+                                counties.map((county) => (
+                                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                                        <h4 class="font-bold text-dark-800 mb-3 border-b border-gray-100 pb-2">
+                                            {county}
+                                        </h4>
+                                        <ul class="grid grid-cols-2 gap-2">
+                                            {locationsByCounty[county].map(
+                                                (location) => (
+                                                    <li>
+                                                        <a
+                                                            href={`/service-areas/${location.slug}`}
+                                                            class="flex items-center text-sm text-dark-600 hover:text-gold-600 transition-colors group"
+                                                        >
+                                                            <Icon
+                                                                name="heroicons:chevron-right"
+                                                                class="w-3 h-3 text-gray-300 group-hover:text-gold-500 mr-1 transition-colors"
+                                                            />
+                                                            {location.city}
+                                                        </a>
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Reviews Section */}
+    <ReviewsCarousel />
+
+    <FinalCTA
+        title="Don't See Your City?"
+        subtitle="We likely still service your area. Call us to confirm coverage."
+    />
+
+    <Footer />
+</BaseLayout>

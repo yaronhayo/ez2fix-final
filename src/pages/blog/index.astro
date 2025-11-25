@@ -1,0 +1,205 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import { getCollection } from "astro:content";
+import { generateBreadcrumbSchema } from "@utils/schema";
+
+const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+);
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Blog", url: "https://ez2fixllc.com/blog" },
+]);
+
+const categories = [
+    { id: "all", name: "All Posts", href: "/blog" },
+    {
+        id: "repair-guides",
+        name: "Repair Guides",
+        href: "/blog/category/repair-guides",
+    },
+    {
+        id: "maintenance-tips",
+        name: "Maintenance Tips",
+        href: "/blog/category/maintenance-tips",
+    },
+    {
+        id: "installation-guides",
+        name: "Installation Guides",
+        href: "/blog/category/installation-guides",
+    },
+    {
+        id: "company-news",
+        name: "Company News",
+        href: "/blog/category/company-news",
+    },
+];
+
+// Helper to format date
+function formatDate(date: Date) {
+    return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }).format(date);
+}
+---
+
+<BaseLayout
+    title="Garage Door Tips & Guides | Ez2Fix Blog"
+    description="Expert advice, maintenance tips, and repair guides for garage doors and openers. Learn how to keep your garage door running smoothly."
+    schema={[breadcrumbSchema]}
+>
+    <Header />
+
+    <!-- Hero Section -->
+    <section
+        class="bg-dark-700 text-white py-16 md:py-24 relative overflow-hidden"
+    >
+        <div
+            class="absolute inset-0 bg-[url('/images/hero-pattern.svg')] opacity-10"
+        >
+        </div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-cream-100">
+                Garage Door Tips &amp; Guides
+            </h1>
+            <p class="text-xl text-cream-200 max-w-2xl mx-auto">
+                Expert advice from Northern New Jersey's trusted garage door
+                professionals.
+            </p>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <div
+        class="bg-cream-100 border-b border-cream-300 sticky top-[72px] z-20 shadow-sm"
+    >
+        <div class="container mx-auto px-4 overflow-x-auto">
+            <div class="flex space-x-6 py-4 min-w-max">
+                {
+                    categories.map((cat) => (
+                        <a
+                            href={cat.href}
+                            class={`text-sm font-semibold uppercase tracking-wide transition-colors ${
+                                cat.id === "all"
+                                    ? "text-gold-600 border-b-2 border-gold-600 pb-1"
+                                    : "text-dark-600 hover:text-gold-600"
+                            }`}
+                        >
+                            {cat.name}
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Grid -->
+    <section class="section bg-white">
+        <div class="container mx-auto px-4">
+            {
+                posts.length > 0 ? (
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {posts.map((post) => (
+                            <article class="bg-white rounded-xl shadow-md overflow-hidden border border-cream-300 hover:shadow-lg transition-shadow flex flex-col h-full">
+                                <a
+                                    href={`/blog/${post.slug}`}
+                                    class="block aspect-video bg-dark-100 overflow-hidden relative group"
+                                >
+                                    {post.data.image ? (
+                                        <img
+                                            src={post.data.image}
+                                            alt={post.data.title}
+                                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <div class="w-full h-full flex items-center justify-center bg-dark-200 text-dark-400">
+                                            <svg
+                                                class="w-12 h-12"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                />
+                                            </svg>
+                                        </div>
+                                    )}
+                                    {post.data.featured && (
+                                        <span class="absolute top-4 right-4 bg-gold-500 text-dark-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                                            Featured
+                                        </span>
+                                    )}
+                                </a>
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <div class="flex items-center text-xs text-dark-500 mb-3 space-x-2">
+                                        <span class="uppercase tracking-wider font-semibold text-gold-600">
+                                            {categories.find(
+                                                (c) =>
+                                                    c.id === post.data.category,
+                                            )?.name || post.data.category}
+                                        </span>
+                                        <span>•</span>
+                                        <time
+                                            datetime={post.data.publishDate.toISOString()}
+                                        >
+                                            {formatDate(post.data.publishDate)}
+                                        </time>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-dark-800 mb-3 leading-tight group-hover:text-gold-600 transition-colors">
+                                        <a href={`/blog/${post.slug}`}>
+                                            {post.data.title}
+                                        </a>
+                                    </h2>
+                                    <p class="text-dark-600 text-sm mb-4 line-clamp-3 flex-1">
+                                        {post.data.description}
+                                    </p>
+                                    <div class="mt-auto pt-4 border-t border-cream-200 flex items-center justify-between">
+                                        <span class="text-xs font-medium text-dark-500">
+                                            By {post.data.author}
+                                        </span>
+                                        <a
+                                            href={`/blog/${post.slug}`}
+                                            class="text-sm font-bold text-gold-600 hover:text-gold-700 flex items-center"
+                                        >
+                                            Read More
+                                            <svg
+                                                class="w-4 h-4 ml-1"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="text-center py-12">
+                        <p class="text-xl text-dark-500">
+                            No blog posts found.
+                        </p>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+
+    <Footer />
+</BaseLayout>

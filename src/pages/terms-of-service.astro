@@ -1,0 +1,485 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import { siteConfig } from "@config/site.config";
+import { generateBreadcrumbSchema } from "@utils/schema";
+import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://ez2fixllc.com" },
+    { name: "Terms of Service", url: "https://ez2fixllc.com/terms-of-service" },
+]);
+
+const lastUpdated = "November 23, 2024";
+---
+
+<BaseLayout
+    title="Terms of Service - Ez2Fix LLC"
+    description="Terms of Service for Ez2Fix LLC. Review our service terms, conditions, warranties, and liability limitations for garage door services in Northern New Jersey."
+    schema={[breadcrumbSchema]}
+>
+    <Header />
+    <Breadcrumbs items={[{ name: "Terms of Service" }]} />
+
+    <!-- Content Section -->
+    <section class="section bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold text-dark-700 mb-4">
+                    Terms of Service
+                </h1>
+                <p class="text-dark-600 mb-8">
+                    Last Updated: {lastUpdated}
+                </p>
+
+                <div class="prose prose-lg max-w-none">
+                    <!-- Introduction -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            1. Agreement to Terms
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            These Terms of Service ("Terms") constitute a
+                            legally binding agreement between you and {
+                                siteConfig.company.legalName
+                            } ("Ez2Fix," "we," "us," or "our") governing your use
+                            of our website at <a
+                                href="https://ez2fixllc.com"
+                                class="text-gold-600 hover:text-gold-700"
+                                >ez2fix.com</a
+                            > and our garage door repair and installation services.
+                        </p>
+                        <p class="text-dark-600">
+                            By accessing or using our website or services, you
+                            agree to be bound by these Terms. If you do not
+                            agree to these Terms, you may not access or use our
+                            website or services.
+                        </p>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            2. Services Provided
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            Ez2Fix provides professional garage door repair,
+                            installation, and maintenance services in {
+                                siteConfig.coverage.primaryHub
+                            }. Our services include but are not limited to:
+                        </p>
+                        <ul class="list-disc pl-6 mb-4 text-dark-600 space-y-2">
+                            <li>Emergency garage door repair</li>
+                            <li>Spring repair and replacement</li>
+                            <li>Garage door opener installation and repair</li>
+                            <li>New garage door installation</li>
+                            <li>Cable repair and replacement</li>
+                            <li>Panel replacement</li>
+                            <li>Track repair and alignment</li>
+                            <li>Preventive maintenance</li>
+                        </ul>
+                        <p class="text-dark-600">
+                            All services are provided by licensed and insured
+                            technicians. NJ License {
+                                siteConfig.contact.license
+                            }.
+                        </p>
+                    </div>
+
+                    <!-- Service Requests -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            3. Service Requests and Appointments
+                        </h2>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            3.1 Booking
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            You may request service by:
+                        </p>
+                        <ul class="list-disc pl-6 mb-4 text-dark-600 space-y-2">
+                            <li>Submitting our online booking form</li>
+                            <li>Calling {siteConfig.contact.phone}</li>
+                            <li>Emailing {siteConfig.contact.email}</li>
+                        </ul>
+                        <p class="text-dark-600 mb-4">
+                            A service request does not constitute a confirmed
+                            appointment until you receive confirmation from
+                            Ez2Fix via phone or email.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            3.2 Estimates
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            We provide free on-site estimates for all services.
+                            Estimates are valid for 30 days from the date of
+                            issuance. Final pricing may vary based on actual
+                            conditions discovered during service.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            3.3 Service Area
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            We serve {siteConfig.coverage.counties.join(", ")} counties
+                            in New Jersey. Service availability may vary by location.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            3.4 Cancellations
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            You may cancel or reschedule appointments by
+                            contacting us at least 24 hours in advance.
+                            Cancellations with less than 24 hours notice may be
+                            subject to a cancellation fee.
+                        </p>
+                    </div>
+
+                    <!-- Payment Terms -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            4. Payment Terms
+                        </h2>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            4.1 Pricing
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            All prices are quoted in U.S. dollars. Pricing is
+                            subject to change without notice. You will be quoted
+                            a price before work begins, and you must approve the
+                            price before we proceed.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            4.2 Payment Methods
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            We accept cash, check, and major credit cards.
+                            Payment is due upon completion of service unless
+                            other arrangements have been made in writing.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            4.3 Late Payments
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            Unpaid balances more than 30 days overdue may be
+                            subject to a late fee of 1.5% per month (18% APR) or
+                            the maximum rate permitted by law, whichever is
+                            less.
+                        </p>
+                    </div>
+
+                    <!-- Warranties -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            5. Warranties and Guarantees
+                        </h2>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            5.1 Workmanship Warranty
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            We guarantee our workmanship for a period of one (1)
+                            year from the date of service. If you experience any
+                            issues with our work within this period, we will
+                            repair or replace the work at no additional charge.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            5.2 Parts Warranty
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            Parts installed by Ez2Fix are covered by the
+                            manufacturer's warranty. Warranty terms vary by
+                            manufacturer and will be provided at the time of
+                            service.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            5.3 Installation Warranty
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            New garage door installations are covered by a ten
+                            (10) year warranty on parts and labor, subject to
+                            proper maintenance and normal use.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            5.4 Warranty Exclusions
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            Warranties do not cover:
+                        </p>
+                        <ul class="list-disc pl-6 mb-4 text-dark-600 space-y-2">
+                            <li>
+                                Damage caused by misuse, abuse, or negligence
+                            </li>
+                            <li>Normal wear and tear</li>
+                            <li>
+                                Damage from natural disasters or acts of God
+                            </li>
+                            <li>
+                                Repairs or modifications performed by non-Ez2Fix
+                                personnel
+                            </li>
+                            <li>Failure to perform recommended maintenance</li>
+                        </ul>
+                    </div>
+
+                    <!-- Liability -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            6. Limitation of Liability
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            To the fullest extent permitted by law:
+                        </p>
+                        <ul class="list-disc pl-6 mb-4 text-dark-600 space-y-2">
+                            <li>
+                                Ez2Fix shall not be liable for any indirect,
+                                incidental, special, consequential, or punitive
+                                damages
+                            </li>
+                            <li>
+                                Our total liability for any claim arising out of
+                                or relating to these Terms or our services shall
+                                not exceed the amount paid by you for the
+                                specific service giving rise to the claim
+                            </li>
+                            <li>
+                                We are not responsible for damage to property
+                                caused by pre-existing conditions or defects
+                            </li>
+                        </ul>
+                        <p class="text-dark-600">
+                            Ez2Fix maintains general liability insurance as
+                            required by law.
+                        </p>
+                    </div>
+
+                    <!-- Customer Responsibilities -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            7. Customer Responsibilities
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            As a customer, you agree to:
+                        </p>
+                        <ul class="list-disc pl-6 mb-4 text-dark-600 space-y-2">
+                            <li>
+                                Provide accurate and complete information when
+                                requesting service
+                            </li>
+                            <li>
+                                Ensure safe and clear access to the work area
+                            </li>
+                            <li>
+                                Disclose any known hazards or issues with the
+                                garage door system
+                            </li>
+                            <li>
+                                Follow all maintenance recommendations provided
+                                by our technicians
+                            </li>
+                            <li>
+                                Make payment in full upon completion of service
+                            </li>
+                            <li>
+                                Notify us immediately of any issues or concerns
+                                with completed work
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Intellectual Property -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            8. Intellectual Property
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            All content on our website, including text,
+                            graphics, logos, images, and software, is the
+                            property of Ez2Fix or its licensors and is protected
+                            by copyright, trademark, and other intellectual
+                            property laws.
+                        </p>
+                        <p class="text-dark-600">
+                            You may not reproduce, distribute, modify, or create
+                            derivative works from any content on our website
+                            without our express written permission.
+                        </p>
+                    </div>
+
+                    <!-- Privacy -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            9. Privacy
+                        </h2>
+                        <p class="text-dark-600">
+                            Your use of our website and services is also
+                            governed by our <a
+                                href="/privacy-policy"
+                                class="text-gold-600 hover:text-gold-700"
+                                >Privacy Policy</a
+                            >. Please review our Privacy Policy to understand
+                            our data practices.
+                        </p>
+                    </div>
+
+                    <!-- Service-Specific Terms -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            10. Emergency Service Terms
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            Emergency services are available 24/7. Emergency
+                            service calls may be subject to additional fees. We
+                            will inform you of any additional charges before
+                            beginning work.
+                        </p>
+                        <p class="text-dark-600">
+                            While we strive to respond to emergency calls as
+                            quickly as possible, response times may vary based
+                            on technician availability, weather conditions, and
+                            other factors beyond our control.
+                        </p>
+                    </div>
+
+                    <!-- Dispute Resolution -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            11. Dispute Resolution
+                        </h2>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            11.1 Informal Resolution
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            If you have a dispute with Ez2Fix, please contact us
+                            first to attempt an informal resolution. We are
+                            committed to addressing customer concerns promptly
+                            and fairly.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            11.2 Governing Law
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            These Terms shall be governed by and construed in
+                            accordance with the laws of the State of New Jersey,
+                            without regard to its conflict of law provisions.
+                        </p>
+
+                        <h3 class="text-xl font-semibold text-dark-700 mb-3">
+                            11.3 Jurisdiction
+                        </h3>
+                        <p class="text-dark-600 mb-4">
+                            Any legal action or proceeding arising out of or
+                            relating to these Terms shall be instituted in the
+                            state or federal courts located in New Jersey. You
+                            consent to the personal jurisdiction of such courts.
+                        </p>
+                    </div>
+
+                    <!-- Modifications -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            12. Modifications to Terms
+                        </h2>
+                        <p class="text-dark-600">
+                            We reserve the right to modify these Terms at any
+                            time. We will notify you of any material changes by
+                            posting the updated Terms on our website and
+                            updating the "Last Updated" date. Your continued use
+                            of our website or services after such changes
+                            constitutes your acceptance of the modified Terms.
+                        </p>
+                    </div>
+
+                    <!-- Severability -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            13. Severability
+                        </h2>
+                        <p class="text-dark-600">
+                            If any provision of these Terms is found to be
+                            invalid or unenforceable, the remaining provisions
+                            shall remain in full force and effect.
+                        </p>
+                    </div>
+
+                    <!-- Entire Agreement -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            14. Entire Agreement
+                        </h2>
+                        <p class="text-dark-600">
+                            These Terms, together with our Privacy Policy,
+                            constitute the entire agreement between you and
+                            Ez2Fix regarding your use of our website and
+                            services.
+                        </p>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-dark-700 mb-4">
+                            15. Contact Information
+                        </h2>
+                        <p class="text-dark-600 mb-4">
+                            If you have any questions about these Terms, please
+                            contact us:
+                        </p>
+                        <div class="bg-cream-100 p-6 rounded-lg">
+                            <p class="font-semibold text-dark-700 mb-2">
+                                {siteConfig.company.legalName}
+                            </p>
+                            <p class="text-dark-600">
+                                Email: <a
+                                    href={`mailto:${siteConfig.contact.email}`}
+                                    class="text-gold-600 hover:text-gold-700"
+                                    >{siteConfig.contact.email}</a
+                                >
+                            </p>
+                            <p class="text-dark-600">
+                                Phone: <a
+                                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                                    class="text-gold-600 hover:text-gold-700"
+                                    >{siteConfig.contact.phone}</a
+                                >
+                            </p>
+                            <p class="text-dark-600">
+                                Service Area: {siteConfig.coverage.primaryHub}
+                            </p>
+                            <p class="text-dark-600 text-sm mt-2">
+                                License: {siteConfig.contact.license}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Acceptance -->
+                    <div
+                        class="bg-gold-50 border-l-4 border-gold-400 p-6 rounded"
+                    >
+                        <p class="text-dark-700 font-semibold mb-2">
+                            Acceptance of Terms
+                        </p>
+                        <p class="text-dark-600">
+                            By using our website or services, you acknowledge
+                            that you have read, understood, and agree to be
+                            bound by these Terms of Service.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</BaseLayout>

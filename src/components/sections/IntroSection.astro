@@ -1,0 +1,108 @@
+---
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "@config/site.config";
+---
+
+<section class="py-16 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+            <!-- Kicker -->
+            <div class="text-center mb-4">
+                <span
+                    class="text-gold-600 font-bold uppercase tracking-wider text-sm"
+                >
+                    Welcome to Ez2Fix
+                </span>
+            </div>
+
+            <!-- Headline -->
+            <h2
+                class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-6"
+            >
+                Northern NJ's Trusted Garage Door Experts
+            </h2>
+
+            <!-- Body Text -->
+            <p class="text-lg text-dark-600 leading-relaxed text-center mb-12">
+                When you need reliable <strong
+                    >garage door repair in Northern NJ</strong
+                >, Ez2Fix provides licensed, professional service across 70+
+                cities in
+                <strong>Bergen County</strong>, <strong>Essex County</strong>,
+                Morris County, Hudson County, and Passaic Counties. Our <strong
+                    >emergency garage door service</strong
+                >
+                is available 24/7 for urgent repairs throughout Northern New Jersey,
+                including
+                <strong>garage door installation</strong>, spring repair, and
+                opener services.
+            </p>
+
+            <!-- Key Highlights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                    class="flex items-start p-6 bg-cream-50 rounded-lg border border-gold-200/30"
+                >
+                    <div
+                        class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center flex-shrink-0 mr-4"
+                    >
+                        <Icon
+                            name="heroicons:shield-check"
+                            class="w-6 h-6 text-gold-600"
+                        />
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-dark-900 mb-1">
+                            Licensed & Insured
+                        </h3>
+                        <p class="text-sm text-dark-600">
+                            NJ License #{siteConfig.contact.license}
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-start p-6 bg-cream-50 rounded-lg border border-gold-200/30"
+                >
+                    <div
+                        class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center flex-shrink-0 mr-4"
+                    >
+                        <Icon
+                            name="heroicons:bolt"
+                            class="w-6 h-6 text-gold-600"
+                        />
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-dark-900 mb-1">
+                            24/7 Emergency
+                        </h3>
+                        <p class="text-sm text-dark-600">
+                            Available for urgent repairs
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-start p-6 bg-cream-50 rounded-lg border border-gold-200/30"
+                >
+                    <div
+                        class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center flex-shrink-0 mr-4"
+                    >
+                        <Icon
+                            name="heroicons:clock"
+                            class="w-6 h-6 text-gold-600"
+                        />
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-dark-900 mb-1">
+                            Same-Day Service
+                        </h3>
+                        <p class="text-sm text-dark-600">
+                            Available in most areas
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

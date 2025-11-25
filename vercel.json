@@ -1,0 +1,114 @@
+{
+    "redirects": [
+        {
+            "source": "/services/garage-door-spring-repair",
+            "destination": "/services/spring-repair",
+            "permanent": true
+        },
+        {
+            "source": "/services/garage-door-opener-installation",
+            "destination": "/services/opener-installation",
+            "permanent": true
+        },
+        {
+            "source": "/services/new-garage-door-installation",
+            "destination": "/services/door-installation",
+            "permanent": true
+        },
+        {
+            "source": "/services/emergency-garage-door-repair",
+            "destination": "/services/emergency-repair",
+            "permanent": true
+        },
+        {
+            "source": "/services/general-garage-door-repair",
+            "destination": "/services/emergency-repair",
+            "permanent": true
+        },
+        {
+            "source": "/services/commercial-garage-door-service",
+            "destination": "/services/emergency-repair",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/fair-lawn",
+            "destination": "/service-areas/fair-lawn-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/clifton",
+            "destination": "/service-areas/clifton-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/cedar-grove",
+            "destination": "/service-areas/cedar-grove-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/little-falls",
+            "destination": "/service-areas/little-falls-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/montclair",
+            "destination": "/service-areas/montclair-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/north-caldwell",
+            "destination": "/service-areas/north-caldwell-nj",
+            "permanent": true
+        },
+        {
+            "source": "/service-areas/west-caldwell",
+            "destination": "/service-areas/west-caldwell-nj",
+            "permanent": true
+        },
+        {
+            "source": "/api/sitemap",
+            "destination": "/sitemap-index.xml",
+            "permanent": true
+        }
+    ],
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-XSS-Protection",
+                    "value": "1; mode=block"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "strict-origin-when-cross-origin"
+                }
+            ]
+        },
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-DNS-Prefetch-Control",
+                    "value": "on"
+                },
+                {
+                    "key": "Strict-Transport-Security",
+                    "value": "max-age=63072000; includeSubDomains; preload"
+                },
+                {
+                    "key": "Permissions-Policy",
+                    "value": "attribution-reporting=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\")"
+                }
+            ]
+        }
+    ]
+}
