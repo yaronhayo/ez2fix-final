@@ -118,7 +118,7 @@ export function generateLocalBusinessSchema(cities?: string[]): SchemaOrganizati
         aggregateRating: {
             '@type': 'AggregateRating',
             ratingValue: siteConfig.trustSignals.rating,
-            reviewCount: 500,
+            reviewCount: parseInt(siteConfig.trustSignals.reviewCount.replace(/\D/g, '')) || 500,
         },
     };
 

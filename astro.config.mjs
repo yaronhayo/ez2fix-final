@@ -17,15 +17,9 @@ export default defineConfig({
     }),
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/thank-you') && !page.includes('/api/'),
+      filter: (page) => !page.includes('/thank-you') && !page.includes('/api/') && !page.includes('/404'),
       changefreq: 'weekly',
-      priority: (page) => {
-        if (page === 'https://ez2fixllc.com/') return 1.0;
-        if (page.includes('/services/')) return 0.9;
-        if (page.includes('/areas/')) return 0.8;
-        if (page.includes('/blog/')) return 0.7;
-        return 0.6;
-      },
+      // priority: removed to fix build warning
       lastmod: new Date(),
     }),
     icon({
@@ -37,6 +31,7 @@ export default defineConfig({
     partytown({
       config: {
         forward: ['dataLayer.push', 'gtag'],
+        debug: false,
       },
     }),
   ],

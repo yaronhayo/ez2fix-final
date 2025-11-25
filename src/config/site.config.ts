@@ -30,7 +30,7 @@ export const siteConfig = {
         yearsInBusiness: 11,
         customersServed: '12,000+',
         rating: '5.0',
-        reviewCount: '500+',
+        reviewCount: '145+',
         warranty: '10-Year Warranty',
         licensed: true,
     },

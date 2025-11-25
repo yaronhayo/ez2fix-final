@@ -13,6 +13,7 @@ import FinalCTA from "@components/sections/FinalCTA.astro";
 import Header from "@components/layout/Header.astro";
 import Footer from "@components/layout/Footer.astro";
 import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
+import { siteConfig } from "@config/site.config";
 
 export async function getStaticPaths() {
     return services.map((service) => ({
@@ -37,14 +38,7 @@ const serviceSchema = {
         "@type": "LocalBusiness",
         name: "Ez2Fix Garage Doors",
         image: "https://ez2fixllc.com/images/logo.png",
-        address: {
-            "@type": "PostalAddress",
-            streetAddress: "389 E 54th St",
-            addressLocality: "Elmwood Park",
-            addressRegion: "NJ",
-            postalCode: "07407",
-            addressCountry: "US",
-        },
+        // SAB-compliant: no street address
         telephone: "+12015546769",
         priceRange: service.priceRange || "$$",
     },
@@ -314,7 +308,8 @@ const allSchema = [serviceSchema, faqSchema].filter(Boolean) as object[];
                             </div>
                         </div>
                         <div class="text-sm text-gray-500 font-medium">
-                            Based on 500+ 5-Star Reviews
+                            Based on {siteConfig.trustSignals.reviewCount} 5-Star
+                            Reviews
                         </div>
                     </div>
                 </div>
@@ -399,7 +394,8 @@ const allSchema = [serviceSchema, faqSchema].filter(Boolean) as object[];
                     </div>
                     <h3 class="font-bold text-dark-800 mb-2">5-Star Rated</h3>
                     <p class="text-sm text-dark-600">
-                        Over 500 5-star reviews from satisfied customers.
+                        Over {siteConfig.trustSignals.reviewCount} 5-star reviews
+                        from satisfied customers.
                     </p>
                 </div>
             </div>

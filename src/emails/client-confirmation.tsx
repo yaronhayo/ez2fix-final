@@ -110,7 +110,7 @@ export const ClientConfirmationEmail = (props: ClientConfirmationEmailProps) => 
                             </div>
                             <div style={trustItem}>
                                 <Text style={trustTitle}>5.0★ Rated</Text>
-                                <Text style={trustText}>500+ Google reviews</Text>
+                                <Text style={trustText}>145+ Google reviews</Text>
                             </div>
                         </div>
                     </Section>

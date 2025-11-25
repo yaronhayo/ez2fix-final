@@ -12,6 +12,7 @@ import { Icon } from "astro-icon/components";
 import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
 import FAQSection from "@components/sections/FAQSection.astro";
 import { getFAQsByPage } from "@data/faqs";
+import { siteConfig } from "@config/site.config";
 
 const serviceFAQs = getFAQsByPage("services");
 
@@ -261,7 +262,8 @@ const breadcrumbSchema = generateBreadcrumbSchema([
                             </div>
                         </div>
                         <div class="text-sm text-gray-500 font-medium">
-                            Based on 500+ Local Reviews
+                            Based on {siteConfig.trustSignals.reviewCount} Local
+                            Reviews
                         </div>
                     </div>
                 </div>

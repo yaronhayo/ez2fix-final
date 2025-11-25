@@ -215,7 +215,7 @@ If you're in Northern New Jersey and need garage door spring repair, **call Ez2F
 
 ---
 
-**About Ez2Fix:** Licensed garage door professionals serving Northern NJ since 2013. Over 12,000 doors serviced with a 5.0★ rating from 500+ customers.
+**About Ez2Fix:** Licensed garage door professionals serving Northern NJ since 2013. Over 12,000 doors serviced with a 5.0★ rating from 145+ customers.
 
 **Related Articles:**
 - [Why Won't My Garage Door Close? 10 Common Causes & Fixes](/blog/repair-guides/garage-door-wont-close-causes-fixes)
