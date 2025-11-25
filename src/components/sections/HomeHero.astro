@@ -9,14 +9,17 @@ import BookingForm from "@components/BookingForm";
     <!-- Background Video/Image -->
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-dark-900/80 z-10"></div>
-        <!-- Hero video background -->
+        <!-- Hero video background - Optimized for LCP -->
         <video
+            width="1920"
+            height="1080"
             class="w-full h-full object-cover"
             autoplay
             muted
             loop
             playsinline
-            preload="auto"
+            preload="none"
+            poster="/images/hero/hero-1.jpg"
         >
             <source src="/videos/hero-background.mp4" type="video/mp4" />
         </video>
@@ -110,7 +113,7 @@ import BookingForm from "@components/BookingForm";
 
                 <!-- Booking Form Component -->
                 <div class="text-left">
-                    <BookingForm client:load />
+                    <BookingForm client:visible />
                 </div>
             </div>
         </div>
