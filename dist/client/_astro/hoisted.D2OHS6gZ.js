@@ -1,0 +1,1 @@
+import"./hoisted.BLjY4jRw.js";const e=document.getElementById("progress-bar");window.addEventListener("scroll",()=>{const o=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight,n=o/t;e&&(e.style.transform=`scaleX(${n})`)});

@@ -1,0 +1,42 @@
+# Homepage
+/index.html / 301
+/index.php / 301
+
+# Services
+/garage-door-repair /services/garage-door-repair 301
+/spring-repair /services/spring-repair 301
+/opener-installation /services/opener-installation 301
+/door-installation /services/door-installation 301
+/opener-repair /services/opener-repair 301
+/cable-repair /services/cable-repair 301
+/panel-replacement /services/panel-replacement 301
+/track-repair /services/track-repair 301
+/maintenance /services/maintenance 301
+
+# Service Areas
+/service-areas/paterson-nj /areas/paterson-nj 301
+/service-areas/clifton-nj /areas/clifton-nj 301
+/service-areas/passaic-nj /areas/passaic-nj 301
+/service-areas/wayne-nj /areas/wayne-nj 301
+/service-areas/hackensack-nj /areas/hackensack-nj 301
+/service-areas/paramus-nj /areas/paramus-nj 301
+/service-areas/ridgewood-nj /areas/ridgewood-nj 301
+/service-areas/teaneck-nj /areas/teaneck-nj 301
+/service-areas/englewood-nj /areas/englewood-nj 301
+/service-areas/bergenfield-nj /areas/bergenfield-nj 301
+/service-areas/fair-lawn-nj /areas/fair-lawn-nj 301
+/service-areas/garfield-nj /areas/garfield-nj 301
+/service-areas/lodi-nj /areas/lodi-nj 301
+/service-areas/elmwood-park-nj /areas/elmwood-park-nj 301
+/service-areas/saddle-brook-nj /areas/saddle-brook-nj 301
+/service-areas/glen-rock-nj /areas/glen-rock-nj 301
+
+# Blog
+/blog/* /blog/:splat 301
+
+# Contact
+/contact /booking 301
+/get-quote /booking 301
+
+# Catch-all
+# /* / 301
