@@ -119,6 +119,7 @@ if ($httpCode >= 200 && $httpCode < 300) {
     echo json_encode(['success' => true, 'message' => 'Message sent', 'token' => $token]);
 } else {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to send email', 'debug' => $response]);
+    error_log("Resend API Error: " . $response);
+    echo json_encode(['success' => false, 'message' => 'Failed to send email. Please try again later.', 'debug' => $response]);
 }
 ?>
