@@ -121,11 +121,13 @@ export default function ContactForm() {
                 <input
                     type="text"
                     id={`${formId}-name`}
+                    name="name"
                     value={formData.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-400 outline-none transition-all ${errors.name ? 'border-red-500' : 'border-gray-300'
                         }`}
                     placeholder="John Doe"
+                    autoComplete="name"
                 />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
@@ -137,11 +139,13 @@ export default function ContactForm() {
                 <input
                     type="email"
                     id={`${formId}-email`}
+                    name="email"
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-400 outline-none transition-all ${errors.email ? 'border-red-500' : 'border-gray-300'
                         }`}
                     placeholder="john@example.com"
+                    autoComplete="email"
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
@@ -153,11 +157,13 @@ export default function ContactForm() {
                 <input
                     type="tel"
                     id={`${formId}-phone`}
+                    name="phone"
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-gold-400 outline-none transition-all ${errors.phone ? 'border-red-500' : 'border-gray-300'
                         }`}
                     placeholder="(555) 123-4567"
+                    autoComplete="tel"
                 />
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
             </div>
@@ -168,6 +174,7 @@ export default function ContactForm() {
                 </label>
                 <textarea
                     id={`${formId}-message`}
+                    name="message"
                     rows={4}
                     value={formData.message}
                     onChange={(e) => updateField('message', e.target.value)}
@@ -182,6 +189,7 @@ export default function ContactForm() {
                 <input
                     type="checkbox"
                     id={`${formId}-consent`}
+                    name="consent"
                     checked={formData.consent}
                     onChange={(e) => updateField('consent', e.target.checked)}
                     className="mt-1 w-4 h-4 text-gold-500 border-gray-300 rounded focus:ring-gold-400"
