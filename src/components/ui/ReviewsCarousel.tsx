@@ -82,9 +82,9 @@ export default function ReviewsCarousel({ reviews, autoPlayInterval = 5000 }: Re
                             <p className="text-dark-700 mb-6 flex-grow italic">"{review.text}"</p>
 
                             <div className="flex items-center justify-between mt-auto">
-                                <div>
-                                    <h4 className="font-bold text-dark-900">{review.author}</h4>
-                                    <p className="text-sm text-dark-500">{review.city}</p>
+                                <div className="mb-3">
+                                    <div className="font-bold text-dark-900">{review.author}</div>
+                                    <div className="text-sm text-dark-600">{review.city}</div>
                                 </div>
                                 <div className="flex items-center text-xs text-dark-500 bg-cream-100 px-2 py-1 rounded border border-gold-200/20">
                                     Google Review
