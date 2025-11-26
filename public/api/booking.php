@@ -120,10 +120,22 @@ curl_close($ch);
 if ($httpCode >= 200 && $httpCode < 300) {
     $token = base64_encode(time() . '-' . rand());
     setcookie('booking_session', $token, time() + 3600, "/", "", true, true);
-    echo json_encode(['success' => true, 'message' => 'Booking received', 'token' => $token]);
+    // DEBUG: Return Resend response even on success
+    echo json_encode([
+        'success' => true, 
+        'message' => 'Booking received', 
+        'token' => $token,
+        'debug_resend_response' => json_decode($response, true),
+        'debug_email_to' => $ownerEmail
+    ]);
 } else {
     http_response_code(500);
     error_log("Resend API Error: " . $response);
-    echo json_encode(['success' => false, 'message' => 'Failed to send email. Please try again later.', 'debug' => $response]);
+    echo json_encode([
+        'success' => false, 
+        'message' => 'Failed to send email. Please try again later.', 
+        'debug' => $response,
+        'debug_http_code' => $httpCode
+    ]);
 }
 ?>
