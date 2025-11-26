@@ -2,6 +2,11 @@ import { useState, useEffect, useId } from 'react';
 import { useGooglePlaces } from '../hooks/useGooglePlaces';
 import { useUTMTracking } from '../hooks/useUTMTracking';
 import { useDeviceDetection } from '../hooks/useDeviceDetection';
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    PaperAirplaneIcon
+} from '@heroicons/react/24/solid';
 
 const SERVICES = [
     { id: 'emergency-repair', name: 'Emergency Repair' },
@@ -261,7 +266,7 @@ export default function BookingForm() {
 
             case 2: // Contact
                 if (!formData.name?.trim()) return false;
-                if (!formData.phone || !/^\d{10}$/.test(formData.phone.replace(/\D/g, ''))) return false;
+                if (!formData.phone || !/^\d{10,11}$/.test(formData.phone.replace(/\D/g, ''))) return false;
                 if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return false;
                 if (!formData.consentToContact) return false;
                 if (!formData.agreedToTerms) return false;
@@ -618,11 +623,12 @@ export default function BookingForm() {
                         name="prev-btn"
                         onClick={prevStep}
                         disabled={currentStep === 0}
-                        className={`px-6 py-3 rounded-lg font-semibold transition-colors ${currentStep === 0
+                        className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-colors ${currentStep === 0
                             ? 'bg-cream-200 text-dark-400 cursor-not-allowed'
                             : 'bg-cream-300 text-dark-900 hover:bg-cream-400'
                             }`}
                     >
+                        <ChevronLeftIcon className="w-5 h-5 mr-2" />
                         Previous
                     </button>
 
@@ -632,9 +638,10 @@ export default function BookingForm() {
                             id={`${formId}-next-btn`}
                             name="next-btn"
                             onClick={nextStep}
-                            className="px-6 py-3 rounded-lg font-semibold transition-colors bg-gold-500 text-dark-900 hover:bg-gold-600"
+                            className="flex items-center px-6 py-3 rounded-lg font-semibold transition-colors bg-gold-500 text-dark-900 hover:bg-gold-600"
                         >
                             Continue
+                            <ChevronRightIcon className="w-5 h-5 ml-2" />
                         </button>
                     ) : (
                         <button
@@ -642,8 +649,8 @@ export default function BookingForm() {
                             id={`${formId}-submit-btn`}
                             name="submit-btn"
                             onClick={handleSubmit}
-                            disabled={isSubmitting}
-                            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${isSubmitting || !canProceedFromStep(2)
+                            disabled={isSubmitting || !canProceedFromStep(2)}
+                            className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-colors ${isSubmitting || !canProceedFromStep(2)
                                 ? 'bg-dark-300 text-dark-500 cursor-not-allowed'
                                 : 'bg-gold-500 text-dark-900 hover:bg-gold-600'
                                 }`}
@@ -657,7 +664,10 @@ export default function BookingForm() {
                                     Processing...
                                 </span>
                             ) : (
-                                'Submit Request'
+                                <>
+                                    <PaperAirplaneIcon className="w-5 h-5 mr-2" />
+                                    Submit Request
+                                </>
                             )}
                         </button>
                     )}
