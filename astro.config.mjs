@@ -47,6 +47,24 @@ export default defineConfig({
     server: {
       headers: {
         'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
+        'Cache-Control': 'public, max-age=604800', // 7 days for static assets
+      },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: (assetInfo) => {
+            // Cache images/videos for 30 days, JS/CSS for 7 days
+            let extType = assetInfo.name.split('.').at(-1);
+            if (/png|jpe?g|gif|svg|webp|avif|ico/i.test(extType)) {
+              return `assets/img/[name]-[hash][extname]`;
+            }
+            if (/mp4|webm|mov/i.test(extType)) {
+              return `assets/video/[name]-[hash][extname]`;
+            }
+            return `assets/[name]-[hash][extname]`;
+          },
+        },
       },
     },
   },

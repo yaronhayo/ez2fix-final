@@ -101,6 +101,20 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         
+        <!-- Defer Google Fonts to eliminate render-blocking -->
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+            media="print"
+            onload="this.media='all'"
+        />
+        <noscript>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+            />
+        </noscript>
+        
         <!-- Preload critical fonts for better LCP -->
         <link
             rel="preload"
@@ -130,9 +144,9 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             </>
         )}
 
-        <!-- reCAPTCHA v3 -->
+        <!-- reCAPTCHA v3 (Deferred - async) -->
         {import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
-            <script is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+            <script async defer is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
         )}
 
 
