@@ -153,7 +153,7 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
 
     </head>
     <body>
-        <!-- ClickCease.com tracking -->
+        <!-- ClickCease.com tracking - DISABLED (causing JS errors breaking form submission)
         <script type='text/javascript'>
             var script = document.createElement('script');
             script.async = true; script.type = 'text/javascript';
@@ -163,32 +163,28 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <noscript>
             <a href='https://www.clickcease.com' rel='nofollow'><img src='https://monitor.clickcease.com' alt='ClickCease'/></a>
         </noscript>
-        <!-- ClickCease.com tracking -->
 
-        <!-- ClickCease Event Tracking Helper & Phone Call Tracking -->
         <script is:inline>
-            // Function to track individual events (e.g. phone calls)
             window.initCConvertion = function(val) {
                 window.ccConVal = val || 0;
                 var script = document.createElement('script');
                 var target = 'https://www.clickcease.com/monitor/cccontrack.js';
                 var elem = document.head;
-                script.type = 'text/javascript';
-                script.src = target;
                 elem.appendChild(script);
+                script.src = target + '?v=' + Math.floor(Date.now()/1000);
             };
 
-            // Global event listener for phone links
             document.addEventListener('click', function(e) {
                 const link = e.target.closest('a[href^="tel:"]');
                 if (link) {
-                    // Track phone call as conversion
                     if (typeof window.initCConvertion === 'function') {
                         window.initCConvertion(0);
                     }
                 }
             });
         </script>
+        END CLICKCEASE DISABLED -->
+
 
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDFV4QVJ"
