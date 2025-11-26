@@ -37,6 +37,15 @@ export default function ContactForm() {
         });
     };
 
+    const checkValidity = (): boolean => {
+        if (!formData.name.trim()) return false;
+        if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return false;
+        if (!formData.phone.trim() || !/^\d{10,11}$/.test(formData.phone.replace(/\D/g, ''))) return false;
+        if (!formData.message.trim()) return false;
+        if (!formData.consent) return false;
+        return true;
+    };
+
     const validate = (): boolean => {
         const newErrors: Record<string, string> = {};
 
@@ -221,7 +230,7 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-dark-900 bg-gold-500 hover:bg-gold-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-all ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                className={`w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-dark-900 bg-gold-500 hover:bg-gold-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-all ${isSubmitting || !checkValidity() ? 'opacity-75 cursor-not-allowed' : ''
                     }`}
             >
                 {isSubmitting ? (

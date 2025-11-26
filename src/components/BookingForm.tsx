@@ -643,7 +643,7 @@ export default function BookingForm() {
                             name="submit-btn"
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${isSubmitting
+                            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${isSubmitting || !canProceedFromStep(2)
                                 ? 'bg-dark-300 text-dark-500 cursor-not-allowed'
                                 : 'bg-gold-500 text-dark-900 hover:bg-gold-600'
                                 }`}
