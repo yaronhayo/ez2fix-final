@@ -1,6 +1,10 @@
 # Enable Rewrite Engine
 RewriteEngine On
 
+# API Routes - Route clean URLs to PHP files
+RewriteRule ^api/booking$ api/booking.php [L]
+RewriteRule ^api/contact$ api/contact.php [L]
+
 # Force HTTPS
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
