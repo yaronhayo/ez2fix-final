@@ -106,7 +106,7 @@
                 },
                 {
                     "key": "Permissions-Policy",
-                    "value": "attribution-reporting=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\")"
+                    "value": "attribution-reporting=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\"), run-ad-auction=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\"), join-ad-interest-group=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\"), browsing-topics=(self \"https://www.googletagmanager.com\" \"https://www.google-analytics.com\")"
                 }
             ]
         }

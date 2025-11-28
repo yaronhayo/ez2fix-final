@@ -4,7 +4,7 @@
     "description": "Professional garage door repair and installation services in Northern New Jersey. 24/7 emergency service, licensed contractors, 10-year warranty.",
     "theme_color": "#D4AF37",
     "background_color": "#1F2937",
-    "display": "browser",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "icons": [

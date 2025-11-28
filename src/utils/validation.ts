@@ -13,7 +13,7 @@ export const bookingSchema = z.object({
     // Step 3: Contact Info
     name: z.string().min(2, 'Please enter your full name'),
     phone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, 'Please enter a valid phone number'),
-    email: z.string().email('Please enter a valid email address'),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
 
     // Step 4: Scheduling (Optional)
     preferredDate: z.string().optional(),
@@ -33,7 +33,7 @@ export type BookingFormData = z.infer<typeof bookingSchema>;
 // Contact Form Validation Schema
 export const contactSchema = z.object({
     name: z.string().min(2, 'Please enter your full name'),
-    email: z.string().email('Please enter a valid email address'),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
     phone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, 'Please enter a valid phone number'),
     subject: z.string().min(3, 'Please enter a subject'),
     message: z.string().min(10, 'Please enter a message'),
@@ -45,8 +45,8 @@ export type ContactFormData = z.infer<typeof contactSchema>;
 
 // Email Validation
 export const emailSchema = z.object({
-    to: z.string().email(),
-    from: z.string().email(),
+    to: z.string().email({ message: 'Invalid email address' }),
+    from: z.string().email({ message: 'Invalid email address' }),
     subject: z.string().min(1),
     html: z.string().min(1),
 });

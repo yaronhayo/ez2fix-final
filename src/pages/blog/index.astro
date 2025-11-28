@@ -3,7 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import Header from "@components/layout/Header.astro";
 import Footer from "@components/layout/Footer.astro";
 import { getCollection } from "astro:content";
+import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
 import { generateBreadcrumbSchema } from "@utils/schema";
+import { Icon } from "@components/ui/Icon";
 
 const posts = (await getCollection("blog")).sort(
     (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
@@ -111,26 +113,20 @@ function formatDate(date: Date) {
                                     class="block aspect-video bg-dark-100 overflow-hidden relative group"
                                 >
                                     {post.data.image ? (
-                                        <img
+                                        <ResponsiveImage
                                             src={post.data.image}
                                             alt={post.data.title}
+                                            width={400}
+                                            height={200}
+                                            loading="lazy"
                                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                     ) : (
                                         <div class="w-full h-full flex items-center justify-center bg-dark-200 text-dark-400">
-                                            <svg
-                                                class="w-12 h-12"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                />
-                                            </svg>
+                                            <Icon
+                                                name="image"
+                                                className="w-12 h-12"
+                                            />
                                         </div>
                                     )}
                                     {post.data.featured && (
@@ -171,19 +167,10 @@ function formatDate(date: Date) {
                                             class="text-sm font-bold text-gold-600 hover:text-gold-700 flex items-center"
                                         >
                                             Read More
-                                            <svg
-                                                class="w-4 h-4 ml-1"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                                />
-                                            </svg>
+                                            <Icon
+                                                name="arrowRight"
+                                                className="w-4 h-4 ml-1"
+                                            />
                                         </a>
                                     </div>
                                 </div>

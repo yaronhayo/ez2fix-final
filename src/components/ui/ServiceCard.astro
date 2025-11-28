@@ -1,8 +1,9 @@
 ---
 import type { Service } from "@data/services";
-import { Icon } from "astro-icon/components";
 
 import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+
+import { Icon } from "@components/ui/Icon";
 
 interface Props {
     service: Service;
@@ -28,22 +29,17 @@ const { service } = Astro.props;
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-dark-900/60 to-transparent pointer-events-none" />
             </div>
-        ) : null
+        ) : (
+            <div class="h-48 bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center">
+                <div class="w-24 h-24 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                    <Icon
+                        name={service.icon}
+                        className="w-12 h-12 text-gold-600"
+                    />
+                </div>
+            </div>
+        )
     }
-
-    <!-- Fallback Icon (shown if no image or image fails to load) -->
-    <div
-        class={`h-48 bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center ${service.heroImage ? "hidden" : "flex"}`}
-    >
-        <div
-            class="w-24 h-24 bg-white/90 rounded-full flex items-center justify-center shadow-lg"
-        >
-            <Icon
-                name={`heroicons:${service.icon === "bolt" ? "bolt" : service.icon === "spring" ? "arrow-path" : service.icon === "remote" ? "signal" : service.icon === "door" ? "home" : service.icon === "wrench" ? "wrench-screwdriver" : service.icon === "cable" ? "link" : service.icon === "panel" ? "squares-2x2" : service.icon === "track" ? "arrows-right-left" : "cog-6-tooth"}`}
-                class="w-12 h-12 text-gold-600"
-            />
-        </div>
-    </div>
 
     <div class="p-6 flex flex-col flex-grow">
         <h3
@@ -64,8 +60,8 @@ const { service } = Astro.props;
             >
                 View Details
                 <Icon
-                    name="heroicons:arrow-right"
-                    class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                    name="arrowRight"
+                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                 />
             </span>
         </div>

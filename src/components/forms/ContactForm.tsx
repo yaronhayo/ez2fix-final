@@ -1,6 +1,5 @@
 import { useState, useId } from 'react';
 import {
-    CheckCircleIcon,
     PaperAirplaneIcon,
     ArrowPathIcon
 } from '@heroicons/react/24/solid';
@@ -26,7 +25,6 @@ export default function ContactForm() {
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
     const updateField = (field: keyof ContactFormData, value: any) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -69,7 +67,6 @@ export default function ContactForm() {
         if (!validate()) return;
 
         setIsSubmitting(true);
-        setSubmitStatus('idle');
 
         try {
             // Get reCAPTCHA token
@@ -85,34 +82,22 @@ export default function ContactForm() {
                 console.warn('reCAPTCHA failed:', error);
             }
 
-            const response = await fetch('/api/contact.php', {
+            const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, recaptchaToken: token }),
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                setSubmitStatus('success');
-                if (data.token) {
-                    window.location.href = `/thank-you?token=${data.token}`;
-                } else {
-                    // Fallback if no token (shouldn't happen with updated API)
-                    setFormData({
-                        name: '',
-                        email: '',
-                        phone: '',
-                        message: '',
-                        consent: false,
-                    });
-                }
-            } else {
-                setSubmitStatus('error');
+            if (!response.ok) {
+                const data = await response.json();
                 setErrors({ submit: data.message || 'Something went wrong. Please try again.' });
+            } else {
+                const data = await response.json();
+                if (data.success && data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                }
             }
         } catch (error) {
-            setSubmitStatus('error');
             setErrors({ submit: 'Network error. Please try again.' });
         } finally {
             setIsSubmitting(false);

@@ -7,7 +7,7 @@ import FinalCTA from "@components/sections/FinalCTA.astro";
 import FAQSection from "@components/sections/FAQSection.astro";
 import { reviews, getAggregateRating } from "@data/reviews";
 import { siteConfig } from "@config/site.config";
-import { Icon } from "astro-icon/components";
+
 import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
 import { getFAQsByPage } from "@data/faqs";
 
@@ -53,7 +53,11 @@ const faqs = getFAQsByPage("reviews");
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
-  <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(reviewSchema)}
+  />
 
   <Header />
   <Breadcrumbs items={[{ name: "Reviews" }]} />
@@ -64,7 +68,13 @@ const faqs = getFAQsByPage("reviews");
       <div
         class="inline-flex items-center space-x-2 bg-gold-500/20 text-gold-400 px-4 py-1 rounded-full text-sm font-bold mb-6 uppercase tracking-wide border border-gold-500/30"
       >
-        <Icon name="heroicons:star-solid" class="w-4 h-4" />
+        <svg class="w-4 h-4"
+          ><path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+            clip-rule="evenodd"></path></svg
+        >
         <span>Top Rated Service</span>
       </div>
       <h1
@@ -88,11 +98,41 @@ const faqs = getFAQsByPage("reviews");
             {averageRating}
           </div>
           <div class="flex justify-center space-x-1 mb-2">
-            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
-            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
-            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
-            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
-            <Icon name="heroicons:star-solid" class="w-5 h-5 text-gold-400" />
+            <svg class="w-5 h-5 text-gold-400"
+              ><path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+                clip-rule="evenodd"></path></svg
+            >
+            <svg class="w-5 h-5 text-gold-400"
+              ><path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+                clip-rule="evenodd"></path></svg
+            >
+            <svg class="w-5 h-5 text-gold-400"
+              ><path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+                clip-rule="evenodd"></path></svg
+            >
+            <svg class="w-5 h-5 text-gold-400"
+              ><path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+                clip-rule="evenodd"></path></svg
+            >
+            <svg class="w-5 h-5 text-gold-400"
+              ><path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006l5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527l1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354L7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273l-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434z"
+                clip-rule="evenodd"></path></svg
+            >
           </div>
           <div class="text-sm text-cream-200">Average Rating</div>
         </div>
@@ -153,7 +193,16 @@ const faqs = getFAQsByPage("reviews");
               id="show-more-btn"
               class="inline-flex items-center justify-center px-8 py-4 bg-gold-500 text-dark-900 rounded-lg shadow-md hover:bg-gold-600 hover:shadow-lg transition-all font-bold text-lg"
             >
-              <Icon name="heroicons:chevron-down" class="w-5 h-5 mr-2" />
+              <svg class="w-5 h-5 mr-2">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="m19.5 8.25l-7.5 7.5l-7.5-7.5"
+                />
+              </svg>
               Show More Reviews
             </button>
           </div>
@@ -167,10 +216,16 @@ const faqs = getFAQsByPage("reviews");
           rel="noopener noreferrer"
           class="inline-flex items-center justify-center px-8 py-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-gold-400 transition-all group"
         >
-          <Icon
-            name="heroicons:globe-alt"
-            class="w-6 h-6 mr-3 text-gray-600 group-hover:text-gold-600"
-          />
+          <svg class="w-6 h-6 mr-3 text-gray-600 group-hover:text-gold-600"
+            ><path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a9 9 0 0 1 7.843 4.582M12 3a9 9 0 0 0-7.843 4.582m15.686 0A11.95 11.95 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.96 8.96 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.9 17.9 0 0 1 12 16.5a17.9 17.9 0 0 1-8.716-2.247m0 0A9 9 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
+            ></path></svg
+          >
           <span class="text-lg font-semibold text-dark-800"
             >Read more reviews on Google</span
           >

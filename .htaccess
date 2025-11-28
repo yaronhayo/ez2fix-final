@@ -1,0 +1,38 @@
+# BEGIN Astro/Vercel to Apache Conversion
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Permanent Redirects
+  Redirect 301 /services/garage-door-spring-repair /services/spring-repair
+  Redirect 301 /services/garage-door-opener-installation /services/opener-installation
+  Redirect 301 /services/new-garage-door-installation /services/door-installation
+  Redirect 301 /services/emergency-garage-door-repair /services/emergency-repair
+  Redirect 301 /services/general-garage-door-repair /services/emergency-repair
+  Redirect 301 /services/commercial-garage-door-service /services/emergency-repair
+  Redirect 301 /service-areas/fair-lawn /service-areas/fair-lawn-nj
+  Redirect 301 /service-areas/clifton /service-areas/clifton-nj
+  Redirect 301 /service-areas/cedar-grove /service-areas/cedar-grove-nj
+  Redirect 301 /service-areas/little-falls /service-areas/little-falls-nj
+  Redirect 301 /service-areas/montclair /service-areas/montclair-nj
+  Redirect 301 /service-areas/north-caldwell /service-areas/north-caldwell-nj
+  Redirect 301 /service-areas/west-caldwell /service-areas/west-caldwell-nj
+  Redirect 301 /api/sitemap /sitemap-index.xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Global Headers
+  Header set X-DNS-Prefetch-Control "on"
+  Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  Header set Permissions-Policy "attribution-reporting=(self 'https://www.googletagmanager.com' 'https://www.google-analytics.com')"
+
+  # API Specific Headers
+  <FilesMatch "^(api/.*)$">
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+  </FilesMatch>
+</IfModule>
+
+# END Astro/Vercel to Apache Conversion

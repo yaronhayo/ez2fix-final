@@ -2,10 +2,12 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Header from "@components/layout/Header.astro";
 import Footer from "@components/layout/Footer.astro";
+
 import Button from "@components/ui/Button.astro";
 import FAQItem from "@components/ui/FAQItem.astro";
 import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
-import { Icon } from "astro-icon/components";
+import { Icon } from "@components/ui/Icon";
+
 import { globalFAQs } from "@data/faqs";
 import { siteConfig } from "@config/site.config";
 import { generateBreadcrumbSchema, generateFAQSchema } from "@utils/schema";
@@ -35,37 +37,37 @@ const categoryInfo: Record<
 > = {
     service: {
         title: "Service & Availability",
-        icon: "heroicons:wrench-screwdriver-solid",
+        icon: "wrench",
         description: "Hours, response times, and service areas",
     },
     pricing: {
         title: "Pricing & Payment",
-        icon: "heroicons:currency-dollar-solid",
+        icon: "dollar",
         description: "Costs, estimates, and payment options",
     },
     credentials: {
         title: "Credentials & Trust",
-        icon: "heroicons:shield-check-solid",
+        icon: "shield",
         description: "Licensing, insurance, and certifications",
     },
     warranty: {
         title: "Warranties & Guarantees",
-        icon: "heroicons:check-badge-solid",
+        icon: "checkCircle",
         description: "Coverage and satisfaction guarantees",
     },
     company: {
         title: "About Our Company",
-        icon: "heroicons:building-office-solid",
+        icon: "building",
         description: "History, values, and what makes us different",
     },
     technical: {
         title: "Technical & Products",
-        icon: "heroicons:cog-6-tooth-solid",
+        icon: "settings",
         description: "Brands, parts, and technical questions",
     },
     general: {
         title: "General Questions",
-        icon: "heroicons:chat-bubble-left-right-solid",
+        icon: "message",
         description: "Miscellaneous inquiries",
     },
 };
@@ -91,10 +93,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                 <div
                     class="inline-flex items-center justify-center w-16 h-16 bg-gold-500 rounded-full mb-6"
                 >
-                    <Icon
-                        name="heroicons:question-mark-circle-solid"
-                        class="w-10 h-10 text-white"
-                    />
+                    <Icon name="question" className="w-10 h-10 text-white" />
                 </div>
                 <h1 class="text-4xl md:text-5xl font-bold mb-6 text-cream-100">
                     Frequently Asked Questions
@@ -103,10 +102,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                     Everything you need to know about our garage door services
                 </p>
                 <p class="text-cream-300 text-lg">
-                    <Icon
-                        name="heroicons:check-circle-solid"
-                        class="w-5 h-5 inline mr-2 text-gold-400"
-                    />
+                    <Icon name="checkCircle" className="w-5 h-5 inline mr-2 text-gold-400" />
                     {totalFAQs} Questions Answered across {
                         categoryKeys.length
                     } Categories
@@ -137,10 +133,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                             href={`#${category}`}
                             class="flex items-center gap-2 px-4 py-2 bg-cream-50 hover:bg-gold-50 border border-gold-200/30 hover:border-gold-400 rounded-lg transition-all whitespace-nowrap text-sm font-medium text-dark-700 hover:text-gold-700"
                         >
-                            <Icon
-                                name={categoryInfo[category]?.icon || "heroicons:folder-solid"}
-                                class="w-4 h-4"
-                            />
+                            <Icon name={categoryInfo[category]?.icon || "question"} className="w-4 h-4" />
                             {categoryInfo[category]?.title || category}
                         </a>
                     ))
@@ -160,13 +153,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                             <div class="mb-8 pb-6 border-b-2 border-gold-300/30">
                                 <div class="flex items-start gap-4">
                                     <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-500 rounded-xl flex items-center justify-center shadow-lg">
-                                        <Icon
-                                            name={
-                                                categoryInfo[category]?.icon ||
-                                                "heroicons:folder-solid"
-                                            }
-                                            class="w-8 h-8 text-white"
-                                        />
+                                        <Icon name={categoryInfo[category]?.icon || "question"} className="w-8 h-8 text-white" />
                                     </div>
                                     <div class="flex-grow">
                                         <h2 class="text-3xl font-bold text-dark-800 mb-2">
@@ -177,10 +164,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                                                 "Common questions and answers"}
                                         </p>
                                         <p class="text-sm text-gold-600 font-semibold mt-2">
-                                            <Icon
-                                                name="heroicons:chat-bubble-left-solid"
-                                                class="w-4 h-4 inline mr-1"
-                                            />
+                                            <Icon name="checkCircle" className="w-4 h-4 inline mr-1" />
                                             {faqs.length} {faqs.length === 1 ? "Question" : "Questions"}
                                         </p>
                                     </div>
@@ -206,10 +190,7 @@ const categoryKeys = Object.keys(faqsByCategory);
             <div
                 class="max-w-3xl mx-auto text-center bg-gradient-to-br from-dark-800 to-dark-700 p-12 rounded-2xl shadow-2xl border border-gold-500/20"
             >
-                <Icon
-                    name="heroicons:chat-bubble-bottom-center-text-solid"
-                    class="w-16 h-16 text-gold-400 mx-auto mb-6"
-                />
+                <Icon name="question" className="w-16 h-16 text-gold-400 mx-auto mb-6" />
                 <h2 class="text-3xl font-bold text-cream-100 mb-4">
                     Still Have Questions?
                 </h2>
@@ -220,7 +201,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button variant="primary" size="lg" href="/contact">
-                        <Icon name="heroicons:envelope" class="w-5 h-5 mr-2" />
+                        <Icon name="mail" className="w-5 h-5 mr-2" />
                         Contact Us
                     </Button>
                     <Button
@@ -228,7 +209,7 @@ const categoryKeys = Object.keys(faqsByCategory);
                         size="lg"
                         href={`tel:${siteConfig.contact.phoneRaw}`}
                     >
-                        <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                        <Icon name="phone" className="w-5 h-5 mr-2" />
                         Call {siteConfig.contact.phone}
                     </Button>
                 </div>

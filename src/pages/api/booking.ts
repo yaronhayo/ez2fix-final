@@ -1,282 +1,260 @@
+// API endpoint for booking form submissions
 import type { APIRoute } from 'astro';
-import { z } from 'zod';
-import { Resend } from 'resend';
-import { render } from '@react-email/render';
-import OwnerNotificationEmail from '../../emails/owner-notification';
-import ClientConfirmationEmail from '../../emails/client-confirmation';
 
-// Force this API route to render on-demand (not prerender)
-export const prerender = false;
-
-const bookingSchema = z.object({
-  service: z.string().min(1),
-  serviceOther: z.string().optional(),
-  comments: z.string().optional(),
-
-  addressFull: z.string().optional(),
-  street: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().default('NJ'),
-  zipCode: z.string().regex(/^\d{5}$/),
-  aptNumber: z.string().optional(),
-  gateCode: z.string().optional(),
-
-  name: z.string().min(1),
-  phone: z.string().regex(/^\d{10,11}$/),
-  email: z.string().email().optional(),
-
-  consentToContact: z.boolean(),
-  agreedToTerms: z.boolean(),
-
-  recaptchaToken: z.string().optional(),
-  fax: z.string().optional(), // Honeypot
-
-  // Tracking fields
-  utmSource: z.string().optional(),
-  utmMedium: z.string().optional(),
-  utmCampaign: z.string().optional(),
-  utmContent: z.string().optional(),
-  utmTerm: z.string().optional(),
-  referrer: z.string().optional(),
-  landingPage: z.string().optional(),
-  deviceType: z.string().optional(),
-  browser: z.string().optional(),
-  os: z.string().optional(),
-  userAgent: z.string().optional(),
-  sessionStart: z.string().optional(),
-  formStartTime: z.string().optional(),
-});
-
-// Generate a simple session token for thank-you page access
-function generateSessionToken(): string {
-  return Buffer.from(`${Date.now()}-${Math.random()}`).toString('base64');
+// Helper for Email Styling
+function getEmailStyle(): string {
+    return `
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #374151; background-color: #f6f9fc; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px; }
+        .header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #eaeaea; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: #1f2937; text-decoration: none; }
+        .h1 { color: #1f2937; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .h2 { color: #1f2937; font-size: 20px; font-weight: bold; margin-top: 30px; margin-bottom: 15px; }
+        .info-row { margin-bottom: 10px; }
+        .label { font-weight: bold; color: #1f2937; }
+        .value { color: #4b5563; }
+        .button { display: inline-block; background-color: #f59e0b; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+        .footer { text-align: center; font-size: 12px; color: #9ca3af; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eaeaea; }
+        .highlight { background-color: #fffbeb; padding: 15px; border-radius: 6px; border: 1px solid #fcd34d; }
+        .tracking-info { font-size: 12px; color: #6b7280; background: #f3f4f6; padding: 10px; border-radius: 4px; margin-top: 20px; }
+    `;
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
-  try {
-    const resend = new Resend(import.meta.env.RESEND_API_KEY);
-
-    console.log('=== BOOKING API CALLED ===');
-    console.log('Request method:', request.method);
-    console.log('Content-Type:', request.headers.get('content-type'));
-
-    let data;
+// Function to send email via Resend
+async function sendResendEmail(
+    apiKey: string,
+    from: string,
+    to: string | string[],
+    subject: string,
+    html: string,
+    replyTo?: string
+): Promise<{ code: number; response: any }> {
     try {
-      // Read body as text first, then parse
-      const bodyText = await request.text();
-      console.log('Raw body text:', bodyText);
+        const payload: any = {
+            from,
+            to: Array.isArray(to) ? to : [to],
+            subject,
+            html,
+        };
 
-      if (!bodyText || bodyText.trim() === '') {
-        console.error('Request body is empty');
-        return new Response(
-          JSON.stringify({ success: false, message: 'Request body is empty' }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-
-      data = JSON.parse(bodyText);
-      console.log('Parsed data successfully');
-      console.log('Data keys:', Object.keys(data));
-    } catch (jsonError) {
-      console.error('JSON parsing failed:', jsonError);
-      return new Response(
-        JSON.stringify({ success: false, message: 'Invalid JSON format' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Honeypot check - silent success for bots
-    if (data.fax) {
-      console.log('Honeypot triggered');
-      return new Response(
-        JSON.stringify({ success: true, token: 'fake-token' }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Clean phone number - remove all non-digits
-    if (data.phone) {
-      data.phone = data.phone.replace(/\D/g, '');
-      // Remove leading 1 if 11 digits
-      if (data.phone.length === 11 && data.phone.startsWith('1')) {
-        data.phone = data.phone.substring(1);
-      }
-      console.log('Cleaned phone:', data.phone);
-    }
-
-    console.log('Starting validation...');
-    // Validate input
-    const validated = bookingSchema.parse(data);
-    console.log('Validation passed');
-
-    // Verify consent
-    if (!validated.consentToContact || !validated.agreedToTerms) {
-      return new Response(
-        JSON.stringify({ success: false, message: 'You must agree to the terms and privacy policy' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Verify reCAPTCHA (only if token provided)
-    if (validated.recaptchaToken) {
-      const recaptchaResponse = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `secret=${import.meta.env.RECAPTCHA_SECRET_KEY}&response=${validated.recaptchaToken}`,
+        if (replyTo) {
+            payload.reply_to = replyTo;
         }
-      );
 
-      const recaptchaData = await recaptchaResponse.json();
-      if (!recaptchaData.success || recaptchaData.score < 0.5) {
-        console.warn('reCAPTCHA validation failed:', recaptchaData);
-        return new Response(
-          JSON.stringify({ success: false, message: 'reCAPTCHA validation failed. Please try again.' }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-      console.log('reCAPTCHA validated successfully, score:', recaptchaData.score);
-    } else {
-      console.warn('No reCAPTCHA token provided, proceeding without verification');
-    }
-
-    // Format phone number
-    const formattedPhone = validated.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-
-    // Get service name for subject
-    const serviceName = validated.service === 'other'
-      ? validated.serviceOther || 'Other Service'
-      : validated.service.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-
-    // Prepare email data with tracking
-    const emailData = {
-      name: validated.name,
-      phone: formattedPhone,
-      email: validated.email,
-      service: validated.service,
-      serviceOther: validated.serviceOther,
-      comments: validated.comments,
-      addressFull: validated.addressFull,
-      street: validated.street,
-      city: validated.city,
-      state: validated.state,
-      zipCode: validated.zipCode,
-      aptNumber: validated.aptNumber,
-      gateCode: validated.gateCode,
-      // Tracking data
-      utmSource: validated.utmSource,
-      utmMedium: validated.utmMedium,
-      utmCampaign: validated.utmCampaign,
-      utmContent: validated.utmContent,
-      utmTerm: validated.utmTerm,
-      referrer: validated.referrer,
-      landingPage: validated.landingPage,
-      deviceType: validated.deviceType,
-      browser: validated.browser,
-      os: validated.os,
-      userAgent: validated.userAgent,
-      sessionStart: validated.sessionStart,
-      formStartTime: validated.formStartTime,
-    };
-
-    // Send owner notification email
-    try {
-      console.log('Rendering owner email...');
-      const ownerEmailHtml = await render(OwnerNotificationEmail(emailData));
-      console.log('Owner email rendered, sending...');
-
-      await resend.emails.send({
-        from: import.meta.env.RESEND_FROM_EMAIL || 'Ez2Fix <notifications@ez2fixllc.com>',
-        to: import.meta.env.RESEND_OWNER_EMAIL || 'ez2fixllc@gmail.com',
-        reply_to: validated.email || formattedPhone,
-        subject: `🔔 New Lead: ${serviceName} in ${validated.city}, ${validated.state} - ${validated.name}`,
-        html: ownerEmailHtml,
-      });
-      console.log('Owner email sent successfully');
-    } catch (emailError) {
-      console.error('Failed to send owner notification email:', emailError);
-      console.error('Email error stack:', emailError instanceof Error ? emailError.stack : 'No stack');
-      // Continue anyway - don't fail the whole request
-    }
-
-    // Send client confirmation email (only if email provided)
-    if (validated.email) {
-      try {
-        console.log('Rendering client email...');
-        const clientEmailHtml = await render(
-          ClientConfirmationEmail({
-            name: validated.name,
-            phone: formattedPhone,
-            service: validated.service,
-            serviceOther: validated.serviceOther,
-          })
-        );
-        console.log('Client email rendered, sending...');
-
-        await resend.emails.send({
-          from: import.meta.env.RESEND_FROM_EMAIL || 'Ez2Fix <notifications@ez2fixllc.com>',
-          to: validated.email,
-          subject: "✅ Your Garage Door Service Request Confirmed - Ez2Fix",
-          html: clientEmailHtml,
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
         });
-        console.log('Client email sent successfully');
-      } catch (emailError) {
-        console.error('Failed to send client confirmation email:', emailError);
-        console.error('Email error stack:', emailError instanceof Error ? emailError.stack : 'No stack');
-        // Continue anyway - don't fail the whole request
-      }
+
+        const data = await response.json();
+
+        return {
+            code: response.status,
+            response: data,
+        };
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return {
+            code: 500,
+            response: { error: String(error) },
+        };
     }
+}
 
-    // Generate session token for thank-you page
-    const sessionToken = generateSessionToken();
-    console.log('Generated session token');
+export const POST: APIRoute = async ({ request }) => {
+    try {
+        // Parse request body
+        const input = await request.json();
 
-    // Set cookie for thank-you page access (1 hour expiration)
-    cookies.set('booking_session', sessionToken, {
-      path: '/',
-      maxAge: 3600, // 1 hour
-      httpOnly: true,
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
-    });
-    console.log('Cookie set');
+        if (!input) {
+            return new Response(
+                JSON.stringify({ success: false, message: 'Invalid JSON input' }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
-    console.log('Booking API completed successfully');
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Booking submitted successfully',
-        token: sessionToken,
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (error) {
-    console.error('Booking error:', error);
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    console.error('Error details:', JSON.stringify(error, null, 2));
+        // Honeypot check
+        if (input.fax) {
+            return new Response(
+                JSON.stringify({ success: true, message: 'Submission received.' }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
-    if (error instanceof z.ZodError) {
-      console.error('Zod validation errors:', error.errors);
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: 'Invalid form data. Please check your entries and try again.',
-          errors: error.errors,
-        }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+        // Get environment variables
+        const resendApiKey = import.meta.env.RESEND_API_KEY;
+        const recaptchaSecret = import.meta.env.RECAPTCHA_SECRET_KEY;
+        const ownerEmail = import.meta.env.RESEND_OWNER_EMAIL;
+        const fromEmail = import.meta.env.RESEND_FROM_EMAIL;
+
+        if (!resendApiKey || !recaptchaSecret) {
+            return new Response(
+                JSON.stringify({ success: false, message: 'Server configuration error: Missing API keys' }),
+                { status: 500, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        // Verify reCAPTCHA
+        if (input.recaptchaToken) {
+            const verifyResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    secret: recaptchaSecret,
+                    response: input.recaptchaToken,
+                }),
+            });
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyData.success || verifyData.score < 0.5) {
+                return new Response(
+                    JSON.stringify({ success: false, message: 'reCAPTCHA validation failed' }),
+                    { status: 400, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+        }
+
+        // Data Preparation
+        const service = input.service || '';
+        const name = input.name || '';
+        const email = input.email || '';
+        const phone = input.phone || '';
+        const address = input.addressFull || '';
+        const comments = input.comments || '';
+        const utmSource = input.utmSource || 'Direct';
+        const utmMedium = input.utmMedium || '-';
+        const utmCampaign = input.utmCampaign || '-';
+
+        // Owner Email Template
+        const ownerHtml = `
+<html>
+<head><style>${getEmailStyle()}</style></head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <a href='https://ez2fixllc.com' class='logo'>Ez2Fix Booking</a>
+        </div>
+        <div class='h1'>New Service Request</div>
+        <div class='highlight'>
+            <div class='info-row'><span class='label'>Service:</span> <span class='value'>${service}</span></div>
+            <div class='info-row'><span class='label'>Customer:</span> <span class='value'>${name}</span></div>
+            <div class='info-row'><span class='label'>Phone:</span> <span class='value'><a href='tel:${phone}'>${phone}</a></span></div>
+        </div>
+        
+        <div class='h2'>Details</div>
+        <div class='info-row'><span class='label'>Email:</span> <span class='value'>${email}</span></div>
+        <div class='info-row'><span class='label'>Address:</span> <span class='value'>${address}</span></div>
+        <div class='info-row'><span class='label'>Comments:</span> <br><span class='value'>${comments}</span></div>
+
+        <div class='tracking-info'>
+            <strong>Marketing Source:</strong><br>
+            Source: ${utmSource} | Medium: ${utmMedium} | Campaign: ${utmCampaign}
+        </div>
+        
+        <div class='footer'>
+            Sent from Ez2Fix Website Booking System
+        </div>
+    </div>
+</body>
+</html>`;
+
+        // Client Auto-Responder Template
+        const clientHtml = `
+<html>
+<head><style>${getEmailStyle()}</style></head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <a href='https://ez2fixllc.com' class='logo'>Ez2Fix Garage Door Service</a>
+        </div>
+        <div class='h1'>Thank You, ${name}!</div>
+        <p>We have received your request for <strong>${service}</strong>. Our team is reviewing it right now.</p>
+        
+        <div class='highlight'>
+            <div class='h2' style='margin-top:0'>What Happens Next?</div>
+            <p>1. <strong>We Review:</strong> A technician will check your details.</p>
+            <p>2. <strong>We Contact You:</strong> We'll call or text you at <strong>${phone}</strong> shortly to confirm.</p>
+            <p>3. <strong>We Fix It:</strong> Our licensed pro will arrive to solve your problem.</p>
+        </div>
+
+        <div style='text-align: center; margin-top: 30px;'>
+            <div class='h2'>Need Immediate Help?</div>
+            <p>Call our 24/7 Emergency Line:</p>
+            <a href='tel:2015546769' class='button'>Call (201) 554-6769</a>
+        </div>
+        
+        <div class='footer'>
+            Ez2Fix Garage Door Service | NJ License #13VH13553300<br>
+            Professional Repair & Installation
+        </div>
+    </div>
+</body>
+</html>`;
+
+        // Send emails
+        const ownerResult = await sendResendEmail(
+            resendApiKey,
+            fromEmail,
+            ownerEmail,
+            `📅 New Booking: ${service} - ${name}`,
+            ownerHtml,
+            email
+        );
+
+        // Send client auto-responder
+        let clientResult = { code: 0, response: 'Skipped' };
+        if (email) {
+            clientResult = await sendResendEmail(
+                resendApiKey,
+                fromEmail,
+                email,
+                `✅ We received your request - Ez2Fix`,
+                clientHtml
+            );
+        }
+
+        // Check success
+        if (ownerResult.code >= 200 && ownerResult.code < 300) {
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    message: 'Booking received successfully',
+                    redirectUrl: '/thank-you',
+                }),
+                {
+                    status: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Set-Cookie': `form_success_token=${Math.random().toString(36).substring(7)}; Path=/; Max-Age=60; HttpOnly; Secure; SameSite=Strict`,
+                    },
+                }
+            );
+        } else {
+            console.error('Resend API Error (Owner):', ownerResult.response);
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    message: 'Failed to send email. Please try again later.',
+                    debug_owner: ownerResult.response,
+                    debug_client: clientResult.response,
+                }),
+                { status: 500, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+    } catch (error) {
+        console.error('Booking API error:', error);
+        return new Response(
+            JSON.stringify({
+                success: false,
+                message: 'An error occurred. Please try again.',
+                error: String(error),
+            }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
     }
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        message: 'An error occurred while submitting your request. Please try again or call us directly.',
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
 };

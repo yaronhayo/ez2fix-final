@@ -33,7 +33,7 @@ const displayedServices = maxServices
             {subtitle && <p class="text-lg text-dark-600">{subtitle}</p>}
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {
                 displayedServices.map((service) => (
                     <ServiceCard service={service} />

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// Force rebuild
 export default {
     content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     theme: {
@@ -12,7 +13,7 @@ export default {
                     300: '#DBC57A',
                     400: '#D4AF37', // PRIMARY BRAND
                     500: '#C19F2F',
-                    600: '#A88A28',
+                    600: '#8B6200', // Darkened for better contrast (WCAG AAA compliant)
                     700: '#8B6200', // TEXT GOLD (Updated from #8B7324)
                     800: '#6E5C1D',
                     900: '#4A3D13',

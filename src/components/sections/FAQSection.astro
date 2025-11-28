@@ -4,8 +4,8 @@ interface FAQ {
     answer: string;
 }
 
-import { Icon } from "astro-icon/components";
 import Button from "@components/ui/Button.astro";
+import { Icon } from "@components/ui/Icon";
 
 interface Props {
     title?: string;
@@ -38,27 +38,39 @@ const {
         <div class="space-y-4">
             {
                 faqs.map((faq, index) => (
-                    <details class="group bg-gradient-to-br from-white to-cream-50 rounded-xl border-2 border-gold-200/30 hover:border-gold-300/50 open:border-gold-400/60 open:bg-white open:shadow-lg transition-all duration-300">
-                        <summary class="flex items-start gap-4 p-6 cursor-pointer list-none hover:bg-cream-50/50 rounded-xl transition-colors">
+                    <details
+                        class="group bg-gradient-to-br from-white to-cream-50 rounded-xl border-2 border-gold-200/30 hover:border-gold-300/50 open:border-gold-400/60 open:bg-white open:shadow-lg transition-all duration-300"
+                        open={index === 0}
+                    >
+                        <summary
+                            class="flex items-start gap-4 p-6 cursor-pointer list-none hover:bg-cream-50/50 rounded-xl transition-colors"
+                            id={`faq-q-${index}`}
+                            aria-controls={`faq-a-${index}`}
+                        >
                             <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-500 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                                 <Icon
-                                    name="heroicons:question-mark-circle-solid"
-                                    class="w-6 h-6 text-white"
+                                    name="helpCircle"
+                                    className="w-6 h-6 text-white"
                                 />
                             </div>
                             <div class="flex-grow">
-                                <h3 class="text-lg font-bold text-dark-800 group-hover:text-gold-600 transition-colors pr-8">
+                                <h3
+                                    class="text-lg font-bold text-dark-800 group-hover:text-gold-600 transition-colors pr-8"
+                                    id={`faq-heading-${index}`}
+                                >
                                     {faq.question}
                                 </h3>
                             </div>
-                            <span class="flex-shrink-0 transform group-open:rotate-180 transition-transform duration-300 text-gold-500">
-                                <Icon
-                                    name="heroicons:chevron-down-solid"
-                                    class="w-6 h-6"
-                                />
+                            <span class="flex-shrink-0 transform transition-transform duration-300 group-open:rotate-180 text-gold-500">
+                                <Icon name="chevronDown" className="w-6 h-6" />
                             </span>
                         </summary>
-                        <div class="px-6 pb-6 pl-20 text-dark-600 leading-relaxed border-t border-gold-200/20 pt-6 animate-fadeIn">
+                        <div
+                            id={`faq-a-${index}`}
+                            role="region"
+                            aria-labelledby={`faq-heading-${index}`}
+                            class="px-6 pb-6 pl-20 text-dark-600 leading-relaxed border-t border-gold-200/20 pt-6 animate-fadeIn"
+                        >
                             <p class="text-base">{faq.answer}</p>
                         </div>
                     </details>
@@ -70,10 +82,7 @@ const {
             showCTA && (
                 <div class="mt-12 text-center">
                     <Button variant="secondary" size="lg" href="/faq">
-                        <Icon
-                            name="heroicons:question-mark-circle"
-                            class="w-5 h-5 mr-2"
-                        />
+                        <Icon name="arrowRight" className="w-5 h-5 mr-2" />
                         View All FAQs
                     </Button>
                 </div>

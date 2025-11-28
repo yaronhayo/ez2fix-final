@@ -1,0 +1,71 @@
+---
+// Scroll to top button that appears when user scrolls down 15% of the page
+---
+
+<button
+    id="scroll-to-top"
+    class="fixed right-6 top-[55%] z-40 opacity-0 pointer-events-none transition-all duration-300 hover:opacity-100 hover:scale-110 bg-gold-500 text-dark-900 p-4 rounded-full shadow-lg hover:shadow-xl border-2 border-white"
+    aria-label="Scroll to top"
+    title="Scroll to top"
+>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
+</button>
+
+<script>
+    const scrollButton = document.getElementById("scroll-to-top");
+    let ticking = false;
+
+    function updateScrollButton() {
+        const scrollHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+        const scrollThreshold = scrollHeight * 0.15; // 15% of total scrollable height
+        const currentScroll = window.scrollY;
+
+        if (currentScroll > scrollThreshold) {
+            scrollButton?.classList.remove("opacity-0", "pointer-events-none");
+            scrollButton?.classList.add("opacity-85");
+        } else {
+            scrollButton?.classList.remove("opacity-85");
+            scrollButton?.classList.add("opacity-0", "pointer-events-none");
+        }
+    }
+
+    // Update on scroll with requestAnimationFrame for performance
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateScrollButton();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Smooth scroll to top on click
+    scrollButton?.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    });
+
+    // Check on load
+    updateScrollButton();
+</script>
+
+<style>
+    #scroll-to-top {
+        /* Ensure the button is always above content */
+        transform: translateY(-50%);
+    }
+
+    #scroll-to-top:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+</style>

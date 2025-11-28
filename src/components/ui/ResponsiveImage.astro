@@ -31,7 +31,14 @@ const webpSrc = getWebPPath(src);
 ---
 
 <picture>
-    {/* <source srcset={webpSrc} type="image/webp" /> */}
+    <!-- 
+      The WebP source is enabled to serve next-gen image formats.
+      For this to work correctly, ensure that for every .jpg or .png image
+      referenced by this component, a corresponding .webp version exists in the same directory.
+      If the .webp image is missing, the browser will fall back to the original `src` below,
+      but it will result in a 404 request for the .webp file.
+    -->
+    <source srcset={webpSrc} type="image/webp" />
     <img
         src={src}
         alt={alt}

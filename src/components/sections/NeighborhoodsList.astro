@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { city, neighborhoods, zipCodes } = Astro.props;
+import { Icon } from "@components/ui/Icon";
 ---
 
 <section class="py-16 bg-cream-100">
@@ -23,19 +24,10 @@ const { city, neighborhoods, zipCodes } = Astro.props;
                     <h3
                         class="text-xl font-bold text-dark-800 mb-4 flex items-center"
                     >
-                        <svg
-                            class="w-6 h-6 text-gold-500 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            ></path>
-                        </svg>
+                        <Icon
+                            name="map"
+                            className="w-6 h-6 text-gold-500 mr-2"
+                        />
                         Neighborhoods
                     </h3>
                     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -57,19 +49,10 @@ const { city, neighborhoods, zipCodes } = Astro.props;
                     <h3
                         class="text-xl font-bold text-dark-800 mb-4 flex items-center"
                     >
-                        <svg
-                            class="w-6 h-6 text-gold-500 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                            ></path>
-                        </svg>
+                        <Icon
+                            name="mapPin"
+                            className="w-6 h-6 text-gold-500 mr-2"
+                        />
                         ZIP Codes
                     </h3>
                     <div class="flex flex-wrap gap-2">

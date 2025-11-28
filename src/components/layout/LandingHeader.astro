@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from "@config/site.config";
 import Button from "@components/ui/Button.astro";
-import { Icon } from "astro-icon/components";
+import { Icon } from "@components/ui/Icon";
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md h-20">
@@ -37,7 +37,7 @@ import { Icon } from "astro-icon/components";
                 href={`tel:${siteConfig.contact.phoneRaw}`}
                 class="shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
-                <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                <Icon name="phone" className="w-5 h-5 mr-2" />
                 <span class="hidden sm:inline">Call Now</span>
                 <span class="sm:hidden">Call</span>
             </Button>

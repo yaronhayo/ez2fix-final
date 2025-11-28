@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
-import partytown from '@astrojs/partytown';
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,35 +26,44 @@ export default defineConfig({
       include: {
         heroicons: ['*'],
         mdi: ['*'],
+        local: ['*'],
       },
     }),
-    partytown({
-      config: {
-        forward: ['dataLayer.push', 'gtag'],
-        debug: false,
-      },
-    }),
+
+
   ],
   image: {
     domains: ['ez2fix.com'],
     formats: ['avif', 'webp'],
-    quality: 85,
+    quality: 80, // Reduced for better compression without visible quality loss
+    experimentalObjectFit: 'cover',
+    experimentalLayout: 'responsive',
   },
+  compressHTML: true, // Minify HTML output
   vite: {
     ssr: {
       noExternal: ['@heroicons/react'],
     },
     server: {
       headers: {
-        'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
-        'Cache-Control': 'public, max-age=604800', // 7 days for static assets
+        'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), run-ad-auction=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), join-ad-interest-group=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), browsing-topics=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
+        'Cache-Control': 'public, max-age=31536000',
       },
     },
     build: {
+      target: 'es2022', // Modern build target for better optimization
+      minify: 'terser', // Use terser for aggressive minification
+      assetsInlineLimit: 4096,
+      cssCodeSplit: true, // Split CSS for better caching
+      reportCompressedSize: false, // Faster builds
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
+          manualChunks: {
+            // Code splitting for better caching
+            'react-vendor': ['react', 'react-dom'],
+          },
           assetFileNames: (assetInfo) => {
-            // Cache images/videos for 30 days, JS/CSS for 7 days
             let extType = assetInfo.name.split('.').at(-1);
             if (/png|jpe?g|gif|svg|webp|avif|ico/i.test(extType)) {
               return `assets/img/[name]-[hash][extname]`;
@@ -64,6 +73,23 @@ export default defineConfig({
             }
             return `assets/[name]-[hash][extname]`;
           },
+          // Optimize chunk file naming
+          chunkFileNames: 'assets/js/[name]-[hash].js',
+          entryFileNames: 'assets/js/[name]-[hash].js',
+        },
+      },
+      terserOptions: {
+        compress: {
+          drop_console: true, // Remove console.logs in production
+          drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug'],
+          passes: 2, // Multiple passes for better compression
+        },
+        mangle: {
+          safari10: true,
+        },
+        format: {
+          comments: false, // Remove all comments
         },
       },
     },

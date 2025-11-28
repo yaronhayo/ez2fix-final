@@ -1,1 +1,0 @@
-import"./hoisted.BLjY4jRw.js";let e=6;const l=6,o=24,i=document.getElementById("show-more-btn"),n=document.querySelectorAll(".review-card");i&&i.addEventListener("click",()=>{const s=Math.min(e+l,o);for(let t=e;t<s&&t<n.length;t++)n[t].classList.remove("hidden");e=s,(e>=o||e>=n.length)&&(i.style.display="none")});

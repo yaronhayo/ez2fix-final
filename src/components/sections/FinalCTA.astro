@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
-
 interface Props {
     title?: string;
     subtitle?: string;
@@ -16,6 +14,7 @@ const {
     ctaLink = "/booking?utm_source=website&utm_medium=cta&utm_campaign=final-cta",
     className,
 } = Astro.props;
+import { Icon } from "@components/ui/Icon";
 ---
 
 <section class={`py-20 bg-dark-900 text-cream-100 ${className || ""}`}>
@@ -31,7 +30,7 @@ const {
                 href={ctaLink}
                 class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-dark-900 bg-gold-500 rounded-xl hover:bg-gold-400 hover:text-white transition-colors transform hover:scale-105 shadow-lg"
             >
-                <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                <Icon name="clipboard" className="w-5 h-5 mr-2" />
                 {ctaText}
             </a>
             <div class="inline-flex flex-col sm:flex-row">
@@ -39,17 +38,14 @@ const {
                     href="tel:2015546769"
                     class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white border-2 border-white rounded-xl hover:bg-white hover:text-dark-900 transition-colors lg:hidden"
                 >
-                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                    <Icon name="phone" className="w-5 h-5 mr-2" />
                     Call (201) 554-6769
                 </a>
                 <a
                     href="/services"
                     class="hidden lg:inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white border-2 border-white rounded-xl hover:bg-white hover:text-dark-900 transition-colors"
                 >
-                    <Icon
-                        name="heroicons:wrench-screwdriver"
-                        class="w-5 h-5 mr-2"
-                    />
+                    <Icon name="wrench" className="w-5 h-5 mr-2" />
                     View All Services
                 </a>
             </div>

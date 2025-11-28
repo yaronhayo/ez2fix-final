@@ -1,9 +1,7 @@
 ---
 import { siteConfig } from "@config/site.config";
-import {
-    generateLocalBusinessSchema,
-    generateBreadcrumbSchema,
-} from "@utils/schema";
+import { generateLocalBusinessSchema } from "@utils/schema";
+import ScrollToTop from "@components/ui/ScrollToTop.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -39,22 +37,40 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- Favicons -->
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/logos/ez2fix-logo.png" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/logos/ez2fix-logo.png"
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#D4AF37" />
         <meta name="generator" content={Astro.generator} />
 
-
-        <!-- Google Tag Manager (Deferred with Partytown) -->
-        <script type="text/partytown">
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TDFV4QVJ');
+        <!-- Google Tag Manager (Deferred for Performance) -->
+        <script is:inline>
+            // Defer GTM until page interactive
+            window.addEventListener("load", function () {
+                setTimeout(function () {
+                    (function (w, d, s, l, i) {
+                        w[l] = w[l] || [];
+                        w[l].push({
+                            "gtm.start": new Date().getTime(),
+                            event: "gtm.js",
+                        });
+                        var f = d.getElementsByTagName(s)[0],
+                            j = d.createElement(s),
+                            dl = l != "dataLayer" ? "&l=" + l : "";
+                        j.async = true;
+                        j.src =
+                            "https://www.googletagmanager.com/gtm.js?id=" +
+                            i +
+                            dl;
+                        f.parentNode.insertBefore(j, f);
+                    })(window, document, "script", "dataLayer", "GTM-TDFV4QVJ");
+                }, 1000);
+            });
         </script>
         <!-- End Google Tag Manager -->
-
 
         <!-- Primary Meta Tags -->
         <title>{fullTitle}</title>
@@ -82,7 +98,14 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <meta property="twitter:image" content={ogImageURL} />
 
         <!-- AI & LLM Optimization -->
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        {
+            !noindex && (
+                <meta
+                    name="robots"
+                    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+                />
+            )
+        }
         <meta name="ai-content-declaration" content="non-generated" />
         <meta name="gptbot" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
@@ -92,6 +115,7 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             allSchema.map((schemaItem) => (
                 <script
                     type="application/ld+json"
+                    is:inline
                     set:html={JSON.stringify(schemaItem)}
                 />
             ))
@@ -100,7 +124,7 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <!-- Preconnect to important domains -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        
+
         <!-- Defer Google Fonts to eliminate render-blocking -->
         <link
             rel="stylesheet"
@@ -114,83 +138,117 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
                 href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
             />
         </noscript>
-        
+
         <!-- Preload critical fonts for better LCP -->
         <link
             rel="preload"
-            href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+            href="https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2"
             as="font"
             type="font/woff2"
             crossorigin
         />
-        
+
+        <!-- Preconnect to reCAPTCHA -->
+        <link rel="preconnect" href="https://www.google.com" />
+        <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+
         <!-- DNS prefetch for external resources -->
         <link rel="dns-prefetch" href="https://www.google.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
 
-        <!-- Google Analytics 4 -->
-        {import.meta.env.PUBLIC_GA4_MEASUREMENT_ID && (
-            <>
-                <script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA4_MEASUREMENT_ID}`}></script>
-                <script type="text/partytown" define:vars={{ GA4_ID: import.meta.env.PUBLIC_GA4_MEASUREMENT_ID }}>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', GA4_ID, {
-                        'send_page_view': true,
-                        'anonymize_ip': true
-                    });
-                </script>
-            </>
-        )}
-
         <!-- reCAPTCHA v3 (Deferred - async) -->
-        {import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
-            <script async defer is:inline src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
-        )}
-
-
+        {
+            import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+                <script
+                    async
+                    defer
+                    is:inline
+                    src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}
+                />
+            )
+        }
     </head>
     <body>
-        <!-- ClickCease.com tracking - DISABLED (causing JS errors breaking form submission)
-        <script type='text/javascript'>
-            var script = document.createElement('script');
-            script.async = true; script.type = 'text/javascript';
-            var target = 'https://www.clickcease.com/monitor/stat.js';
-            script.src = target; var elem = document.head;elem.appendChild(script);
+        <!-- Skip Navigation Link for Accessibility -->
+        <a
+            href="#main-content"
+            class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-gold-500 focus:text-dark-900 focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:shadow-xl"
+        >
+            Skip to main content
+        </a>
+
+        <!-- ClickCease.com tracking -->
+        <script is:inline>
+            window.addEventListener("load", function () {
+                var script = document.createElement("script");
+                script.async = true;
+                script.type = "text/javascript";
+                var target = "https://www.clickcease.com/monitor/stat.js";
+                script.src = target;
+                var elem = document.head;
+                elem.appendChild(script);
+            });
         </script>
         <noscript>
-            <a href='https://www.clickcease.com' rel='nofollow'><img src='https://monitor.clickcease.com' alt='ClickCease'/></a>
+            <a href="https://www.clickcease.com" rel="nofollow"
+                ><img
+                    src="https://monitor.clickcease.com"
+                    alt="ClickCease"
+                /></a
+            >
         </noscript>
 
         <script is:inline>
-            window.initCConvertion = function(val) {
+            window.initCConvertion = function (val) {
                 window.ccConVal = val || 0;
-                var script = document.createElement('script');
-                var target = 'https://www.clickcease.com/monitor/cccontrack.js';
+                var script = document.createElement("script");
+                var target = "https://www.clickcease.com/monitor/cccontrack.js";
                 var elem = document.head;
                 elem.appendChild(script);
-                script.src = target + '?v=' + Math.floor(Date.now()/1000);
+                script.src = target + "?v=" + Math.floor(Date.now() / 1000);
             };
 
-            document.addEventListener('click', function(e) {
+            document.addEventListener("click", function (e) {
                 const link = e.target.closest('a[href^="tel:"]');
                 if (link) {
-                    if (typeof window.initCConvertion === 'function') {
+                    if (typeof window.initCConvertion === "function") {
                         window.initCConvertion(0);
                     }
                 }
             });
         </script>
-        END CLICKCEASE DISABLED -->
-
+        <!-- END CLICKCEASE -->
 
         <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDFV4QVJ"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-TDFV4QVJ"
+                height="0"
+                width="0"
+                style="display:none;visibility:hidden"></iframe></noscript
+        >
         <!-- End Google Tag Manager (noscript) -->
-        
+
+        <!-- Register Service Worker for PWA (Deferred) -->
+        <script is:inline>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker
+                        .register("/sw.js")
+                        .catch(function (err) {
+                            console.log(
+                                "Service Worker registration failed:",
+                                err,
+                            );
+                        });
+                });
+            }
+        </script>
+
         <slot />
+
+        <!-- Scroll to Top Button -->
+        <ScrollToTop />
     </body>
 </html>

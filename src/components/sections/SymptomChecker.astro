@@ -1,6 +1,6 @@
 ---
 import { services } from "@data/services";
-import { Icon } from "astro-icon/components";
+import { Icon } from "@components/ui/Icon";
 
 // Aggregate all symptoms and map them back to services
 const allSymptoms = services
@@ -20,10 +20,7 @@ const allSymptoms = services
             <div
                 class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold-100 mb-6"
             >
-                <Icon
-                    name="heroicons:wrench-screwdriver"
-                    class="w-8 h-8 text-gold-600"
-                />
+                <Icon name="wrench" className="w-8 h-8 text-gold-600" />
             </div>
             <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
                 Diagnose Your Garage Door Issue
@@ -43,15 +40,15 @@ const allSymptoms = services
                     >
                         <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                             <Icon
-                                name="heroicons:exclamation-triangle"
-                                class="w-24 h-24 text-gold-500 transform rotate-12"
+                                name="alertTriangle"
+                                className="w-24 h-24 text-gold-500 transform rotate-12"
                             />
                         </div>
 
                         <div class="w-12 h-12 bg-dark-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gold-500 group-hover:text-white transition-all duration-300">
                             <Icon
-                                name="heroicons:exclamation-triangle"
-                                class="w-6 h-6 text-gold-600 group-hover:text-white transition-colors"
+                                name="alertTriangle"
+                                className="w-6 h-6 text-gold-600 group-hover:text-white transition-colors"
                             />
                         </div>
 
@@ -62,8 +59,8 @@ const allSymptoms = services
                         <div class="mt-auto pt-6 flex items-center text-sm font-semibold text-gray-400 group-hover:text-gold-600 transition-colors">
                             View Solution
                             <Icon
-                                name="heroicons:arrow-right"
-                                class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
+                                name="arrowRight"
+                                className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
                             />
                         </div>
                     </a>
@@ -87,7 +84,7 @@ const allSymptoms = services
                     href="tel:2015546769"
                     class="text-gold-600 font-bold hover:text-gold-700 flex items-center"
                 >
-                    <Icon name="heroicons:phone" class="w-4 h-4 mr-2" />
+                    <Icon name="phone" className="w-4 h-4 mr-2" />
                     (201) 554-6769
                 </a>
             </div>

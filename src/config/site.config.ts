@@ -18,8 +18,10 @@ export const siteConfig = {
         stateFull: 'New Jersey',
     },
     social: {
-        facebook: '', // TODO: Add Facebook URL
-        googleBusiness: '', // TODO: Add Google Business Profile URL
+        googleBusiness: 'https://maps.app.goo.gl/cRHSWB5sdghwCxV66',
+        instagram: 'https://www.instagram.com/ez2fix_garage_doors_/',
+        youtube: 'https://www.youtube.com/@EZ2FIXGARAGEDOORNEWJERSEY',
+        facebook: '', // Not provided yet
     },
     businessHours: {
         weekdays: 'Mon-Fri: 8am-8pm',
@@ -30,7 +32,7 @@ export const siteConfig = {
         yearsInBusiness: 11,
         customersServed: '12,000+',
         rating: '5.0',
-        reviewCount: '145+',
+        reviewCount: '148+',
         warranty: '10-Year Warranty',
         licensed: true,
     },

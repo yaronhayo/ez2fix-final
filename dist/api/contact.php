@@ -49,7 +49,9 @@ if (!$input) {
 }
 
 if (!empty($input['fax'])) {
-    echo json_encode(['success' => true, 'token' => 'fake-token']);
+    // This is a honeypot field. Silently exit without doing anything.
+    http_response_code(200);
+    echo json_encode(['success' => true, 'message' => 'Submission received.']);
     exit;
 }
 
@@ -210,17 +212,25 @@ if (!empty($email)) {
 
 // Check Success (based on Owner email)
 if ($ownerResult['code'] >= 200 && $ownerResult['code'] < 300) {
-    $token = base64_encode(time() . '-' . rand());
-    setcookie('booking_session', $token, time() + 3600, "/", "", true, true);
-    
-    echo json_encode([
-        'success' => true, 
-        'message' => 'Message sent', 
-        'token' => $token,
-        'debug_owner_response' => json_decode($ownerResult['response'], true),
-        'debug_client_response' => json_decode($clientResult['response'], true),
-        'debug_owner_email_to' => $ownerEmail
+    // Set a short-lived, secure, httponly cookie as a "ticket" to the thank-you page.
+    $token = bin2hex(random_bytes(16)); // More secure token
+    setcookie('form_success_token', $token, [
+        'expires' => time() + 60, // Expires in 60 seconds
+        'path' => '/',
+        'domain' => '', // Leave empty for current host
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Strict'
     ]);
+    
+    // Return JSON success with redirect URL
+    http_response_code(200);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Message sent successfully',
+        'redirectUrl' => '/thank-you'
+    ]);
+    exit;
 } else {
     http_response_code(500);
     error_log("Resend API Error (Owner): " . $ownerResult['response']);

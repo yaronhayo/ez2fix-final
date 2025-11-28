@@ -1,10 +1,13 @@
 ---
+export const prerender = true;
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Header from "@components/layout/Header.astro";
 import Footer from "@components/layout/Footer.astro";
 import FinalCTA from "@components/sections/FinalCTA.astro";
 import { categories } from "../../../data/categories";
 import { getCollection } from "astro:content";
+import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+import { Icon } from "@components/ui/Icon";
 
 export async function getStaticPaths() {
     const allPosts = await getCollection("blog");
@@ -51,9 +54,13 @@ const metaDescription = categoryData.description;
     >
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-dark-900/80 z-10"></div>
-            <img
+            <ResponsiveImage
                 src={categoryData.image}
                 alt={categoryData.title}
+                width={1920}
+                height={1080}
+                loading="eager"
+                fetchpriority="high"
                 class="w-full h-full object-cover"
             />
         </div>
@@ -85,26 +92,20 @@ const metaDescription = categoryData.description;
                                 class="block aspect-video overflow-hidden bg-gray-100"
                             >
                                 {post.data.image ? (
-                                    <img
+                                    <ResponsiveImage
                                         src={post.data.image}
                                         alt={post.data.title}
+                                        width={400}
+                                        height={200}
+                                        loading="lazy"
                                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                     />
                                 ) : (
                                     <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
-                                        <svg
-                                            class="w-12 h-12"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                            />
-                                        </svg>
+                                        <Icon
+                                            name="image"
+                                            className="w-12 h-12"
+                                        />
                                     </div>
                                 )}
                             </a>
@@ -141,19 +142,10 @@ const metaDescription = categoryData.description;
                                     class="inline-flex items-center text-gold-600 font-semibold hover:text-gold-700 mt-auto"
                                 >
                                     Read Article
-                                    <svg
-                                        class="w-4 h-4 ml-2"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                        />
-                                    </svg>
+                                    <Icon
+                                        name="arrowRight"
+                                        className="w-4 h-4 ml-2"
+                                    />
                                 </a>
                             </div>
                         </article>
@@ -182,17 +174,7 @@ const metaDescription = categoryData.description;
                     href="/blog"
                     class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-dark-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                    <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        ><path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg
-                    >
+                    <Icon name="arrowLeft" className="w-4 h-4 mr-2" />
                     Back to All Articles
                 </a>
             </div>

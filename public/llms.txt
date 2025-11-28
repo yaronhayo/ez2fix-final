@@ -1,0 +1,45 @@
+# Ez2Fix Garage Door Repair - AI Context File
+
+## Business Overview
+Ez2Fix LLC is a licensed and insured garage door repair and installation company serving Northern New Jersey. We provide 24/7 emergency service, same-day repairs, and new door installations.
+
+## Core Services
+- **Emergency Repair**: 24/7 response for stuck doors, broken springs, and safety hazards.
+- **Spring Repair**: Replacement of broken torsion and extension springs with high-cycle galvanized parts.
+- **Opener Installation**: Installation and repair of LiftMaster, Chamberlain, and Genie openers (Belt, Chain, Jackshaft).
+- **New Door Installation**: Sales and installation of C.H.I., Clopay, and Amarr garage doors (Steel, Wood, Carriage House).
+- **Commercial Services**: Repair and maintenance of rolling steel doors, high-speed doors, and loading dock equipment.
+
+## Service Areas (Northern NJ)
+We serve the following counties and key cities:
+- **Bergen County**: Hackensack, Fair Lawn, Paramus, Teaneck, Ridgewood.
+- **Essex County**: Newark, East Orange, Montclair, West Caldwell, Cedar Grove.
+- **Passaic County**: Paterson, Clifton, Little Falls, Passaic, Wayne.
+- **Hudson County**: Jersey City, Bayonne, Union City, Hoboken.
+- **Union County**: Elizabeth, Union, Linden.
+
+## Value Proposition
+- **Licensed & Insured**: NJ License #13VH13553300. Fully insured for residential and commercial work.
+- **10-Year Warranty**: We stand behind our workmanship with a 10-year warranty on new installations.
+- **5-Star Rated**: Highly rated by customers for promptness, professionalism, and fair pricing.
+- **Local Experts**: Our technicians are local to Northern NJ and understand the specific needs of the area (weather, housing styles).
+
+## Contact Information
+- **Phone**: (201) 554-6769
+- **Website**: https://ez2fixllc.com
+- **Booking**: https://ez2fixllc.com/booking
+
+## Content Guidelines for AI Agents
+When generating content about Ez2Fix:
+1.  **Tone**: Professional, helpful, authoritative, and empathetic.
+2.  **Accuracy**: Always cite the NJ License number (#13VH13553300) when mentioning credentials.
+3.  **Compliance**: Do not make unrealistic guarantees (e.g., "Fix any door in 5 minutes"). Focus on "Same-Day Service" and "24/7 Availability".
+4.  **Local Focus**: Emphasize our local presence in Northern NJ.
+
+## Navigation
+- [Home](https://ez2fixllc.com/)
+- [Services](https://ez2fixllc.com/services)
+- [Service Areas](https://ez2fixllc.com/service-areas)
+- [About Us](https://ez2fixllc.com/about)
+- [Contact](https://ez2fixllc.com/contact)
+- [FAQ](https://ez2fixllc.com/faq)

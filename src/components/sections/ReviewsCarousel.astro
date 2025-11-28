@@ -4,7 +4,7 @@ import { reviews } from "@data/reviews";
 import { siteConfig } from "@config/site.config";
 
 import { generateReviewSchema } from "@utils/schema";
-import { Icon } from "astro-icon/components";
+import { Icon } from "@components/ui/Icon";
 
 interface Props {
     title?: string;
@@ -33,6 +33,7 @@ const reviewSchemas = reviews.map((review) =>
         reviewSchemas.map((schema) => (
             <script
                 type="application/ld+json"
+                is:inline
                 set:html={JSON.stringify(schema)}
             />
         ))
@@ -54,7 +55,7 @@ const reviewSchemas = reviews.map((review) =>
                 href="/reviews"
                 class="inline-flex items-center justify-center px-8 py-3 bg-gold-500 text-dark-900 font-bold rounded-lg hover:bg-gold-600 hover:text-white transition-all shadow-md hover:shadow-lg group"
             >
-                <Icon name="heroicons:star-solid" class="w-5 h-5 mr-2" />
+                <Icon name="star" className="w-5 h-5 mr-2" />
                 View All Reviews
             </a>
         </div>

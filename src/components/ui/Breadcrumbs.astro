@@ -1,6 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
-
+import { Icon } from "@components/ui/Icon";
 interface Props {
     items: {
         name: string;
@@ -19,7 +18,7 @@ const { items, className = "" } = Astro.props;
                 href="/"
                 class="text-gray-400 hover:text-gold-500 transition-colors"
             >
-                <Icon name="heroicons:home" class="w-5 h-5" />
+                <Icon name="home" className="w-5 h-5" />
                 <span class="sr-only">Home</span>
             </a>
         </li>
@@ -27,8 +26,8 @@ const { items, className = "" } = Astro.props;
             items.map((item) => (
                 <li class="flex items-center">
                     <Icon
-                        name="heroicons:chevron-right"
-                        class="w-4 h-4 text-gray-400 mx-1"
+                        name="chevronRight"
+                        className="w-4 h-4 text-gray-400 mx-1"
                     />
                     {item.url ? (
                         <a

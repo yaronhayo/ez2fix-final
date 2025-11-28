@@ -1,12 +1,8 @@
-import { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { useGooglePlaces } from '../hooks/useGooglePlaces';
 import { useUTMTracking } from '../hooks/useUTMTracking';
 import { useDeviceDetection } from '../hooks/useDeviceDetection';
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    PaperAirplaneIcon
-} from '@heroicons/react/24/solid';
+import { Icon } from './ui/Icon';
 
 const SERVICES = [
     { id: 'emergency-repair', name: 'Emergency Repair' },
@@ -60,7 +56,53 @@ interface BookingData {
     formStartTime?: string;
 }
 
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(error: any) {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error: any, errorInfo: any) {
+        console.error("BookingForm Error:", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="p-6 text-center bg-red-50 rounded-xl border border-red-200">
+                    <Icon name="alertTriangle" className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-bold text-red-800 mb-2">Something went wrong</h3>
+                    <p className="text-red-600 mb-4">
+                        We're having trouble loading the booking form. Please try refreshing the page.
+                    </p>
+                    <a
+                        href="tel:2015546769"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                        <Icon name="phone" className="w-5 h-5 mr-2" />
+                        Call (201) 554-6769
+                    </a>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
+}
+
 export default function BookingForm() {
+    return (
+        <ErrorBoundary>
+            <BookingFormContent />
+        </ErrorBoundary>
+    );
+}
+
+function BookingFormContent() {
     // Generate unique ID for this form instance (stable across server/client)
     const formId = useId();
 
@@ -214,29 +256,22 @@ export default function BookingForm() {
 
 
             // console.log('Sending request to /api/booking');
-            const response = await fetch('/api/booking.php', {
+            const response = await fetch('/api/booking', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, recaptchaToken: token }),
             });
 
 
-            if (response.ok) {
-                const data = await response.json();
-                // console.log('Booking submitted successfully, token:', data.token);
-
-                // Ensure we have a token before redirecting
-                if (data.token) {
-                    // console.log('Redirecting to thank-you page with token');
-                    window.location.href = `/thank-you?token=${data.token}`;
-                } else {
-                    console.error('No token received from server');
-                    setErrors({ submit: 'Submission successful but redirect failed. Please contact us directly.' });
-                }
-            } else {
+            if (!response.ok) {
                 const data = await response.json();
                 console.error('Server error:', data);
                 setErrors({ submit: data.message || 'Submission failed. Please try again.' });
+            } else {
+                const data = await response.json();
+                if (data.success && data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                }
             }
         } catch (error) {
             console.error('Network error:', error);
@@ -246,9 +281,7 @@ export default function BookingForm() {
         }
     };
 
-    const serviceName = formData.service
-        ? SERVICES.find((s) => s.id === formData.service)?.name || ''
-        : '';
+
 
     // Check if current step is valid for proceeding
     const canProceedFromStep = (step: number): boolean => {
@@ -348,7 +381,7 @@ export default function BookingForm() {
                         )}
 
                         {formData.service && (
-                            <div className="mb-6 animate-fadeIn">
+                            <div className="mb-6 animate-fade-in">
                                 <label htmlFor={`${formId}-comments`} className="block text-sm font-semibold text-dark-900 mb-2">
                                     Additional details (optional)
                                 </label>
@@ -393,7 +426,7 @@ export default function BookingForm() {
 
                         {/* Address fields (read-only after selection) */}
                         {formData.street && (
-                            <div className="grid grid-cols-2 gap-3 mb-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                                 <div>
                                     <label htmlFor={`${formId}-street`} className="block text-xs font-medium text-dark-700 mb-1">Street</label>
                                     <input
@@ -442,7 +475,7 @@ export default function BookingForm() {
                         )}
 
                         {/* Optional fields */}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label htmlFor={`${formId}-aptNumber`} className="block text-sm font-medium text-dark-700 mb-1">
                                     Apt # (optional)
@@ -628,7 +661,7 @@ export default function BookingForm() {
                             : 'bg-cream-300 text-dark-900 hover:bg-cream-400'
                             }`}
                     >
-                        <ChevronLeftIcon className="w-5 h-5 mr-2" />
+                        <Icon name="chevronLeft" className="w-5 h-5 mr-2" />
                         Previous
                     </button>
 
@@ -641,7 +674,7 @@ export default function BookingForm() {
                             className="flex items-center px-6 py-3 rounded-lg font-semibold transition-colors bg-gold-500 text-dark-900 hover:bg-gold-600"
                         >
                             Continue
-                            <ChevronRightIcon className="w-5 h-5 ml-2" />
+                            <Icon name="chevronRight" className="w-5 h-5 ml-2" />
                         </button>
                     ) : (
                         <button
@@ -665,7 +698,7 @@ export default function BookingForm() {
                                 </span>
                             ) : (
                                 <>
-                                    <PaperAirplaneIcon className="w-5 h-5 mr-2" />
+                                    <Icon name="send" className="w-5 h-5 mr-2" />
                                     Submit Request
                                 </>
                             )}

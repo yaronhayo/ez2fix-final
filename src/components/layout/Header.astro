@@ -1,34 +1,47 @@
 ---
 import { siteConfig } from "@config/site.config";
 import Button from "@components/ui/Button.astro";
-import { Icon } from "astro-icon/components";
+import { Icon } from "@components/ui/Icon";
 
+import { services } from "@data/services";
 import { locations } from "@data/locations";
+import { isService, isLocation } from "@utils/typeguards";
 
 const navLinks = [
-    { name: "Services", href: "/services" },
-    { name: "Service Areas", href: "/service-areas" },
-    { name: "FAQ", href: "/faq" },
-    { name: "Reviews", href: "/reviews" },
-    { name: "About", href: "/about" },
     {
-        name: "Contact",
-        href: "/contact?utm_source=website&utm_medium=cta&utm_campaign=header",
+        name: "Services",
+        href: "/services",
+        icon: "heroicons:wrench-screwdriver",
     },
+    {
+        name: "Service Areas",
+        href: "/service-areas",
+        icon: "heroicons:map-pin",
+    },
+    { name: "FAQ", href: "/faq", icon: "heroicons:question-mark-circle" },
+    { name: "Reviews", href: "/reviews", icon: "heroicons:star-solid" },
+    { name: "About", href: "/about", icon: "heroicons:information-circle" },
+    { name: "Contact", href: "/contact", icon: "heroicons:envelope" },
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-cream-100 shadow-md">
-    <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-20">
+<header
+    id="site-header"
+    class="fixed top-0 left-0 right-0 z-50 bg-cream-100/90 backdrop-blur-sm shadow-md transition-all duration-300"
+>
+    <div class="container mx-auto px-3 sm:px-4 lg:px-6">
+        <div class="flex items-center justify-between h-16 sm:h-20">
             <!-- Logo -->
             <a href="/" class="flex items-center flex-shrink-0">
                 <img
                     src="/images/logos/ez2fix-logo.png"
                     alt="Ez2Fix LLC - Licensed Garage Door Repair Northern NJ"
-                    class="w-20 lg:w-auto lg:h-16"
-                    width="200"
+                    class="h-10 w-auto sm:h-12 lg:h-14"
+                    width="171"
                     height="48"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
                 />
             </a>
 
@@ -39,79 +52,39 @@ const navLinks = [
                         if (link.name === "Services") {
                             return (
                                 <div class="relative group">
-                                    <button class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors focus:outline-none py-6">
-                                        Services
+                                    <a
+                                        href={link.href}
+                                        class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors focus:outline-none py-6"
+                                    >
+                                        {link.name}
                                         <Icon
-                                            name="heroicons:chevron-down"
-                                            class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
+                                            name="chevronDown"
+                                            className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
                                         />
-                                    </button>
+                                    </a>
                                     <div class="hidden absolute left-0 top-full w-[800px] bg-white shadow-xl rounded-xl border border-gold-200/20 group-hover:block p-6 z-50">
                                         <div class="grid grid-cols-3 gap-4">
-                                            {[
-                                                {
-                                                    name: "Emergency Repair",
-                                                    href: "/services/emergency-repair",
-                                                    icon: "heroicons:bolt",
-                                                },
-                                                {
-                                                    name: "Spring Repair",
-                                                    href: "/services/spring-repair",
-                                                    icon: "heroicons:cog",
-                                                },
-                                                {
-                                                    name: "Opener Installation",
-                                                    href: "/services/opener-installation",
-                                                    icon: "heroicons:arrow-up-on-square",
-                                                },
-                                                {
-                                                    name: "Door Installation",
-                                                    href: "/services/door-installation",
-                                                    icon: "heroicons:home",
-                                                },
-                                                {
-                                                    name: "Opener Repair",
-                                                    href: "/services/opener-repair",
-                                                    icon: "heroicons:wrench",
-                                                },
-                                                {
-                                                    name: "Cable Repair",
-                                                    href: "/services/cable-repair",
-                                                    icon: "heroicons:link",
-                                                },
-                                                {
-                                                    name: "Panel Replacement",
-                                                    href: "/services/panel-replacement",
-                                                    icon: "heroicons:squares-plus",
-                                                },
-                                                {
-                                                    name: "Track Repair",
-                                                    href: "/services/track-repair",
-                                                    icon: "heroicons:bars-3-bottom-left",
-                                                },
-                                                {
-                                                    name: "Commercial Garage Door",
-                                                    href: "/services/commercial-garage-door",
-                                                    icon: "heroicons:building-office",
-                                                },
-                                            ].map((service) => (
-                                                <a
-                                                    href={service.href}
-                                                    class="flex items-start p-3 rounded-lg hover:bg-gold-50 transition-colors group/item"
-                                                >
-                                                    <div class="flex-shrink-0 mt-1">
+                                            {services
+                                                .slice(0, 9)
+                                                .map((service) => (
+                                                    <a
+                                                        href={`/services/${service.slug}`}
+                                                        class="flex items-start p-3 rounded-lg hover:bg-gold-50 transition-colors group/item"
+                                                    >
                                                         <Icon
-                                                            name={service.icon}
-                                                            class="w-5 h-5 text-gold-500 group-hover/item:text-gold-600"
+                                                            name={
+                                                                service.icon ||
+                                                                "wrench"
+                                                            }
+                                                            className="w-5 h-5 text-gold-600 mt-0.5 flex-shrink-0"
                                                         />
-                                                    </div>
-                                                    <div class="ml-3">
-                                                        <p class="text-sm font-bold text-dark-900 group-hover/item:text-gold-700">
-                                                            {service.name}
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            ))}
+                                                        <div class="ml-3">
+                                                            <p class="text-sm font-bold text-dark-900 group-hover/item:text-gold-700">
+                                                                {service.title}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                ))}
                                         </div>
                                         <div class="mt-6 pt-4 border-t border-gray-200">
                                             <a
@@ -120,8 +93,8 @@ const navLinks = [
                                             >
                                                 View All Services
                                                 <Icon
-                                                    name="heroicons:arrow-right"
-                                                    class="w-5 h-5 ml-2 transition-transform group-hover/link:translate-x-1"
+                                                    name="arrowRight"
+                                                    className="w-5 h-5 ml-2 transition-transform group-hover/link:translate-x-1"
                                                 />
                                             </a>
                                         </div>
@@ -131,13 +104,16 @@ const navLinks = [
                         } else if (link.name === "Service Areas") {
                             return (
                                 <div class="relative group">
-                                    <button class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors focus:outline-none py-6">
-                                        Service Areas
+                                    <a
+                                        href={link.href}
+                                        class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors focus:outline-none py-6"
+                                    >
+                                        {link.name}
                                         <Icon
-                                            name="heroicons:chevron-down"
-                                            class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
+                                            name="chevronDown"
+                                            className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
                                         />
-                                    </button>
+                                    </a>
                                     <div class="hidden absolute left-0 top-full w-[700px] bg-white shadow-xl rounded-xl border border-gold-200/20 group-hover:block p-6 z-50">
                                         <div class="grid grid-cols-4 gap-4">
                                             {locations.map((location) => (
@@ -146,8 +122,8 @@ const navLinks = [
                                                     class="flex items-center p-2 rounded-lg hover:bg-gold-50 transition-colors group/item"
                                                 >
                                                     <Icon
-                                                        name="heroicons:map-pin"
-                                                        class="w-4 h-4 text-gold-500 mr-2 group-hover/item:text-gold-600"
+                                                        name="mapPin"
+                                                        className="w-4 h-4 text-gold-500 mr-2 group-hover/item:text-gold-600"
                                                     />
                                                     <span class="text-sm font-medium text-dark-700 group-hover/item:text-gold-700">
                                                         {location.city}
@@ -162,8 +138,8 @@ const navLinks = [
                                             >
                                                 View All Service Areas
                                                 <Icon
-                                                    name="heroicons:arrow-right"
-                                                    class="w-5 h-5 ml-2 transition-transform group-hover/link:translate-x-1"
+                                                    name="arrowRight"
+                                                    className="w-5 h-5 ml-2 transition-transform group-hover/link:translate-x-1"
                                                 />
                                             </a>
                                         </div>
@@ -191,210 +167,127 @@ const navLinks = [
                     size="md"
                     href={`tel:${siteConfig.contact.phoneRaw}`}
                 >
-                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
-                    Call {siteConfig.contact.phone}
+                    <Icon name="phone" className="w-5 h-5 mr-2" />
+                    {siteConfig.contact.phone}
                 </Button>
                 <Button
                     variant="primary"
                     size="md"
                     href="/booking?utm_source=website&utm_medium=cta&utm_campaign=header"
                 >
-                    <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                    <Icon name="clipboard" className="w-5 h-5 mr-2" />
                     Book Online
                 </Button>
             </div>
 
             <!-- Mobile Right Section (CTAs + Menu) -->
             <div
-                class="flex lg:hidden items-center space-x-3 max-[375px]:space-x-1 ml-auto"
+                class="flex lg:hidden items-center space-x-1.5 sm:space-x-3 ml-auto"
             >
-                <!-- Mobile CTAs -->
-                <div class="flex items-center space-x-2 max-[375px]:space-x-1">
-                    <a
-                        href={`tel:${siteConfig.contact.phoneRaw}`}
-                        class="flex items-center justify-center px-3 py-1.5 max-[375px]:px-1.5 max-[375px]:py-1 text-dark-900 border-2 border-dark-900 rounded-lg hover:bg-gray-50 transition-all font-bold text-xs max-[375px]:text-[10px] whitespace-nowrap"
-                        aria-label="Call Now"
-                    >
-                        <Icon
-                            name="heroicons:phone"
-                            class="w-4 h-4 max-[375px]:w-3.5 max-[375px]:h-3.5"
-                        />
-                        <span class="ml-1.5 max-[330px]:hidden">Call Now</span>
-                    </a>
-                    <a
-                        href="/booking?utm_source=website&utm_medium=cta&utm_campaign=header"
-                        class="flex items-center justify-center px-3 py-1.5 max-[375px]:px-1.5 max-[375px]:py-1 bg-gold-500 text-dark-900 rounded-lg font-bold text-xs max-[375px]:text-[10px] hover:bg-gold-600 hover:text-white transition-all whitespace-nowrap"
-                        aria-label="Book Online"
-                    >
-                        <Icon
-                            name="heroicons:calendar"
-                            class="w-4 h-4 max-[375px]:w-3.5 max-[375px]:h-3.5"
-                        />
-                        <span class="ml-1.5">Book Online</span>
-                    </a>
-                </div>
+                <a
+                    href={`tel:${siteConfig.contact.phoneRaw}`}
+                    class="flex items-center justify-center px-2 py-1.5 sm:p-2 text-dark-900 border-2 border-dark-900 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-all font-bold text-xs whitespace-nowrap"
+                    aria-label="Call Now"
+                >
+                    <Icon name="phone" className="w-4 h-4" />
+                    <span class="ml-1 hidden xs:inline">Call</span>
+                </a>
+                <a
+                    href="/booking?utm_source=website&utm_medium=cta&utm_campaign=header"
+                    class="flex items-center justify-center px-2 py-1.5 sm:px-3 sm:py-2 bg-gold-500 text-dark-900 rounded-lg font-bold text-xs hover:bg-gold-600 active:bg-gold-700 hover:text-white transition-all whitespace-nowrap"
+                    aria-label="Book Online"
+                >
+                    <Icon name="clipboard" className="w-4 h-4" />
+                    <span class="ml-1">Book</span>
+                </a>
 
                 <!-- Mobile Menu Button -->
                 <button
                     id="mobile-menu-button"
-                    class="p-1 text-dark-700 hover:text-gold-600"
+                    class="p-1.5 sm:p-2 text-dark-700 hover:text-gold-600"
                     aria-label="Toggle menu"
+                    aria-expanded="false"
                 >
                     <Icon
-                        name="heroicons:bars-3"
-                        class="w-7 h-7 max-[375px]:w-6 max-[375px]:h-6"
+                        name="menu"
+                        className="w-6 h-6 sm:w-7 sm:h-7"
+                        id="mobile-menu-icon-open"
+                    />
+                    <Icon
+                        name="close"
+                        className="w-7 h-7 sm:w-8 sm:h-8 hidden"
+                        id="mobile-menu-icon-close"
                     />
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu Panel -->
     <div
         id="mobile-menu"
-        class="hidden lg:hidden bg-white border-t border-gray-200"
+        class="hidden lg:hidden absolute top-full left-0 w-full h-[calc(100vh-80px)] bg-white border-t border-gray-200 overflow-y-auto"
     >
-        <nav class="container mx-auto px-4 py-4 flex flex-col space-y-2">
+        <nav class="container mx-auto px-4 sm:px-6 py-4 flex flex-col">
             {
                 navLinks.map((link) => {
-                    if (link.name === "Services") {
+                    if (
+                        link.name === "Services" ||
+                        link.name === "Service Areas"
+                    ) {
+                        const items =
+                            link.name === "Services"
+                                ? services.slice(0, 9)
+                                : locations;
+
                         return (
-                            <div class="border-b border-gray-200 pb-2">
-                                <button
-                                    class="mobile-dropdown-trigger w-full flex items-center justify-between text-dark-700 hover:text-gold-600 font-semibold transition-colors py-2"
-                                    data-target="mobile-services"
-                                >
+                            <div class="border-b border-gray-200">
+                                <button class="mobile-dropdown-trigger w-full flex items-center justify-between text-dark-700 hover:text-gold-600 font-semibold transition-colors py-3 text-lg">
                                     <span class="flex items-center">
-                                        <Icon
-                                            name="heroicons:wrench-screwdriver"
-                                            class="w-5 h-5 mr-2 text-gold-500"
-                                        />
-                                        Services
+                                        {link.name}
                                     </span>
                                     <Icon
-                                        name="heroicons:chevron-down"
-                                        class="w-5 h-5 transition-transform duration-200"
+                                        name="chevronDown"
+                                        className="chevron-icon w-5 h-5 transition-transform duration-300"
                                     />
                                 </button>
-                                <div
-                                    id="mobile-services"
-                                    class="hidden mt-2 ml-4 space-y-2"
-                                >
-                                    {[
-                                        {
-                                            name: "Emergency Repair",
-                                            href: "/services/emergency-repair",
-                                            icon: "heroicons:bolt",
-                                        },
-                                        {
-                                            name: "Spring Repair",
-                                            href: "/services/spring-repair",
-                                            icon: "heroicons:cog",
-                                        },
-                                        {
-                                            name: "Opener Installation",
-                                            href: "/services/opener-installation",
-                                            icon: "heroicons:arrow-up-on-square",
-                                        },
-                                        {
-                                            name: "Door Installation",
-                                            href: "/services/door-installation",
-                                            icon: "heroicons:home",
-                                        },
-                                        {
-                                            name: "Opener Repair",
-                                            href: "/services/opener-repair",
-                                            icon: "heroicons:wrench",
-                                        },
-                                        {
-                                            name: "Cable Repair",
-                                            href: "/services/cable-repair",
-                                            icon: "heroicons:link",
-                                        },
-                                        {
-                                            name: "Panel Replacement",
-                                            href: "/services/panel-replacement",
-                                            icon: "heroicons:squares-plus",
-                                        },
-                                        {
-                                            name: "Track Repair",
-                                            href: "/services/track-repair",
-                                            icon: "heroicons:bars-3-bottom-left",
-                                        },
-                                        {
-                                            name: "Commercial Garage Door",
-                                            href: "/services/commercial-garage-door",
-                                            icon: "heroicons:building-office",
-                                        },
-                                    ].map((service) => (
-                                        <a
-                                            href={service.href}
-                                            class="flex items-center text-sm text-dark-600 hover:text-gold-600 py-1.5 transition-colors"
-                                        >
-                                            <Icon
-                                                name={service.icon}
-                                                class="w-4 h-4 mr-2 text-gold-500 flex-shrink-0"
-                                            />
-                                            {service.name}
-                                        </a>
-                                    ))}
+                                <div class="mobile-dropdown-content hidden mt-2 ml-4 pl-5 border-l-2 border-gold-100 space-y-2 pb-2">
+                                    {items.map((item) => {
+                                        if (isService(item)) {
+                                            return (
+                                                <a
+                                                    href={`/services/${item.slug}`}
+                                                    class="flex items-center text-dark-600 hover:text-gold-600 py-1.5 transition-colors"
+                                                >
+                                                    {item.title}
+                                                </a>
+                                            );
+                                        }
+                                        if (isLocation(item)) {
+                                            return (
+                                                <a
+                                                    href={`/service-areas/${item.slug}`}
+                                                    class="flex items-center text-dark-600 hover:text-gold-600 py-1.5 transition-colors"
+                                                >
+                                                    <Icon
+                                                        name="mapPin"
+                                                        className="w-4 h-4 mr-2 text-gold-400 flex-shrink-0"
+                                                    />
+                                                    {item.city}
+                                                </a>
+                                            );
+                                        }
+                                        return null;
+                                    })}{" "}
                                     <a
-                                        href="/services"
-                                        class="block mt-3 pt-3 border-t border-gray-100 text-sm font-bold text-gold-600 hover:text-gold-700 flex items-center"
+                                        href={link.href}
+                                        class="block mt-2 pt-2 border-t border-gray-100 font-bold text-gold-600 hover:text-gold-700 flex items-center"
                                     >
                                         <Icon
-                                            name="heroicons:wrench-screwdriver"
-                                            class="w-4 h-4 mr-1.5"
+                                            name="arrowRight"
+                                            className="w-5 h-5 mr-1.5"
                                         />
-                                        View All Services
-                                    </a>
-                                </div>
-                            </div>
-                        );
-                    } else if (link.name === "Service Areas") {
-                        return (
-                            <div class="border-b border-gray-200 pb-2">
-                                <button
-                                    class="mobile-dropdown-trigger w-full flex items-center justify-between text-dark-700 hover:text-gold-600 font-semibold transition-colors py-2"
-                                    data-target="mobile-areas"
-                                >
-                                    <span class="flex items-center">
-                                        <Icon
-                                            name="heroicons:map-pin"
-                                            class="w-5 h-5 mr-2 text-gold-500"
-                                        />
-                                        Service Areas
-                                    </span>
-                                    <Icon
-                                        name="heroicons:chevron-down"
-                                        class="w-5 h-5 transition-transform duration-200"
-                                    />
-                                </button>
-                                <div
-                                    id="mobile-areas"
-                                    class="hidden mt-2 ml-4 grid grid-cols-2 gap-2"
-                                >
-                                    {locations.map((location) => (
-                                        <a
-                                            href={`/service-areas/${location.slug}`}
-                                            class="flex items-center text-sm text-dark-600 hover:text-gold-600 py-1 transition-colors"
-                                        >
-                                            <Icon
-                                                name="heroicons:map-pin"
-                                                class="w-3.5 h-3.5 mr-1.5 text-gold-400 flex-shrink-0"
-                                            />
-                                            {location.city}
-                                        </a>
-                                    ))}
-                                    <a
-                                        href="/service-areas"
-                                        class="col-span-2 mt-2 pt-2 border-t border-gray-100 text-sm font-bold text-gold-600 hover:text-gold-700 flex items-center justify-center"
-                                    >
-                                        <Icon
-                                            name="heroicons:map-pin"
-                                            class="w-4 h-4 mr-1.5"
-                                        />
-                                        View All Service Areas
+                                        View All {link.name}
                                     </a>
                                 </div>
                             </div>
@@ -403,53 +296,23 @@ const navLinks = [
                         return (
                             <a
                                 href={link.href}
-                                class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors py-2 border-b border-gray-200 pb-2"
+                                class="flex items-center text-dark-700 hover:text-gold-600 font-semibold transition-colors py-3 text-lg border-b border-gray-200"
                             >
-                                {link.name === "FAQ" && (
-                                    <Icon
-                                        name="heroicons:question-mark-circle"
-                                        class="w-5 h-5 mr-2 text-gold-500"
-                                    />
-                                )}
-                                {link.name === "Reviews" && (
-                                    <Icon
-                                        name="heroicons:star-solid"
-                                        class="w-5 h-5 mr-2 text-gold-500"
-                                    />
-                                )}
-                                {link.name === "About" && (
-                                    <Icon
-                                        name="heroicons:information-circle"
-                                        class="w-5 h-5 mr-2 text-gold-500"
-                                    />
-                                )}
-                                {link.name === "Contact" && (
-                                    <Icon
-                                        name="heroicons:envelope"
-                                        class="w-5 h-5 mr-2 text-gold-500"
-                                    />
-                                )}
                                 {link.name}
                             </a>
                         );
                     }
                 })
             }
-            <div class="pt-4 border-t border-gray-200 flex flex-col space-y-3">
-                <Button
-                    variant="secondary"
-                    size="md"
-                    href={`tel:${siteConfig.contact.phoneRaw}`}
-                >
-                    <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
-                    Call Now
-                </Button>
+            <div
+                class="pt-6 mt-4 border-t border-gray-200 flex flex-col space-y-3"
+            >
                 <Button
                     variant="primary"
-                    size="md"
-                    href="/booking?utm_source=website&utm_medium=cta&utm_campaign=header"
+                    size="lg"
+                    href="/booking?utm_source=website&utm_medium=cta&utm_campaign=header-mobile"
                 >
-                    <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                    <Icon name="clipboard" className="w-5 h-5 mr-2" />
                     Book Online
                 </Button>
             </div>
@@ -458,27 +321,59 @@ const navLinks = [
 </header>
 
 <script>
+    const header = document.getElementById("site-header");
+    let ticking = false;
+
+    // Scroll transparency effect
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                if (window.scrollY > 50) {
+                    header?.classList.remove("bg-cream-100/90");
+                    header?.classList.add("bg-cream-100/70");
+                } else {
+                    header?.classList.remove("bg-cream-100/70");
+                    header?.classList.add("bg-cream-100/90");
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Mobile menu functionality
     const menuButton = document.getElementById("mobile-menu-button");
     const mobileMenu = document.getElementById("mobile-menu");
+    const openIcon = document.getElementById("mobile-menu-icon-open");
+    const closeIcon = document.getElementById("mobile-menu-icon-close");
+    const body = document.body;
 
     menuButton?.addEventListener("click", () => {
+        const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
         mobileMenu?.classList.toggle("hidden");
+        openIcon?.classList.toggle("hidden");
+        closeIcon?.classList.toggle("hidden");
+        menuButton.setAttribute("aria-expanded", String(!isExpanded));
+
+        if (!isExpanded) {
+            body.style.overflow = "hidden";
+        } else {
+            body.style.overflow = "";
+        }
     });
 
     // Mobile dropdown functionality
-    const dropdownTriggers = document.querySelectorAll(
-        ".mobile-dropdown-trigger",
-    );
-
-    dropdownTriggers.forEach((trigger) => {
+    document.querySelectorAll(".mobile-dropdown-trigger").forEach((trigger) => {
         trigger.addEventListener("click", () => {
-            const targetId = trigger.getAttribute("data-target") || "";
-            const targetElement = document.getElementById(targetId);
-            const chevron = trigger.querySelector("svg");
+            const content = trigger.nextElementSibling;
+            const chevron = trigger.querySelector(".chevron-icon");
 
-            if (targetElement && chevron) {
-                targetElement.classList.toggle("hidden");
-                chevron.classList.toggle("rotate-180");
+            if (content?.classList.contains("hidden")) {
+                content.classList.remove("hidden");
+                chevron?.classList.add("rotate-180");
+            } else {
+                content?.classList.add("hidden");
+                chevron?.classList.remove("rotate-180");
             }
         });
     });

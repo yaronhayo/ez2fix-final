@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { city, content } = Astro.props;
+import { Icon } from "@components/ui/Icon";
 ---
 
 <section class="py-16 bg-white">
@@ -25,19 +26,7 @@ const { city, content } = Astro.props;
                 <h3
                     class="text-xl font-bold text-dark-800 mb-4 flex items-center"
                 >
-                    <svg
-                        class="w-6 h-6 text-gold-500 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                    </svg>
+                    <Icon name="info" className="w-6 h-6 text-gold-500 mr-2" />
                     Local Service Note
                 </h3>
                 <p class="text-dark-600">

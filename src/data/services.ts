@@ -131,7 +131,7 @@ export const services: Service[] = [
             'Precision Balance Calibration',
             'Both Springs Replaced (Recommended)',
             'Safety Inspection Included',
-            'Same-Day Service Guaranteed'
+            'Same-Day Service Available'
         ],
         processSteps: [
             {

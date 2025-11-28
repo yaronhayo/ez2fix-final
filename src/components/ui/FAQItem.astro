@@ -1,55 +1,30 @@
 ---
-import { Icon } from "astro-icon/components";
-
 interface Props {
     question: string;
     answer: string;
-    isOpen?: boolean;
 }
 
-const { question, answer, isOpen = false } = Astro.props;
+const { question, answer } = Astro.props;
+import { Icon } from "@components/ui/Icon";
 ---
 
-<details
-    class="group bg-gradient-to-br from-white to-cream-50 rounded-xl border-2 border-gold-200/30 hover:border-gold-300/50 open:border-gold-400/60 open:bg-white open:shadow-lg transition-all duration-300"
-    open={isOpen}
->
-    <summary
-        class="flex items-start gap-4 p-6 cursor-pointer list-none hover:bg-cream-50/50 rounded-xl transition-colors"
-    >
-        <div
-            class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-500 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
+<div class="border-b border-gray-200 py-6">
+    <details class="group">
+        <summary
+            class="flex justify-between items-center cursor-pointer list-none"
         >
-            <Icon
-                name="heroicons:question-mark-circle-solid"
-                class="w-6 h-6 text-white"
-            />
-        </div>
-        <div class="flex-grow">
-            <h3
-                class="text-lg font-bold text-dark-800 group-hover:text-gold-600 transition-colors pr-8"
+            <span
+                class="text-lg font-medium text-dark-800 group-hover:text-gold-600"
+                >{question}</span
             >
-                {question}
-            </h3>
+            <span
+                class="transition-transform duration-300 transform group-open:rotate-180"
+            >
+                <Icon name="chevronDown" className="w-6 h-6 text-dark-500" />
+            </span>
+        </summary>
+        <div class="mt-4 text-dark-600 prose max-w-none">
+            <p>{answer}</p>
         </div>
-        <span
-            class="flex-shrink-0 transform transition-transform duration-300 group-open:rotate-180 text-gold-500"
-        >
-            <Icon name="heroicons:chevron-down-solid" class="w-6 h-6" />
-        </span>
-    </summary>
-    <div
-        class="px-6 pb-6 pl-20 text-dark-600 leading-relaxed border-t border-gold-200/20 pt-6 animate-fadeIn"
-    >
-        <div class="text-base" set:html={answer} />
-    </div>
-</details>
-
-<style>
-    details > summary {
-        list-style: none;
-    }
-    details > summary::-webkit-details-marker {
-        display: none;
-    }
-</style>
+    </details>
+</div>

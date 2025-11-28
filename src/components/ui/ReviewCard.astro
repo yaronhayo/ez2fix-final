@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
-
 interface Props {
     author: string;
     rating: number;
@@ -11,19 +9,20 @@ interface Props {
 }
 
 const { author, rating, date, text, city, service } = Astro.props;
+import { Icon } from "@components/ui/Icon";
 ---
 
 <div
     class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col hover:shadow-md transition-shadow"
 >
     <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-1">
+        <div
+            class="flex items-center space-x-1"
+            aria-label={`Rated ${rating} out of 5 stars`}
+        >
             {
-                Array.from({ length: 5 }).map((_, i) => (
-                    <Icon
-                        name="heroicons:star-solid"
-                        class={`w-5 h-5 ${i < rating ? "text-gold-400" : "text-gray-300"}`}
-                    />
+                Array.from({ length: 5 }).map((_) => (
+                    <Icon name="star" className="" />
                 ))
             }
         </div>
@@ -47,10 +46,7 @@ const { author, rating, date, text, city, service } = Astro.props;
         {
             service && (
                 <div class="mt-3 inline-flex items-center text-xs font-medium text-gold-600 bg-gold-50 px-2 py-1 rounded">
-                    <Icon
-                        name="heroicons:wrench-screwdriver"
-                        class="w-3 h-3 mr-1"
-                    />
+                    <Icon name="wrench" className="w-3 h-3 mr-1" />
                     {service}
                 </div>
             )

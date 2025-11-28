@@ -26,7 +26,7 @@ console.log(`Found ${apiKeys.length} API keys. Trying them sequentially...`);
 
 const IMAGE_TO_GENERATE = {
     path: "public/images/service-areas-hero.jpg",
-    prompt: "High-end aerial drone photography of the George Washington Bridge at golden hour, viewed from the Fort Lee, New Jersey side looking towards the Hudson River. The bridge is majestic and connects the lush greenery of the Palisades to the city. 8k resolution, cinematic lighting, photorealistic, professional commercial photography, highly detailed, no text, no AI artifacts."
+    prompt: "High-end aerial drone photography of the George Washington Bridge at golden hour, viewed from the Fort Lee, New-Jersey side looking towards the Hudson River. The bridge is majestic and connects the lush greenery of the Palisades to the city. 2k resolution, cinematic lighting, photorealistic, professional commercial photography, highly detailed, no text, no AI artifacts, optimized for web."
 };
 
 async function generateImage(item) {

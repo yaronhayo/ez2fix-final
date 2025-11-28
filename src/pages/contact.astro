@@ -7,10 +7,11 @@ import GoogleMap from "@components/ui/GoogleMap.astro";
 import FAQSection from "@components/sections/FAQSection.astro";
 import { siteConfig } from "@config/site.config";
 import { generateBreadcrumbSchema } from "@utils/schema";
-import { Icon } from "astro-icon/components";
+
 import Breadcrumbs from "@components/ui/Breadcrumbs.astro";
 import { getFAQsByPage } from "@data/faqs";
 import ContactForm from "@components/forms/ContactForm";
+import { Icon } from "@components/ui/Icon";
 
 const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://ez2fixllc.com" },
@@ -59,8 +60,8 @@ const faqs = getFAQsByPage("contact");
                     <div class="mb-6">
                         <div class="flex items-center mb-2">
                             <Icon
-                                name="heroicons:phone"
-                                class="w-6 h-6 text-gold-500 mr-3"
+                                name="phone"
+                                className="w-6 h-6 text-gold-500 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Phone
@@ -81,8 +82,8 @@ const faqs = getFAQsByPage("contact");
                     <div class="mb-6">
                         <div class="flex items-center mb-2">
                             <Icon
-                                name="heroicons:envelope"
-                                class="w-6 h-6 text-gold-500 mr-3"
+                                name="mail"
+                                className="w-6 h-6 text-gold-500 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Email
@@ -100,8 +101,8 @@ const faqs = getFAQsByPage("contact");
                     <div class="mb-6">
                         <div class="flex items-center mb-2">
                             <Icon
-                                name="heroicons:map-pin"
-                                class="w-6 h-6 text-gold-500 mr-3"
+                                name="mapPin"
+                                className="w-6 h-6 text-gold-500 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Service Area
@@ -119,8 +120,8 @@ const faqs = getFAQsByPage("contact");
                     <div class="mb-8">
                         <div class="flex items-center mb-2">
                             <Icon
-                                name="heroicons:clock"
-                                class="w-6 h-6 text-gold-500 mr-3"
+                                name="clock"
+                                className="w-6 h-6 text-gold-500 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Business Hours
@@ -187,7 +188,7 @@ const faqs = getFAQsByPage("contact");
                         }
                     </p>
                     <Button variant="primary" href="/service-areas">
-                        <Icon name="heroicons:map-pin" class="w-5 h-5 mr-2" />
+                        <Icon name="mapPin" className="w-5 h-5 mr-2" />
                         View All Service Areas
                     </Button>
                 </div>

@@ -1,8 +1,9 @@
 ---
 import Button from "@components/ui/Button.astro";
 import { siteConfig } from "@config/site.config";
-import { Icon } from "astro-icon/components";
+
 import BookingForm from "@components/BookingForm";
+import { Icon } from "@components/ui/Icon";
 ---
 
 <section class="relative min-h-[600px] flex items-center overflow-hidden mt-24">
@@ -10,6 +11,7 @@ import BookingForm from "@components/BookingForm";
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-dark-900/80 z-10"></div>
         <!-- Hero video background - Optimized for LCP -->
+        {/* @ts-ignore */}
         <video
             width="1920"
             height="1080"
@@ -18,8 +20,10 @@ import BookingForm from "@components/BookingForm";
             muted
             loop
             playsinline
-            preload="none"
-            poster="/images/hero/hero-1.jpg"
+            preload="auto"
+            poster="/images/hero/hero-2.webp"
+            aria-hidden="true"
+            fetchpriority="high"
         >
             <source src="/videos/hero-background.mp4" type="video/mp4" />
         </video>
@@ -49,7 +53,7 @@ import BookingForm from "@components/BookingForm";
                         href="/booking?utm_source=website&utm_medium=cta&utm_campaign=hero"
                         class="w-full sm:w-auto justify-center"
                     >
-                        <Icon name="heroicons:calendar" class="w-5 h-5 mr-2" />
+                        <Icon name="clipboard" className="w-5 h-5 mr-2" />
                         Book Free Estimate
                     </Button>
                     <div class="w-full sm:w-auto">
@@ -59,7 +63,7 @@ import BookingForm from "@components/BookingForm";
                             href={`tel:${siteConfig.contact.phoneRaw}`}
                             class="w-full justify-center lg:hidden"
                         >
-                            <Icon name="heroicons:phone" class="w-5 h-5 mr-2" />
+                            <Icon name="phone" className="w-5 h-5 mr-2" />
                             Call Now
                         </Button>
                         <Button
@@ -68,10 +72,7 @@ import BookingForm from "@components/BookingForm";
                             href="/services?utm_source=website&utm_medium=cta&utm_campaign=home-hero"
                             class="w-full justify-center hidden lg:inline-flex"
                         >
-                            <Icon
-                                name="heroicons:wrench-screwdriver"
-                                class="w-5 h-5 mr-2"
-                            />
+                            <Icon name="wrench" className="w-5 h-5 mr-2" />
                             View All Services
                         </Button>
                     </div>
@@ -83,15 +84,15 @@ import BookingForm from "@components/BookingForm";
                 >
                     <div class="flex items-center">
                         <Icon
-                            name="heroicons:shield-check"
-                            class="w-5 h-5 text-gold-400 mr-2"
+                            name="shieldCheck"
+                            className="w-5 h-5 text-gold-400 mr-2"
                         />
                         Licensed & Insured
                     </div>
                     <div class="flex items-center">
                         <Icon
-                            name="heroicons:star-solid"
-                            class="w-5 h-5 text-gold-400 mr-2"
+                            name="star"
+                            className="w-5 h-5 text-gold-400 mr-2"
                         />
                         5.0★ Google Rating
                     </div>
