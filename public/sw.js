@@ -1,5 +1,5 @@
 // Service Worker for caching and offline support
-const CACHE_NAME = 'ez2fix-v1';
+const CACHE_NAME = 'ez2fix-v2';
 const STATIC_ASSETS = [
     '/',
     '/offline',
