@@ -5,7 +5,6 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ez2fixllc.com',
@@ -45,6 +44,9 @@ export default defineConfig({
       noExternal: ['@heroicons/react'],
     },
     server: {
+      hmr: {
+        clientPort: 4321,
+      },
       headers: {
         'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), run-ad-auction=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), join-ad-interest-group=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), browsing-topics=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
         'Cache-Control': 'public, max-age=31536000',
@@ -61,7 +63,7 @@ export default defineConfig({
         output: {
           manualChunks: {
             // Code splitting for better caching
-            'react-vendor': ['react', 'react-dom'],
+            // 'react-vendor': ['react', 'react-dom'],
           },
           assetFileNames: (assetInfo) => {
             let extType = assetInfo.name.split('.').at(-1);

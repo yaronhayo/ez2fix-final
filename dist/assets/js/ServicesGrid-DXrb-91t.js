@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, a as renderTemplate } from "./astro/server-CwXtluzS.js";
 import "piccolore";
 import { $ as $$ResponsiveImage } from "./ResponsiveImage-BtcVjDxY.js";
-import { I as Icon } from "./Footer-DAxRJj5_.js";
+import { I as Icon } from "./Footer-CTbJaeej.js";
 const $$Astro$1 = createAstro("https://ez2fixllc.com");
 const $$ServiceCard = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);

@@ -230,21 +230,25 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         >
         <!-- End Google Tag Manager (noscript) -->
 
-        <!-- Register Service Worker for PWA (Deferred) -->
-        <script is:inline>
-            if ("serviceWorker" in navigator) {
-                window.addEventListener("load", function () {
-                    navigator.serviceWorker
-                        .register("/sw.js")
-                        .catch(function (err) {
-                            console.log(
-                                "Service Worker registration failed:",
-                                err,
-                            );
+        <!-- Register Service Worker for PWA (Production Only) -->
+        {
+            import.meta.env.PROD && (
+                <script is:inline>
+                    if ("serviceWorker" in navigator) {
+                        window.addEventListener("load", function () {
+                            navigator.serviceWorker
+                                .register("/sw.js")
+                                .catch(function (err) {
+                                    console.log(
+                                        "Service Worker registration failed:",
+                                        err,
+                                    );
+                                });
                         });
-                });
-            }
-        </script>
+                    }
+                </script>
+            )
+        }
 
         <slot />
 

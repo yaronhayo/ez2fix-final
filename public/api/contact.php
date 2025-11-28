@@ -219,8 +219,8 @@ if ($ownerResult['code'] >= 200 && $ownerResult['code'] < 300) {
         'path' => '/',
         'domain' => '', // Leave empty for current host
         'secure' => true,
-        'httponly' => true,
-        'samesite' => 'Strict'
+        'httponly' => false,
+        'samesite' => 'Lax'
     ]);
     
     // Return JSON success with redirect URL
