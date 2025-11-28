@@ -49,7 +49,12 @@ if (!$input) {
     exit;
 }
 
-if (!empty($input['fax'])) {
+if (!empty($input['_hp_fax'])) {
+    // Log honeypot trigger
+    $logFile = __DIR__ . '/email_debug.log';
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] HONEYPOT TRIGGERED. IP: " . $_SERVER['REMOTE_ADDR'] . PHP_EOL, 3, $logFile);
+
     // This is a honeypot field. Silently exit without doing anything.
     http_response_code(200);
     echo json_encode(['success' => true, 'message' => 'Submission received.']);

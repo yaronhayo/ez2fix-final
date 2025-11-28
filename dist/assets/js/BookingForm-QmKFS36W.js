@@ -657,17 +657,17 @@ function BookingFormContent() {
         ] })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "opacity-0 absolute top-0 left-0 h-0 w-0 overflow-hidden z-[-1]", children: [
-        /* @__PURE__ */ jsx("label", { htmlFor: `${formId}-fax`, children: "Fax Number" }),
+        /* @__PURE__ */ jsx("label", { htmlFor: `${formId}-hp`, children: "Fax Number" }),
         /* @__PURE__ */ jsx(
           "input",
           {
             type: "text",
-            id: `${formId}-fax`,
-            name: "fax",
+            id: `${formId}-hp`,
+            name: "_hp_fax",
             tabIndex: -1,
             autoComplete: "off",
-            value: formData.fax || "",
-            onChange: (e) => updateField("fax", e.target.value)
+            value: formData._hp_fax || "",
+            onChange: (e) => updateField("_hp_fax", e.target.value)
           }
         )
       ] }),
