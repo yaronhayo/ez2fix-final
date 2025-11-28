@@ -157,6 +157,9 @@ $clientHtml = "
 
 // Function to send email via Resend
 function send_resend_email($apiKey, $from, $to, $subject, $html, $replyTo = null) {
+    $logFile = __DIR__ . '/email_debug.log';
+    $timestamp = date('Y-m-d H:i:s');
+    
     $ch = curl_init('https://api.resend.com/emails');
     $payload = [
         'from' => $from,
@@ -170,6 +173,9 @@ function send_resend_email($apiKey, $from, $to, $subject, $html, $replyTo = null
     }
 
     $jsonPayload = json_encode($payload);
+    
+    error_log("[$timestamp] cURL Request to Resend API" . PHP_EOL, 3, $logFile);
+    error_log("[$timestamp] Payload: " . $jsonPayload . PHP_EOL, 3, $logFile);
 
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPayload);
@@ -178,40 +184,67 @@ function send_resend_email($apiKey, $from, $to, $subject, $html, $replyTo = null
         'Content-Type: application/json'
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // DEBUG ONLY
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // DEBUG ONLY
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    $curlErrno = curl_errno($ch);
     curl_close($ch);
+    
+    if ($curlErrno !== 0) {
+        error_log("[$timestamp] cURL Error #$curlErrno: $curlError" . PHP_EOL, 3, $logFile);
+    }
+    
+    error_log("[$timestamp] HTTP Code: $httpCode" . PHP_EOL, 3, $logFile);
+    error_log("[$timestamp] Response: $response" . PHP_EOL, 3, $logFile);
 
-    return ['code' => $httpCode, 'response' => $response];
+    return ['code' => $httpCode, 'response' => $response, 'curl_error' => $curlError];
 }
 
 // --- SEND EMAILS ---
 
-// 1. Send to Owners
-$ownerResult = send_resend_email(
-    $resendApiKey, 
-    $fromEmail, 
-    $ownerEmail, 
-    "📩 New Contact Message: $name", 
-    $ownerHtml, 
-    $email
-);
+//        // Send emails
+        $logFile = __DIR__ . '/email_debug.log';
+        $timestamp = date('Y-m-d H:i:s');
+        
+        error_log("[$timestamp] === CONTACT FORM SUBMISSION ===" . PHP_EOL, 3, $logFile);
+        error_log("[$timestamp] API Key present: " . (!empty($resendApiKey) ? 'YES' : 'NO') . PHP_EOL, 3, $logFile);
+        error_log("[$timestamp] Owner Email: $ownerEmail" . PHP_EOL, 3, $logFile);
+        error_log("[$timestamp] From Email: $fromEmail" . PHP_EOL, 3, $logFile);
+        
+        $ownerResult = send_resend_email(
+            $resendApiKey,
+            $fromEmail,
+            $ownerEmail,
+            "📩 New Contact Message: {$name}",
+            $ownerHtml,
+            $email
+        );
+        
+        error_log("[$timestamp] Owner Email Result - Code: {$ownerResult['code']}" . PHP_EOL, 3, $logFile);
+        error_log("[$timestamp] Owner Response: " . json_encode($ownerResult['response']) . PHP_EOL, 3, $logFile);
 
-// 2. Send to Client (Auto-responder)
-$clientResult = ['code' => 0, 'response' => 'Skipped'];
-if (!empty($email)) {
-    $clientResult = send_resend_email(
-        $resendApiKey, 
-        $fromEmail, 
-        $email, 
-        "✅ We received your message - Ez2Fix", 
-        $clientHtml
-    );
-}
+        // Send client auto-responder
+        $clientResult = ['code' => 0, 'response' => 'Skipped'];
+        if (!empty($email)) {
+            $clientResult = send_resend_email(
+                $resendApiKey,
+                $fromEmail,
+                $email,
+                "✅ We received your message - Ez2Fix",
+                $clientHtml
+            );
+            
+            error_log("[$timestamp] Client Email Result - Code: {$clientResult['code']}" . PHP_EOL, 3, $logFile);
+            error_log("[$timestamp] Client Response: " . json_encode($clientResult['response']) . PHP_EOL, 3, $logFile);
+        }
 
-// Check Success (based on Owner email)
-if ($ownerResult['code'] >= 200 && $ownerResult['code'] < 300) {
+        // Check success
+        if ($ownerResult['code'] >= 200 && $ownerResult['code'] < 300) {
     // Set a short-lived, secure, httponly cookie as a "ticket" to the thank-you page.
     $token = bin2hex(random_bytes(16)); // More secure token
     setcookie('form_success_token', $token, [

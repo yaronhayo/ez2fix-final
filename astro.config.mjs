@@ -44,9 +44,6 @@ export default defineConfig({
       noExternal: ['@heroicons/react'],
     },
     server: {
-      hmr: {
-        clientPort: 4321,
-      },
       headers: {
         'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), run-ad-auction=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), join-ad-interest-group=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), browsing-topics=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
         'Cache-Control': 'public, max-age=31536000',
