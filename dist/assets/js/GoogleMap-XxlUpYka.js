@@ -1,7 +1,7 @@
 import { d as createAstro, c as createComponent, a as renderTemplate, j as defineScriptVars, b as addAttribute, m as maybeRenderHead } from "./astro/server-BU2CT6Eb.js";
 import "piccolore";
 import "clsx";
-import { l as locations } from "./Header-BZfRGV3r.js";
+import { l as locations } from "./Header-mryneuqc.js";
 var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));

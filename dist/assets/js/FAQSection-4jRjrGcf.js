@@ -1,6 +1,6 @@
 import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, a as renderTemplate } from "./astro/server-BU2CT6Eb.js";
 import "piccolore";
-import { I as Icon, a as $$Button } from "./Footer-7dGzek7_.js";
+import { I as Icon, a as $$Button } from "./Footer-F8Evb0cv.js";
 const $$Astro = createAstro("https://ez2fixllc.com");
 const $$FAQSection = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
