@@ -1,7 +1,7 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import React__default, { useRef, useState, useEffect, useId } from "react";
 import { UAParser } from "ua-parser-js";
-import { I as Icon } from "./Footer-DTyrhOFz.js";
+import { I as Icon } from "./Footer-7dGzek7_.js";
 function useGooglePlaces({ onPlaceSelect }) {
   const inputRef = useRef(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);

@@ -46,7 +46,7 @@ const navLinks = [
             </a>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden lg:flex items-center space-x-6">
+            <nav class="hidden xl:flex items-center space-x-6">
                 {
                     navLinks.map((link) => {
                         if (link.name === "Services") {
@@ -161,7 +161,7 @@ const navLinks = [
             </nav>
 
             <!-- Desktop CTAs -->
-            <div class="hidden lg:flex items-center space-x-4">
+            <div class="hidden xl:flex items-center space-x-4">
                 <Button
                     variant="secondary"
                     size="md"
@@ -182,7 +182,7 @@ const navLinks = [
 
             <!-- Mobile Right Section (CTAs + Menu) -->
             <div
-                class="flex lg:hidden items-center space-x-1.5 sm:space-x-3 ml-auto"
+                class="flex xl:hidden items-center space-x-1.5 sm:space-x-3 ml-auto"
             >
                 <a
                     href={`tel:${siteConfig.contact.phoneRaw}`}
@@ -226,7 +226,7 @@ const navLinks = [
     <!-- Mobile Menu Panel -->
     <div
         id="mobile-menu"
-        class="hidden lg:hidden absolute top-full left-0 w-full h-[calc(100vh-80px)] bg-white border-t border-gray-200 overflow-y-auto"
+        class="hidden xl:hidden absolute top-full left-0 w-full h-[calc(100vh-80px)] bg-white border-t border-gray-200 overflow-y-auto"
     >
         <nav class="container mx-auto px-4 sm:px-6 py-4 flex flex-col">
             {
