@@ -2,7 +2,7 @@ import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addA
 import "piccolore";
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { I as Icon, s as siteConfig, e as generateReviewSchema } from "./Footer-F8Evb0cv.js";
+import { I as Icon, s as siteConfig, e as generateReviewSchema } from "./Footer-D2Mw6hT6.js";
 import { r as reviews } from "./reviews-DcJlOZwn.js";
 function ReviewsCarousel({ reviews: reviews2, autoPlayInterval = 7e3 }) {
   const [currentIndex, setCurrentIndex] = useState(0);

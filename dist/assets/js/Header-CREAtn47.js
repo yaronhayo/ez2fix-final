@@ -1,6 +1,6 @@
 import { c as createComponent, m as maybeRenderHead, r as renderComponent, b as addAttribute, e as renderScript, a as renderTemplate } from "./astro/server-BU2CT6Eb.js";
 import "piccolore";
-import { I as Icon, a as $$Button, s as siteConfig } from "./Footer-F8Evb0cv.js";
+import { I as Icon, a as $$Button, s as siteConfig } from "./Footer-D2Mw6hT6.js";
 const services = [
   {
     id: "emergency-repair",

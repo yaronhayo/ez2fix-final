@@ -10,11 +10,11 @@
   }
 
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth overflow-x-hidden;
   }
 
   body {
-    @apply bg-cream-100 text-dark-700 font-sans antialiased;
+    @apply bg-cream-100 text-dark-700 font-sans antialiased overflow-x-hidden;
   }
 
   /* Headings */
