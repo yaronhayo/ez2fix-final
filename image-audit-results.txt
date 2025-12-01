@@ -1,0 +1,141 @@
+=== IMAGE AUDIT REPORT ===
+Date: Mon Dec  1 00:35:03 CST 2025
+
+## ALL IMAGES FOUND ##
+
+### public/images ###
+images/service-areas-hero.webp (151K)
+images/gallery/spring-after.webp (96K)
+images/gallery/off-track-before.jpg (125K)
+images/gallery/spring-repair-before.jpg (0B)
+images/gallery/spring-before.webp (98K)
+images/gallery/glass-door-before.webp (198K)
+images/gallery/off-track-after.jpg (125K)
+images/gallery/spring-repair-after.jpg (0B)
+images/logos/ez2fix-logo.png (40K)
+images/logos/ez2fix-logo.webp (16K)
+images/blog/smart-opener.webp (34K)
+images/blog/snapped-cable.webp (88K)
+images/blog/insulating-door.webp (108K)
+images/blog/cleaning-door.webp (130K)
+images/blog/roi-replacement.webp (148K)
+images/blog/broken-spring-repair.webp (112K)
+images/blog/tightening-hardware.webp (125K)
+images/blog/balance-test.webp (111K)
+images/blog/installation-placeholder.webp (177K)
+images/blog/welcome-hero.webp (75K)
+images/blog/garage-security.webp (133K)
+images/blog/garage-door-wont-open.webp (69K)
+images/blog/emergency-release.webp (31K)
+images/blog/maintenance-placeholder.webp (103K)
+images/blog/weatherstripping.webp (145K)
+images/blog/door-sizes.webp (103K)
+images/blog/remote-not-working.webp (27K)
+images/blog/garage-door-wont-close.webp (117K)
+images/blog/seasonal-maintenance.webp (192K)
+images/blog/opener-types.webp (50K)
+images/blog/sensor-alignment.webp (60K)
+images/blog/spring-life.webp (183K)
+images/blog/repair-placeholder.webp (133K)
+images/blog/lubricate-garage-door.webp (114K)
+images/blog/choosing-new-door.webp (140K)
+images/blog/insulated-vs-uninsulated.webp (40K)
+images/blog/noisy-garage-door.webp (172K)
+images/blog/glass-doors.webp (87K)
+images/blog/categories/repair-guides.webp (80K)
+images/blog/categories/company-news.webp (75K)
+images/blog/categories/maintenance-tips.webp (91K)
+images/blog/categories/installation-guides.webp (109K)
+images/blog/off-track-door.webp (139K)
+images/blog/installation-prep.webp (80K)
+images/cities/elizabeth.webp (135K)
+images/cities/fair-lawn.webp (304K)
+images/cities/cedar-grove.webp (215K)
+images/cities/jersey-city.webp (141K)
+images/cities/union-city.webp (182K)
+images/cities/clifton.webp (169K)
+images/cities/newark.webp (151K)
+images/cities/west-caldwell.webp (207K)
+images/cities/little-falls.webp (126K)
+images/cities/east-orange.webp (259K)
+images/cities/north-caldwell.webp (318K)
+images/cities/montclair.webp (209K)
+images/cities/bayonne.webp (123K)
+images/cities/paterson.webp (164K)
+images/cities/passaic.webp (110K)
+images/cities/hackensack.webp (164K)
+images/hero/hero-2.webp (143K)
+images/og/og-default.webp (16K)
+images/og/og-default.png (40K)
+images/services/opener-repair-v3.webp (107K)
+images/services/cable-repair-v3.webp (101K)
+images/services/spring-repair-v2.webp (77K)
+images/services/opener-installation.webp (118K)
+images/services/spring-repair-v3.webp (75K)
+images/services/track-repair-v3.webp (121K)
+images/services/emergency-repair-v3.webp (148K)
+images/services/opener-installation-v3.webp (98K)
+images/services/emergency-repair-v2.webp (136K)
+images/services/door-installation-v3.webp (184K)
+images/services/emergency-repair.webp (45K)
+images/services/commercial.webp (38K)
+images/services/repair.webp (60K)
+images/services/spring-repair-banner.webp (111K)
+images/services/cable-repair.webp (149K)
+images/services/spring-repair.webp (41K)
+images/services/commercial-garage-door-v3.webp (162K)
+images/services/door-installation.webp (155K)
+images/services/panel-replacement-v3.webp (139K)
+images/google-g.svg (90B)
+
+### src/assets/images ###
+src/assets/images/logos/ez2fix-logo.png (40K)
+src/assets/images/cities/clifton.jpg (250K)
+src/assets/images/cities/little-falls.jpg (205K)
+src/assets/images/cities/fair-lawn.jpg (362K)
+src/assets/images/cities/elizabeth.jpg (214K)
+src/assets/images/cities/passaic.jpg (198K)
+src/assets/images/cities/union-city.jpg (260K)
+src/assets/images/cities/jersey-city.jpg (212K)
+src/assets/images/cities/cedar-grove.jpg (282K)
+src/assets/images/cities/north-caldwell.jpg (372K)
+src/assets/images/cities/west-caldwell.jpg (277K)
+src/assets/images/cities/east-orange.jpg (322K)
+src/assets/images/cities/paterson.jpg (237K)
+src/assets/images/cities/bayonne.jpg (207K)
+src/assets/images/cities/newark.jpg (239K)
+src/assets/images/cities/hackensack.jpg (233K)
+src/assets/images/cities/montclair.jpg (273K)
+
+## TOTAL COUNTS ##
+Public images: 83
+Asset images: 17
+TOTAL: 100
+
+Public size: 9.6M
+Assets size: 4.1M
+
+## IMAGE USAGE IN CODE ##
+
+Found 4 unique image references in code
+
+## POTENTIAL DUPLICATES ##
+
+Duplicate base name: ez2fix-logo
+  - /Users/yaronhayo/Desktop/ez2fix-website/rebuild/public/images/logos/ez2fix-logo.png (40K)
+  - /Users/yaronhayo/Desktop/ez2fix-website/rebuild/public/images/logos/ez2fix-logo.webp (16K)
+  - /Users/yaronhayo/Desktop/ez2fix-website/rebuild/src/assets/images/logos/ez2fix-logo.png (40K)
+Duplicate base name: og-default
+  - /Users/yaronhayo/Desktop/ez2fix-website/rebuild/public/images/og/og-default.webp (16K)
+  - /Users/yaronhayo/Desktop/ez2fix-website/rebuild/public/images/og/og-default.png (40K)
+
+## IMAGES-ORIGINAL FOLDER ##
+Files in images-original: 150
+Size of images-original: 67M
+
+These are backups from previous optimization - can be deleted after verification
+
+=== AUDIT COMPLETE ===
+Results saved to: /Users/yaronhayo/Desktop/ez2fix-website/rebuild/image-audit-results.txt
+Used images list: /Users/yaronhayo/Desktop/ez2fix-website/rebuild/used-images.txt
+All images list: /Users/yaronhayo/Desktop/ez2fix-website/rebuild/all-images-found.txt

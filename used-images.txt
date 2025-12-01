@@ -1,0 +1,4 @@
+/images/hero/hero-2.webp
+/images/logos/ez2fix-logo.png
+/images/service-areas-hero.webp
+/images/services/commercial.jpg

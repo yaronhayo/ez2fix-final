@@ -1,7 +1,5 @@
 ---
 import { siteConfig } from "@config/site.config";
-import { Image } from "astro:assets";
-import logoImage from "@assets/images/logos/ez2fix-logo.png";
 import { Icon } from "@components/ui/Icon";
 
 const mainLinks = [
@@ -40,10 +38,12 @@ const legalLinks = [
             <!-- Column 1: Company Info -->
             <div class="sm:col-span-2 xl:col-span-2">
                 <a href="/" class="inline-block mb-4">
-                    <Image
-                        src={logoImage}
-                        alt="Ez2Fix LLC Logo"
-                        class="h-14 w-auto"
+                    <img
+                        src="/images/logos/ez2fix-logo.png"
+                        alt="Ez2Fix Garage Doors"
+                        width={180}
+                        height={48}
+                        class="h-10 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
                     />
                 </a>
                 <p class="text-cream-200 mb-4 max-w-sm mx-auto sm:mx-0">

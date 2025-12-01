@@ -10,17 +10,18 @@ interface Props {
 
 const { className = "" } = Astro.props;
 
-const promotions = getPromotionsForLocation("hero"); // Using 'hero' location as it contains general high-priority promos
+const promotions = getPromotionsForLocation("hero");
 ---
 
 <section class={`py-16 bg-dark-900 relative overflow-hidden ${className}`}>
     <!-- Background Pattern -->
     <div
-        class="absolute inset-0 opacity-10 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px]"
+        class="absolute inset-0 opacity-5 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:20px_20px]"
     >
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
+        <!-- Header - Centered -->
         <div class="text-center mb-12">
             <div
                 class="inline-flex items-center bg-gold-500/20 border border-gold-500/30 rounded-full px-4 py-1 mb-6 backdrop-blur-sm"
@@ -33,63 +34,92 @@ const promotions = getPromotionsForLocation("hero"); // Using 'hero' location as
                     >Current Specials</span
                 >
             </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Save on Expert Garage Door Service
+            </h2>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                Take advantage of our current specials. Quality service doesn't
+                have to break the bank.
+            </p>
         </div>
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-            Save on Expert Garage Door Service
-        </h2>
-        <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-            Take advantage of our current specials. Quality service doesn't have
-            to break the bank.
-        </p>
-    </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {
-            promotions.map((promo) => (
-                <div class="group relative bg-dark-800 border border-dark-700 rounded-2xl p-6 hover:border-gold-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gold-500/10 flex flex-col h-full">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Icon
-                            name="wrench"
-                            className="w-24 h-24 text-gold-500 transform rotate-12"
-                        />
-                    </div>
+        <!-- Coupon Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {
+                promotions.map((promo) => (
+                    <div class="group relative bg-gradient-to-br from-cream-100 to-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                        <!-- Decorative Perforated Edge (Top) -->
+                        <div class="absolute top-0 left-0 right-0 h-4 flex justify-between px-1">
+                            {Array.from({ length: 15 }).map((_, i) => (
+                                <div class="w-1 h-1 bg-dark-800 rounded-full opacity-20" />
+                            ))}
+                        </div>
 
-                    <div class="relative z-10 flex flex-col h-full">
-                        <PromoBadge
-                            variant={promo.variant}
-                            text={promo.badgeText}
-                            class="mb-6"
-                        />
+                        <!-- Decorative Corner Clip -->
+                        <div class="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-t-gold-500 border-l-[20px] border-l-transparent" />
 
-                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-gold-400 transition-colors">
-                            {promo.title}
-                        </h3>
-
-                        <p class="text-gray-400 mb-6 flex-grow text-sm">
-                            {promo.description}
-                        </p>
-
-                        <div class="flex items-center justify-between mt-auto">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                href="/booking?utm_source=website&utm_medium=promo-section"
-                            >
-                                Claim Offer
-                            </Button>
-                            <div class="text-xs text-gray-500 font-medium">
-                                *Terms apply
+                        <!-- Content -->
+                        <div class="p-6 pt-8">
+                            <!-- Badge -->
+                            <div class="mb-4">
+                                <PromoBadge
+                                    variant={promo.variant}
+                                    text={promo.badgeText}
+                                />
                             </div>
+
+                            <!-- Title -->
+                            <h3 class="text-xl font-bold text-dark-900 mb-3 min-h-[3.5rem]">
+                                {promo.title}
+                            </h3>
+
+                            <!-- Description -->
+                            <p class="text-dark-600 text-sm mb-6 min-h-[4rem] leading-relaxed">
+                                {promo.description}
+                            </p>
+
+                            <!-- Divider with Scissors Icon -->
+                            <div class="flex items-center my-4 opacity-30">
+                                <div class="flex-1 border-t-2 border-dashed border-dark-400" />
+                                <Icon name="scissors" className="w-4 h-4 mx-2 text-dark-400" />
+                                <div class="flex-1 border-t-2 border-dashed border-dark-400" />
+                            </div>
+
+                            <!-- CTA Button -->
+                            <div class="text-center">
+                                <Button
+                                    variant="primary"
+                                    size="sm"
+                                    href="/booking?utm_source=website&utm_medium=promo-section"
+                                    class="w-full"
+                                >
+                                    <Icon name="clipboard" className="w-4 h-4 mr-2" />
+                                    Claim Offer
+                                </Button>
+                            </div>
+
+                            <!-- Terms -->
+                            <p class="text-xs text-dark-500 text-center mt-3 font-medium">
+                                *Terms apply
+                            </p>
+                        </div>
+
+                        <!-- Decorative Perforated Edge (Bottom) -->
+                        <div class="absolute bottom-0 left-0 right-0 h-4 flex justify-between px-1">
+                            {Array.from({ length: 15 }).map((_, i) => (
+                                <div class="w-1 h-1 bg-dark-800 rounded-full opacity-20" />
+                            ))}
                         </div>
                     </div>
-                </div>
-            ))
-        }
-    </div>
+                ))
+            }
+        </div>
 
-    <div class="mt-12 text-center">
-        <p class="text-gray-500 text-sm">
-            Offers cannot be combined. Please mention coupon when booking.
-        </p>
+        <!-- Disclaimer -->
+        <div class="mt-12 text-center">
+            <p class="text-gray-500 text-sm">
+                Offers cannot be combined. Please mention coupon when booking.
+            </p>
+        </div>
     </div>
 </section>

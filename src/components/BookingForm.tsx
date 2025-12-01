@@ -635,13 +635,24 @@ function BookingFormContent() {
                     </div>
                 )}
 
-                {/* Honeypot Field */}
-                <div className="opacity-0 absolute top-0 left-0 h-0 w-0 overflow-hidden z-[-1]">
-                    <label htmlFor={`${formId}-hp`}>Fax Number</label>
+                {/* Honeypot Field - Completely Hidden from Browsers & Users */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: '-9999px',
+                        width: '1px',
+                        height: '1px',
+                        overflow: 'hidden',
+                        opacity: 0,
+                        pointerEvents: 'none'
+                    }}
+                    aria-hidden="true"
+                >
+                    <label htmlFor={`${formId}-website`}>Website</label>
                     <input
                         type="text"
-                        id={`${formId}-hp`}
-                        name="_hp_fax"
+                        id={`${formId}-website`}
+                        name="_got_url"
                         tabIndex={-1}
                         autoComplete="off"
                         value={formData._hp_fax || ''}

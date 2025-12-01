@@ -161,8 +161,8 @@ export const locations: Location[] = [
         heroImage: 'hackensack.jpg',
         localContent: 'Hackensack\'s revitalization has brought modern high-rises to the skyline while preserving the historic charm of the Fairmount section. We offer a full range of services to meet this diversity: smart garage door openers for tech-savvy homeowners, custom wood overlay doors for historic renovations, and high-performance steel doors for commercial facilities near the Courthouse. Our team is a staple in the community, providing reliable service to the county seat.',
         coordinates: { lat: 40.8859, lng: -74.0435 },
-        heroTitle: 'Bergen County\'s Garage Door Specialists',
-        heroSubtitle: 'Serving Hackensack and Bergen County with premium garage door solutions since 2015.',
+        heroTitle: 'Hackensack\'s Trusted Garage Door Experts',
+        heroSubtitle: 'Expert service for Bergen County\'s county seat. Licensed, insured, and locally trusted since 2015.',
         commonServices: ['Custom Wood Doors', 'Insulated Installation', 'Opener Repair', 'Spring Service', 'Commercial Doors'],
         landmarks: ['Bergen County Courthouse', 'The Shops at Riverside', 'Hackensack University Medical Center', 'Foschini Park', 'Johnson Public Library']
     },

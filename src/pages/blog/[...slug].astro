@@ -36,7 +36,7 @@ const articleSchema = {
     description: post.data.description,
     image: post.data.image
         ? `https://ez2fixllc.com${post.data.image}`
-        : "https://ez2fixllc.com/images/og-default.jpg",
+        : "https://ez2fixllc.com/images/og/og-default.webp",
     datePublished: post.data.publishDate.toISOString(),
     dateModified:
         post.data.updatedDate?.toISOString() ||

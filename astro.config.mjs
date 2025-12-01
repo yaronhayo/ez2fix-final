@@ -34,6 +34,17 @@ export default defineConfig({
       config: {
         forward: ['dataLayer.push'],
         debug: false,
+        resolveUrl: (url) => {
+          // Allow all local URLs
+          if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+            return url;
+          }
+          // Allow Google Tag Manager and Analytics
+          if (url.hostname === 'www.googletagmanager.com' || url.hostname === 'www.google-analytics.com') {
+            return url;
+          }
+          return url;
+        },
       },
     }),
 
@@ -53,6 +64,9 @@ export default defineConfig({
     },
     server: {
       headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Permissions-Policy': 'attribution-reporting=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), run-ad-auction=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), join-ad-interest-group=(self "https://www.googletagmanager.com" "https://www.google-analytics.com"), browsing-topics=(self "https://www.googletagmanager.com" "https://www.google-analytics.com")',
         'Cache-Control': 'public, max-age=31536000',
       },
