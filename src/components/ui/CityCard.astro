@@ -1,6 +1,6 @@
 ---
 import type { Location } from "@data/locations";
-import ResponsiveImage from "@components/ui/ResponsiveImage.astro";
+import { Image } from "astro:assets";
 import { Icon } from "@components/ui/Icon";
 
 interface Props {
@@ -8,6 +8,14 @@ interface Props {
 }
 
 const { location } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/images/cities/*.{jpeg,jpg,png,tiff,webp,gif,avif,svg}",
+);
+const imagePath = `/src/assets/images/cities/${location.heroImage}`;
+const heroImage = images[imagePath]
+    ? (await images[imagePath]()).default
+    : null;
 ---
 
 <a
@@ -16,13 +24,19 @@ const { location } = Astro.props;
 >
     {/* Background Image with Overlay */}
     <div class="absolute inset-0 z-0">
-        <ResponsiveImage
-            src={location.heroImage}
-            alt={`${location.city}, NJ Garage Door Repair`}
-            width={400}
-            height={300}
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+        {
+            heroImage ? (
+                <Image
+                    src={heroImage}
+                    alt={`${location.city}, NJ Garage Door Repair`}
+                    width={400}
+                    height={300}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+            ) : (
+                <div class="w-full h-full bg-dark-900" />
+            )
+        }
         <div
             class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent opacity-90 group-hover:opacity-80 transition-opacity"
         >
@@ -50,7 +64,7 @@ const { location } = Astro.props;
             class="flex items-center justify-between text-xs text-cream-300 border-t border-white/10 pt-3"
         >
             <div class="flex items-center">
-                <Icon name="users" className="w-4 h-4 mr-1.5 text-gold-400" />
+                <Icon name="users" className="w-4 h-4 mr-1.5 text-gold-600" />
                 <span>{location.customersServed}+ Customers</span>
             </div>
             <div

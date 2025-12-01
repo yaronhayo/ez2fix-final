@@ -1,5 +1,7 @@
 ---
 import { siteConfig } from "@config/site.config";
+import { Image } from "astro:assets";
+import logoImage from "@assets/images/logos/ez2fix-logo.png";
 import { Icon } from "@components/ui/Icon";
 
 const mainLinks = [
@@ -38,12 +40,10 @@ const legalLinks = [
             <!-- Column 1: Company Info -->
             <div class="sm:col-span-2 xl:col-span-2">
                 <a href="/" class="inline-block mb-4">
-                    <img
-                        src="/images/logos/ez2fix-logo.png"
+                    <Image
+                        src={logoImage}
                         alt="Ez2Fix LLC Logo"
                         class="h-14 w-auto"
-                        width="171"
-                        height="48"
                     />
                 </a>
                 <p class="text-cream-200 mb-4 max-w-sm mx-auto sm:mx-0">
@@ -258,7 +258,7 @@ const legalLinks = [
                 © {new Date().getFullYear()} Ez2Fix LLC. All rights reserved.
             </p>
 
-            <p class="text-xs text-dark-400 pt-2">
+            <p class="text-xs text-cream-300 pt-2">
                 This site is protected by reCAPTCHA and the Google
                 <a
                     href="https://policies.google.com/privacy"

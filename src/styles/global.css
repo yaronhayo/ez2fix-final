@@ -1,4 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+/* Google Fonts loaded locally for performance */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  /* Changed from swap for better performance */
+  src: url('/fonts/montserrat-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: optional;
+  src: url('/fonts/montserrat-600.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: optional;
+  src: url('/fonts/montserrat-700.ttf') format('truetype');
+}
 
 @tailwind base;
 @tailwind components;

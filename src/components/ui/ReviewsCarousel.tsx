@@ -89,7 +89,7 @@ export default function ReviewsCarousel({ reviews, autoPlayInterval = 7000 }: Re
                             aria-label={`Review from ${review.author}`}
                         >
                             <div className="flex items-center mb-4">
-                                <div className="flex text-gold-400">
+                                <div className="flex text-gold-600">
                                     <span className="sr-only">Rated {review.rating} out of 5 stars</span>
                                     {[...Array(5)].map((_, i) => (
                                         <Icon key={i} name="star" className="w-5 h-5 fill-current" aria-hidden="true" />

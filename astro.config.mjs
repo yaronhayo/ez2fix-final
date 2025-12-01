@@ -3,6 +3,8 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+
+import partytown from '@astrojs/partytown';
 import icon from 'astro-icon';
 
 // https://astro.build/config
@@ -26,6 +28,12 @@ export default defineConfig({
         heroicons: ['*'],
         mdi: ['*'],
         local: ['*'],
+      },
+    }),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+        debug: false,
       },
     }),
 
@@ -79,9 +87,7 @@ export default defineConfig({
       },
       terserOptions: {
         compress: {
-          drop_console: true, // Remove console.logs in production
           drop_debugger: true,
-          pure_funcs: ['console.log', 'console.info', 'console.debug'],
           passes: 2, // Multiple passes for better compression
         },
         mangle: {

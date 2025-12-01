@@ -11,6 +11,7 @@ interface Props {
     noindex?: boolean;
     ogImage?: string;
     schema?: object[];
+    loadRecaptcha?: boolean; // Only load on pages with forms
 }
 
 const {
@@ -20,6 +21,7 @@ const {
     noindex = false,
     ogImage = "/images/og/og-default.png",
     schema = [],
+    loadRecaptcha = false, // Default to not loading reCAPTCHA
 } = Astro.props;
 
 const fullTitle = `${title} | ${siteConfig.company.name}`;
@@ -46,29 +48,24 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
         <meta name="theme-color" content="#D4AF37" />
         <meta name="generator" content={Astro.generator} />
 
-        <!-- Google Tag Manager (Deferred for Performance) -->
-        <script is:inline>
-            // Defer GTM until page interactive
-            window.addEventListener("load", function () {
-                setTimeout(function () {
-                    (function (w, d, s, l, i) {
-                        w[l] = w[l] || [];
-                        w[l].push({
-                            "gtm.start": new Date().getTime(),
-                            event: "gtm.js",
-                        });
-                        var f = d.getElementsByTagName(s)[0],
-                            j = d.createElement(s),
-                            dl = l != "dataLayer" ? "&l=" + l : "";
-                        j.async = true;
-                        j.src =
-                            "https://www.googletagmanager.com/gtm.js?id=" +
-                            i +
-                            dl;
-                        f.parentNode.insertBefore(j, f);
-                    })(window, document, "script", "dataLayer", "GTM-TDFV4QVJ");
-                }, 1000);
-            });
+        <!-- Google Tag Manager (Partytown for performance) -->
+        <script type="text/partytown">
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    "gtm.start": new Date().getTime(),
+                    event: "gtm.js",
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != "dataLayer" ? "&l=" + l : "";
+                j.async = true;
+                j.src =
+                    "https://www.googletagmanager.com/gtm.js?id=" +
+                    i +
+                    dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, "script", "dataLayer", "GTM-TDFV4QVJ");
         </script>
         <!-- End Google Tag Manager -->
 
@@ -121,45 +118,26 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             ))
         }
 
-        <!-- Preconnect to important domains -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!-- Fonts are loaded locally in global.css -->
 
-        <!-- Defer Google Fonts to eliminate render-blocking -->
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
-            media="print"
-            onload="this.media='all'"
-        />
-        <noscript>
-            <link
-                rel="stylesheet"
-                href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
-            />
-        </noscript>
-
-        <!-- Preload critical fonts for better LCP -->
-        <link
-            rel="preload"
-            href="https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2"
-            as="font"
-            type="font/woff2"
-            crossorigin
-        />
-
-        <!-- Preconnect to reCAPTCHA -->
-        <link rel="preconnect" href="https://www.google.com" />
-        <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+        {
+            loadRecaptcha && (
+                <>
+                    {/* Preconnect to reCAPTCHA only when needed */}
+                    <link rel="preconnect" href="https://www.google.com" />
+                    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+                </>
+            )
+        }
 
         <!-- DNS prefetch for external resources -->
-        <link rel="dns-prefetch" href="https://www.google.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        <link rel="dns-prefetch" href="https://www.clickcease.com" />
 
-        <!-- reCAPTCHA v3 (Deferred - async) -->
+        <!-- reCAPTCHA v3 (Only loaded on pages with forms) -->
         {
-            import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+            loadRecaptcha && import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
                 <script
                     async
                     defer
@@ -178,17 +156,13 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             Skip to main content
         </a>
 
-        <!-- ClickCease.com tracking -->
-        <script is:inline>
-            window.addEventListener("load", function () {
-                var script = document.createElement("script");
-                script.async = true;
-                script.type = "text/javascript";
-                var target = "https://www.clickcease.com/monitor/stat.js";
-                script.src = target;
-                var elem = document.head;
-                elem.appendChild(script);
-            });
+        <!-- ClickCease.com tracking (Partytown for performance) -->
+        <script type="text/partytown">
+            var script = document.createElement("script");
+            script.async = true;
+            script.type = "text/javascript";
+            script.src = "https://www.clickcease.com/monitor/stat.js";
+            document.head.appendChild(script);
         </script>
         <noscript>
             <a href="https://www.clickcease.com" rel="nofollow"
@@ -199,7 +173,7 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             >
         </noscript>
 
-        <script is:inline>
+        <script type="text/partytown">
             window.initCConvertion = function (val) {
                 window.ccConVal = val || 0;
                 var script = document.createElement("script");
@@ -250,7 +224,9 @@ const allSchema = [generateLocalBusinessSchema(), ...schema];
             )
         }
 
-        <slot />
+        <main id="main-content">
+            <slot />
+        </main>
 
         <!-- Scroll to Top Button -->
         <ScrollToTop />

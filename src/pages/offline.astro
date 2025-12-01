@@ -1,0 +1,110 @@
+---
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import { siteConfig } from "@config/site.config";
+import { Icon } from "@components/ui/Icon";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Offline | {siteConfig.company.name}</title>
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#D4AF37" />
+    </head>
+    <body class="bg-gray-50">
+        <Header />
+
+        <main
+            class="container mx-auto px-4 py-16 min-h-screen flex items-center justify-center"
+        >
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="mb-8">
+                    <Icon
+                        name="wifiOff"
+                        className="w-24 h-24 mx-auto text-gray-400 mb-6"
+                    />
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-6">
+                    You're Offline
+                </h1>
+
+                <p class="text-xl text-dark-600 mb-8">
+                    It looks like you've lost your internet connection. Don't
+                    worry, you can still browse previously viewed pages.
+                </p>
+
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-dark-900 mb-4">
+                        Need Help Now?
+                    </h2>
+                    <p class="text-dark-600 mb-6">
+                        If you have an emergency, you can still call us
+                        directly.
+                    </p>
+                    <a
+                        href={`tel:${siteConfig.contact.phoneRaw}`}
+                        class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gold-500 rounded-lg hover:bg-gold-400 transition-all shadow-lg"
+                    >
+                        <Icon name="phone" className="w-5 h-5 mr-2" />
+                        Call {siteConfig.contact.phone}
+                    </a>
+                </div>
+
+                <div class="text-left bg-cream-100 rounded-xl p-6">
+                    <h3
+                        class="text-lg font-bold text-dark-900 mb-3 flex items-center"
+                    >
+                        <Icon
+                            name="info"
+                            className="w-5 h-5 mr-2 text-gold-500"
+                        />
+                        What you can do:
+                    </h3>
+                    <ul class="space-y-2 text-dark-600">
+                        <li class="flex items-start">
+                            <Icon
+                                name="checkCircle"
+                                className="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
+                            />
+                            <span>Check your internet connection</span>
+                        </li>
+                        <li class="flex items-start">
+                            <Icon
+                                name="checkCircle"
+                                className="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
+                            />
+                            <span>Browse pages you've already visited</span>
+                        </li>
+                        <li class="flex items-start">
+                            <Icon
+                                name="checkCircle"
+                                className="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
+                            />
+                            <span>Call us directly for emergency service</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button
+                    onclick="window.history.back()"
+                    class="mt-8 inline-flex items-center text-gold-600 hover:text-gold-500 font-semibold"
+                >
+                    <Icon name="arrowLeft" className="w-5 h-5 mr-2" />
+                    Go Back
+                </button>
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+</html>
+
+<style>
+    @import "../styles/global.css";
+</style>

@@ -25,6 +25,7 @@ const faqs = getFAQsByPage("contact");
     title="Contact Ez2Fix - Garage Door Repair Northern NJ | Call Now"
     description="Contact Ez2Fix for garage door service in Northern NJ. Call (201) 554-6769 for prompt help or use our contact form. 24/7 emergency service available."
     schema={[breadcrumbSchema]}
+    loadRecaptcha={true}
 >
     <Header />
     <Breadcrumbs items={[{ name: "Contact" }]} />
@@ -61,7 +62,7 @@ const faqs = getFAQsByPage("contact");
                         <div class="flex items-center mb-2">
                             <Icon
                                 name="phone"
-                                className="w-6 h-6 text-gold-500 mr-3"
+                                className="w-6 h-6 text-gold-600 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Phone
@@ -83,7 +84,7 @@ const faqs = getFAQsByPage("contact");
                         <div class="flex items-center mb-2">
                             <Icon
                                 name="mail"
-                                className="w-6 h-6 text-gold-500 mr-3"
+                                className="w-6 h-6 text-gold-600 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Email
@@ -102,7 +103,7 @@ const faqs = getFAQsByPage("contact");
                         <div class="flex items-center mb-2">
                             <Icon
                                 name="mapPin"
-                                className="w-6 h-6 text-gold-500 mr-3"
+                                className="w-6 h-6 text-gold-600 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Service Area
@@ -121,7 +122,7 @@ const faqs = getFAQsByPage("contact");
                         <div class="flex items-center mb-2">
                             <Icon
                                 name="clock"
-                                className="w-6 h-6 text-gold-500 mr-3"
+                                className="w-6 h-6 text-gold-600 mr-3"
                             />
                             <h3 class="text-xl font-bold text-dark-700">
                                 Business Hours
@@ -156,7 +157,7 @@ const faqs = getFAQsByPage("contact");
                         soon as possible. For emergencies, please call.
                     </p>
 
-                    <ContactForm client:load />
+                    <ContactForm client:visible />
                 </div>
             </div>
         </div>

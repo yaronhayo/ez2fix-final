@@ -150,7 +150,7 @@ function BookingFormContent() {
         });
     };
 
-    const { inputRef } = useGooglePlaces({
+    const { inputRef, loadScript } = useGooglePlaces({
         onPlaceSelect: (address) => {
             setFormData((prev) => ({
                 ...prev,
@@ -413,6 +413,7 @@ function BookingFormContent() {
                                 id={`${formId}-address`}
                                 name="address"
                                 ref={inputRef}
+                                onFocus={loadScript}
                                 placeholder="Start typing your address..."
                                 autoComplete="street-address"
                                 className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400 ${errors.address ? 'border-red-500' : 'border-cream-300'
