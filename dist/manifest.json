@@ -7,6 +7,24 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
+    "id": "ez2fix-website",
+    "categories": [
+        "business",
+        "utilities",
+        "home"
+    ],
+    "shortcuts": [
+        {
+            "name": "Book Online",
+            "url": "/booking",
+            "description": "Book a garage door repair appointment"
+        },
+        {
+            "name": "Services",
+            "url": "/services",
+            "description": "View our garage door services"
+        }
+    ],
     "icons": [
         {
             "src": "/images/logos/ez2fix-logo.png",

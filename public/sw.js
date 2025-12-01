@@ -1,12 +1,12 @@
 // Service Worker for caching and offline support
-const CACHE_NAME = 'ez2fix-v3'; // Incremented version
+const CACHE_NAME = 'ez2fix-v4'; // Updated version to force cache refresh
 const STATIC_ASSETS = [
     '/',
     '/offline',
     '/manifest.json',
     '/favicon.png',
     '/images/logos/ez2fix-logo.png',
-    '/images/hero/hero-2.webp', // Cache critical LCP image
+    '/images/hero/hero-2.webp',
 ];
 
 // Install event - cache static assets
@@ -18,7 +18,7 @@ self.addEventListener('install', (event) => {
             });
         })
     );
-    self.skipWait();
+    self.skipWait(); // Force immediate activation
 });
 
 // Activate event - clean up old caches
@@ -32,10 +32,10 @@ self.addEventListener('activate', (event) => {
             );
         })
     );
-    self.clients.claim();
+    self.clients.claim(); // Take control immediately
 });
 
-// Fetch event - cache-first strategy for static assets
+// Fetch event - network-first for HTML/CSS, cache-first for images
 self.addEventListener('fetch', (event) => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') return;
@@ -43,6 +43,33 @@ self.addEventListener('fetch', (event) => {
     // Skip external requests
     if (!event.request.url.startsWith(self.location.origin)) return;
 
+    const url = new URL(event.request.url);
+
+    // Network-first for HTML and CSS (always get fresh styles)
+    if (url.pathname.endsWith('.html') || url.pathname.endsWith('.css') || url.pathname.endsWith('/') || url.pathname.includes('/thank-you')) {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    // Cache the fresh response
+                    if (response && response.status === 200) {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => {
+                    // Fallback to cache if offline
+                    return caches.match(event.request).then((cachedResponse) => {
+                        return cachedResponse || caches.match('/offline');
+                    });
+                })
+        );
+        return;
+    }
+
+    // Cache-first for images and static assets (better performance)
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
@@ -50,12 +77,10 @@ self.addEventListener('fetch', (event) => {
             }
 
             return fetch(event.request).then((response) => {
-                // Don't cache non-successful responses
                 if (!response || response.status !== 200 || response.type === 'error') {
                     return response;
                 }
 
-                // Cache successful responses for static assets
                 const responseToCache = response.clone();
                 caches.open(CACHE_NAME).then((cache) => {
                     cache.put(event.request, responseToCache);
@@ -63,7 +88,6 @@ self.addEventListener('fetch', (event) => {
 
                 return response;
             }).catch(() => {
-                // Return offline page if available
                 return caches.match('/offline');
             });
         })

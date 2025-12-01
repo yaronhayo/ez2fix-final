@@ -1,11 +1,12 @@
 // Service Worker for caching and offline support
-const CACHE_NAME = 'ez2fix-v2';
+const CACHE_NAME = 'ez2fix-v3'; // Incremented version
 const STATIC_ASSETS = [
     '/',
     '/offline',
     '/manifest.json',
     '/favicon.png',
     '/images/logos/ez2fix-logo.png',
+    '/images/hero/hero-2.webp', // Cache critical LCP image
 ];
 
 // Install event - cache static assets

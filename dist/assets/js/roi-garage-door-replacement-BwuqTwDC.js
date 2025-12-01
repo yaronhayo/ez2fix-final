@@ -1,9 +1,0 @@
-async function getMod() {
-  return import("./roi-garage-door-replacement-DOEh7hFy.js");
-}
-const collectedLinks = [];
-const collectedStyles = [];
-const defaultMod = { __astroPropagation: true, getMod, collectedLinks, collectedStyles, collectedScripts: [] };
-export {
-  defaultMod as default
-};
